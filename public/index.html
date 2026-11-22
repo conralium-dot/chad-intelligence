@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chad Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Layout: bandeau de recherche + chiffres clés, puis sections pleine largeur (fiche pays, comparateur, éducation, humanitaire, sources) sur une colonne de 1120px. */
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --ink: #0f1b33;
+  --muted: #5a6578;
+  --line: #dde2ea;
+  --accent: #0b3b8c;      /* bleu du drapeau, assourdi */
+  --accent-soft: rgba(11, 59, 140, 0.10);
+  --gold: #c99400;        /* jaune du drapeau, lisible sur fond clair */
+  --critical: #b3261e;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1220; --surface: #141c2e; --ink: #e8edf6; --muted: #9aa6bb; --line: #26304a;
+    --accent: #7fa6ff; --accent-soft: rgba(127, 166, 255, 0.14); --gold: #f2c230; --critical: #ff7a6e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1220; --surface: #141c2e; --ink: #e8edf6; --muted: #9aa6bb; --line: #26304a;
+  --accent: #7fa6ff; --accent-soft: rgba(127, 166, 255, 0.14); --gold: #f2c230; --critical: #ff7a6e;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(--font-body); }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* En-tête */
+header.top { position: sticky; top: 0; z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 20px; height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.flag { display: inline-grid; grid-template-columns: repeat(3, 6px); height: 18px; border-radius: 2px; overflow: hidden; }
+.flag i:nth-child(1) { background: #002664; } .flag i:nth-child(2) { background: #fecb00; } .flag i:nth-child(3) { background: #c60c30; }
+nav.main { display: flex; gap: 4px; flex: 1; overflow-x: auto; }
+nav.main a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 10px; border-radius: 6px; white-space: nowrap; }
+nav.main a:hover { color: var(--ink); background: var(--accent-soft); }
+.lang { display: flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.lang button { border: 0; background: none; color: var(--muted); font: 600 13px var(--font-body); padding: 6px 10px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+@media (max-width: 760px) { nav.main { display: none; } }
+
+/* Bandeau */
+.hero { padding: 48px 0 28px; }
+.hero h1 { font-size: clamp(30px, 4.6vw, 46px); font-weight: 800; max-width: 18ch; line-height: 1.08; }
+.hero p.lead { color: var(--muted); max-width: 60ch; margin: 14px 0 22px; font-size: 17px; }
+.search { position: relative; max-width: 620px; }
+.search input { width: 100%; font: 16px var(--font-body); padding: 14px 16px 14px 44px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); }
+.search svg { position: absolute; left: 14px; top: 15px; color: var(--muted); }
+.results { position: absolute; left: 0; right: 0; top: calc(100% + 6px); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 30px rgba(15, 27, 51, 0.14); list-style: none; margin: 0; padding: 6px; display: none; z-index: 10; }
+.results.open { display: block; }
+.results li a { display: flex; justify-content: space-between; gap: 12px; padding: 9px 10px; border-radius: 6px; text-decoration: none; color: var(--ink); font-size: 14px; }
+.results li a:hover, .results li a:focus { background: var(--accent-soft); }
+.results li .num { color: var(--muted); }
+.results .empty { padding: 10px; color: var(--muted); font-size: 14px; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(136px, 1fr)); gap: 12px; margin-top: 28px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 2px; }
+.tile .label { font-size: 13px; color: var(--muted); }
+.tile .value { font-family: var(--font-display); font-weight: 700; font-size: 26px; font-variant-numeric: tabular-nums; }
+.tile .meta { font-size: 12px; color: var(--muted); }
+.tile.alert { border-left: 4px solid var(--critical); }
+
+/* Sections */
+section.block { padding: 40px 0; border-top: 1px solid var(--line); }
+.head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px; margin-bottom: 18px; }
+.head h2 { font-size: 26px; font-weight: 700; }
+.head .tag { font-size: 13px; color: var(--muted); }
+.insight { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 12px 16px; max-width: 80ch; margin: 0 0 20px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; min-width: 0; }
+.card h3 { font-size: 16px; font-weight: 700; }
+.card .sub { font-size: 13px; color: var(--muted); margin: 2px 0 10px; }
+.card .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: var(--muted); }
+.btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 500 12px var(--font-body); padding: 5px 10px; border-radius: 6px; cursor: pointer; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { fill: var(--muted); font: 11px var(--font-body); font-variant-numeric: tabular-nums; }
+.chart .grid { stroke: var(--line); }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font: 12px var(--font-body); padding: 5px 8px; border-radius: 6px; white-space: nowrap; transform: translate(-50%, -110%); display: none; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.chips button { border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 500 13px var(--font-body); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+.chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+
+.tablewrap { overflow-x: auto; }
+table.src { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.src th, table.src td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.src th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); font-weight: 600; }
+code { font-family: var(--font-mono); font-size: 12px; }
+
+.soon { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.soon .card { border-style: dashed; }
+.pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-bottom: 6px; }
+
+footer { padding: 28px 0 40px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="flag" aria-hidden="true"><i></i><i></i><i></i></span>Chad Intelligence</a>
+    <nav class="main" aria-label="Sections">
+      <a href="#pays" data-i18n="navCountry">Fiche pays</a>
+      <a href="#comparer" data-i18n="navCompare">Comparer</a>
+      <a href="#education" data-i18n="navEducation">Éducation</a>
+      <a href="#humanitaire" data-i18n="navHuman">Humanitaire</a>
+      <a href="#sources" data-i18n="navSources">Sources</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Langue / Language">
+      <button type="button" id="lang-fr" aria-pressed="true">FR</button>
+      <button type="button" id="lang-en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <h1 data-i18n="heroTitle">La référence des données sur le Tchad</h1>
+    <p class="lead" data-i18n="heroLead">Données publiques de la Banque mondiale, du HCR et de l'INSEED, rassemblées, vérifiées et expliquées. Chaque chiffre renvoie à sa source.</p>
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <label for="q" class="sr" style="position:absolute;left:-9999px" data-i18n="searchLabel">Rechercher un indicateur</label>
+      <input id="q" type="search" autocomplete="off" data-i18n-ph="searchPh" placeholder="Rechercher : population, PIB, réfugiés, électricité…">
+      <ul class="results" id="results" role="listbox"></ul>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </div>
+
+  <section class="block" id="pays">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="countryTitle">Tchad, fiche pays</h2><span class="tag" data-i18n="countryTag">Mise à jour : données 2024 publiées par la Banque mondiale</span></div>
+      <p class="insight" id="countryInsight"></p>
+      <div class="grid2">
+        <div class="card">
+          <h3 data-i18n="gdpTitle">PIB, 2004-2024</h3>
+          <p class="sub" data-i18n="gdpSub">Milliards de dollars US courants</p>
+          <div class="chart" id="chartGdp"></div>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?locations=TD">Banque mondiale, NY.GDP.MKTP.CD</a></span><button class="btn" data-csv="gdp" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="popTitle">Population, 2004-2024</h3>
+          <p class="sub" data-i18n="popSub">Millions d'habitants</p>
+          <div class="chart" id="chartPop"></div>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/indicator/SP.POP.TOTL?locations=TD">Banque mondiale, SP.POP.TOTL</a></span><button class="btn" data-csv="pop" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="comparer">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="compareTitle">Le Tchad face à ses voisins</h2><span class="tag" data-i18n="compareTag">Cameroun, Niger, Nigeria, Soudan, République centrafricaine</span></div>
+      <div class="chips" id="cmpChips" role="group" aria-label="Indicateur"></div>
+      <p class="insight" id="cmpInsight"></p>
+      <div class="card">
+        <h3 id="cmpTitle"></h3>
+        <p class="sub" id="cmpSub"></p>
+        <div class="chart" id="chartCmp"></div>
+        <div class="foot"><span><span data-i18n="source">Source</span> : <a id="cmpSrc" href="#"></a></span><button class="btn" data-csv="cmp" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="education">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="eduTitle">Éducation</h2><span class="tag" data-i18n="eduTag">Premier secteur couvert en détail</span></div>
+      <p class="insight" id="eduInsight"></p>
+      <div class="grid2">
+        <div class="card">
+          <h3 data-i18n="enrTitle">Taux brut de scolarisation au primaire</h3>
+          <p class="sub" data-i18n="enrSub">% de la population d'âge scolaire, 2000-2024 (peut dépasser 100 %)</p>
+          <div class="chart" id="chartEnr"></div>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/indicator/SE.PRM.ENRR?locations=TD">Banque mondiale / UNESCO, SE.PRM.ENRR</a></span><button class="btn" data-csv="enr" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="litTitle">Alphabétisation des adultes</h3>
+          <p class="sub" data-i18n="litSub">% des 15 ans et plus, dernière année disponible par pays</p>
+          <div class="chart" id="chartLit"></div>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/indicator/SE.ADT.LITR.ZS">Banque mondiale / UNESCO, SE.ADT.LITR.ZS</a></span><button class="btn" data-csv="lit" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="humanitaire">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="humTitle">Humanitaire</h2><span class="tag" data-i18n="humTag">Personnes réfugiées et déplacées au Tchad, fin d'année</span></div>
+      <p class="insight" id="humInsight"></p>
+      <div class="card">
+        <div class="legend"><span style="--c: var(--accent)" data-i18n="refugees">Réfugiés accueillis</span><span style="--c: var(--gold)" data-i18n="idps">Déplacés internes</span></div>
+        <div class="chart" id="chartHum"></div>
+        <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://www.unhcr.org/refugee-statistics/">HCR, Refugee Data Finder (API population)</a></span><button class="btn" data-csv="hum" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="bientot">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="soonTitle">Prochainement</h2></div>
+      <div class="soon">
+        <div class="card"><span class="pill" data-i18n="soonV1">Prochaine version</span><h3 data-i18n="soon1">Fiches des 23 provinces</h3><p class="sub" data-i18n="soon1d">Population, écoles, santé et besoins humanitaires par province.</p></div>
+        <div class="card"><span class="pill" data-i18n="soonV1">Prochaine version</span><h3 data-i18n="soon2">Secteurs économiques</h3><p class="sub" data-i18n="soon2d">Pétrole, élevage, coton, gomme arabique : production, exportations, acteurs.</p></div>
+        <div class="card"><span class="pill" data-i18n="soonV2">Version 2</span><h3 data-i18n="soon3">Assistant IA</h3><p class="sub" data-i18n="soon3d">Posez vos questions en français ou en anglais ; chaque réponse cite ses sources.</p></div>
+        <div class="card"><span class="pill" data-i18n="soonV2">Version 2</span><h3 data-i18n="soon4">API et offre Pro</h3><p class="sub" data-i18n="soon4d">Accès programmatique, alertes et graphiques personnalisés pour les organisations.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="sources">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="srcTitle">Sources et méthode</h2></div>
+      <p class="insight" data-i18n="srcLead">Chaque chiffre affiché provient d'une source publique, avec son code d'indicateur et son année. Aucune valeur n'est estimée par Chad Intelligence.</p>
+      <div class="card tablewrap">
+        <table class="src">
+          <thead><tr><th data-i18n="thIndicator">Indicateur</th><th data-i18n="thSource">Source</th><th data-i18n="thCode">Code</th><th data-i18n="thYear">Année</th></tr></thead>
+          <tbody id="srcRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Chad Intelligence · <span data-i18n="footer">Version de démonstration, données consultées le 22 novembre 2026</span></span>
+    <span data-i18n="footer2">Données ouvertes : Banque mondiale (CC BY 4.0), HCR</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Données (Banque mondiale API v2, HCR API population) ---------- */
+  const WB = "https://data.worldbank.org/indicator/";
+  const years = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+
+  const gdp = { 2004: 4422855660.83, 2005: 8655892392.93, 2006: 9709626596.13, 2007: 10865385131.52, 2008: 13385593990.34, 2009: 12317614053.68, 2010: 14058506663.73, 2011: 16685349674.00, 2012: 17892228569.89, 2013: 17865316886.33, 2014: 18144336903.72, 2015: 14559599499.50, 2016: 13026289835.78, 2017: 13349041408.72, 2018: 15327000248.87, 2019: 14905517742.85, 2020: 14932897821.24, 2021: 16871937697.59, 2022: 17828508289.60, 2023: 18352937976.22, 2024: 19906706689.76 };
+  const pop = { 2004: 9920036, 2005: 10328092, 2006: 10706424, 2007: 11081660, 2008: 11476296, 2009: 11893754, 2010: 12312575, 2011: 12754997, 2012: 13210998, 2013: 13691079, 2014: 14188678, 2015: 14647621, 2016: 15114655, 2017: 15622759, 2018: 16156531, 2019: 16685223, 2020: 17224679, 2021: 17828273, 2022: 18455316, 2023: 19319064, 2024: 20299123 };
+  const enr = { 2000: 61.54, 2001: 63.90, 2002: 68.02, 2003: 70.07, 2004: 73.45, 2005: 70.31, 2006: 69.86, 2007: 68.65, 2008: 76.39, 2009: 80.87, 2010: 80.91, 2011: 87.17, 2012: 90.90, 2013: 97.53, 2014: 98.32, 2015: 87.91, 2016: 82.55, 2017: 74.21, 2018: 84.34, 2019: 83.26, 2020: null, 2021: 86.15, 2022: 87.03, 2023: 88.34, 2024: 88.46 };
+  const hum = [
+    [2015, 369538, 51999], [2016, 391235, 124342], [2017, 411475, 99983], [2018, 451203, 165314], [2019, 442670, 170278],
+    [2020, 478649, 336124], [2021, 555782, 406573], [2022, 592764, 381289], [2023, 1100921, 215928], [2024, 1278866, 220610], [2025, 1502263, 219595]
+  ];
+
+  const COUNTRIES = ["TCD", "CMR", "NER", "NGA", "SDN", "CAF"];
+  const CNAME = {
+    fr: { TCD: "Tchad", CMR: "Cameroun", NER: "Niger", NGA: "Nigeria", SDN: "Soudan", CAF: "Centrafrique" },
+    en: { TCD: "Chad", CMR: "Cameroon", NER: "Niger", NGA: "Nigeria", SDN: "Sudan", CAF: "Central African Rep." }
+  };
+  const CMP = [
+    { id: "gdppc", code: "NY.GDP.PCAP.CD", fr: "PIB par habitant", en: "GDP per capita", unitFr: "dollars US courants, 2024", unitEn: "current US dollars, 2024", fmt: "usd",
+      v: { TCD: [980.67, 2024], CMR: [1830.01, 2024], NER: [729.86, 2024], NGA: [1084.16, 2024], SDN: [984.61, 2024], CAF: [516.16, 2024] }, high: true },
+    { id: "elec", code: "EG.ELC.ACCS.ZS", fr: "Accès à l'électricité", en: "Access to electricity", unitFr: "% de la population, 2024", unitEn: "% of population, 2024", fmt: "pct",
+      v: { TCD: [13.4, 2024], CMR: [72, 2024], NER: [21.3, 2024], NGA: [62.5, 2024], SDN: [66, 2024], CAF: [18.2, 2024] }, high: true },
+    { id: "net", code: "IT.NET.USER.ZS", fr: "Utilisateurs d'internet", en: "Internet users", unitFr: "% de la population, 2024 (Soudan : 2017)", unitEn: "% of population, 2024 (Sudan: 2017)", fmt: "pct",
+      v: { TCD: [12.63, 2024], CMR: [46.26, 2024], NER: [15.56, 2024], NGA: [41.21, 2024], SDN: [18.6, 2017], CAF: [13.78, 2024] }, high: true },
+    { id: "life", code: "SP.DYN.LE00.IN", fr: "Espérance de vie à la naissance", en: "Life expectancy at birth", unitFr: "années, 2024", unitEn: "years, 2024", fmt: "yrs",
+      v: { TCD: [55.24, 2024], CMR: [63.97, 2024], NER: [61.43, 2024], NGA: [54.64, 2024], SDN: [66.52, 2024], CAF: [57.67, 2024] }, high: true },
+    { id: "pop", code: "SP.POP.TOTL", fr: "Population", en: "Population", unitFr: "millions d'habitants, 2024", unitEn: "million people, 2024", fmt: "mio",
+      v: { TCD: [20299123, 2024], CMR: [29123744, 2024], NER: [27032412, 2024], NGA: [232679478, 2024], SDN: [50448963, 2024], CAF: [5330690, 2024] }, high: true }
+  ];
+  const LIT = { TCD: [30.63, 2019], CMR: [72.55, 2018], NER: [35.61, 2022], NGA: [70.41, 2024], CAF: [42.44, 2019] };
+
+  /* ---------- Textes FR / EN ---------- */
+  const T = {
+    fr: {
+      navCountry: "Fiche pays", navCompare: "Comparer", navEducation: "Éducation", navHuman: "Humanitaire", navSources: "Sources",
+      heroTitle: "La référence des données sur le Tchad",
+      heroLead: "Données publiques de la Banque mondiale, du HCR et de l'INSEED, rassemblées, vérifiées et expliquées. Chaque chiffre renvoie à sa source.",
+      searchLabel: "Rechercher un indicateur", searchPh: "Rechercher : population, PIB, réfugiés, électricité…", noResult: "Aucun indicateur trouvé. Essayez « PIB » ou « réfugiés ».",
+      countryTitle: "Tchad, fiche pays", countryTag: "Mise à jour : données 2024 publiées par la Banque mondiale",
+      gdpTitle: "PIB, 2004-2024", gdpSub: "Milliards de dollars US courants", popTitle: "Population, 2004-2024", popSub: "Millions d'habitants",
+      source: "Source", copyCsv: "Copier les données (CSV)", copied: "Copié", copyFail: "Copie impossible ici",
+      compareTitle: "Le Tchad face à ses voisins", compareTag: "Cameroun, Niger, Nigeria, Soudan, République centrafricaine",
+      eduTitle: "Éducation", eduTag: "Premier secteur couvert en détail",
+      enrTitle: "Taux brut de scolarisation au primaire", enrSub: "% de la population d'âge scolaire, 2000-2024 (peut dépasser 100 %)",
+      litTitle: "Alphabétisation des adultes", litSub: "% des 15 ans et plus, dernière année disponible par pays",
+      humTitle: "Humanitaire", humTag: "Personnes réfugiées et déplacées au Tchad, fin d'année", refugees: "Réfugiés accueillis", idps: "Déplacés internes",
+      soonTitle: "Prochainement", soonV1: "Prochaine version", soonV2: "Version 2",
+      soon1: "Fiches des 23 provinces", soon1d: "Population, écoles, santé et besoins humanitaires par province.",
+      soon2: "Secteurs économiques", soon2d: "Pétrole, élevage, coton, gomme arabique : production, exportations, acteurs.",
+      soon3: "Assistant IA", soon3d: "Posez vos questions en français ou en anglais ; chaque réponse cite ses sources.",
+      soon4: "API et offre Pro", soon4d: "Accès programmatique, alertes et graphiques personnalisés pour les organisations.",
+      srcTitle: "Sources et méthode", srcLead: "Chaque chiffre affiché provient d'une source publique, avec son code d'indicateur et son année. Aucune valeur n'est estimée par Chad Intelligence.",
+      thIndicator: "Indicateur", thSource: "Source", thCode: "Code", thYear: "Année",
+      footer: "Version de démonstration, données consultées le 22 novembre 2026", footer2: "Données ouvertes : Banque mondiale (CC BY 4.0), HCR",
+      tPop: "Population", tGdp: "PIB", tGdppc: "PIB par habitant", tLife: "Espérance de vie", tElec: "Accès à l'électricité", tNet: "Internet", tUrb: "Population urbaine", tRef: "Réfugiés accueillis",
+      yrs: "ans", wbank: "Banque mondiale", unhcr: "HCR", enrolment: "Scolarisation primaire (brut)", literacy: "Alphabétisation des adultes", idpsL: "Déplacés internes"
+    },
+    en: {
+      navCountry: "Country profile", navCompare: "Compare", navEducation: "Education", navHuman: "Humanitarian", navSources: "Sources",
+      heroTitle: "The reference for data on Chad",
+      heroLead: "Public data from the World Bank, UNHCR and INSEED, gathered, checked and explained. Every figure links to its source.",
+      searchLabel: "Search an indicator", searchPh: "Search: population, GDP, refugees, electricity…", noResult: "No indicator found. Try “GDP” or “refugees”.",
+      countryTitle: "Chad, country profile", countryTag: "Updated: 2024 data published by the World Bank",
+      gdpTitle: "GDP, 2004-2024", gdpSub: "Billion current US dollars", popTitle: "Population, 2004-2024", popSub: "Million people",
+      source: "Source", copyCsv: "Copy data (CSV)", copied: "Copied", copyFail: "Copy not available here",
+      compareTitle: "Chad and its neighbours", compareTag: "Cameroon, Niger, Nigeria, Sudan, Central African Republic",
+      eduTitle: "Education", eduTag: "First sector covered in depth",
+      enrTitle: "Gross primary school enrolment", enrSub: "% of school-age population, 2000-2024 (can exceed 100%)",
+      litTitle: "Adult literacy", litSub: "% of people aged 15 and over, latest year available per country",
+      humTitle: "Humanitarian", humTag: "Refugees and displaced people in Chad, end of year", refugees: "Refugees hosted", idps: "Internally displaced",
+      soonTitle: "Coming soon", soonV1: "Next release", soonV2: "Version 2",
+      soon1: "Profiles of the 23 provinces", soon1d: "Population, schools, health and humanitarian needs by province.",
+      soon2: "Economic sectors", soon2d: "Oil, livestock, cotton, gum arabic: output, exports, players.",
+      soon3: "AI assistant", soon3d: "Ask questions in French or English; every answer cites its sources.",
+      soon4: "API and Pro plan", soon4d: "Programmatic access, alerts and custom charts for organisations.",
+      srcTitle: "Sources and method", srcLead: "Every figure shown comes from a public source, with its indicator code and year. Chad Intelligence estimates no values.",
+      thIndicator: "Indicator", thSource: "Source", thCode: "Code", thYear: "Year",
+      footer: "Demo version, data retrieved on 22 November 2026", footer2: "Open data: World Bank (CC BY 4.0), UNHCR",
+      tPop: "Population", tGdp: "GDP", tGdppc: "GDP per capita", tLife: "Life expectancy", tElec: "Access to electricity", tNet: "Internet", tUrb: "Urban population", tRef: "Refugees hosted",
+      yrs: "years", wbank: "World Bank", unhcr: "UNHCR", enrolment: "Primary enrolment (gross)", literacy: "Adult literacy", idpsL: "Internally displaced"
+    }
+  };
+
+  let lang = "fr";
+  try { const s = localStorage.getItem("ci-lang"); if (s === "en" || s === "fr") lang = s; } catch (e) {}
+  const t = k => T[lang][k] || k;
+  const loc = () => (lang === "fr" ? "fr-FR" : "en-GB");
+  const nf = (v, d) => new Intl.NumberFormat(loc(), { maximumFractionDigits: d, minimumFractionDigits: d }).format(v);
+
+  function fmt(v, kind) {
+    if (v == null) return "–";
+    switch (kind) {
+      case "usd": return lang === "fr" ? nf(v, 0) + " $" : "$" + nf(v, 0);
+      case "pct": return nf(v, 1) + " %";
+      case "yrs": return nf(v, 1) + " " + t("yrs");
+      case "mio": return nf(v / 1e6, 1) + " M";
+      case "bn": return nf(v / 1e9, 1) + (lang === "fr" ? " Md$" : " bn $");
+      default: return nf(v, 0);
+    }
+  }
+
+  /* ---------- Graphiques SVG ---------- */
+  const NS = "http://www.w3.org/2000/svg";
+  function el(name, attrs, parent) {
+    const n = document.createElementNS(NS, name);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function niceMax(m) {
+    const p = Math.pow(10, Math.floor(Math.log10(m)));
+    const s = [1, 2, 2.5, 5, 10].find(x => x * p >= m);
+    return s * p;
+  }
+  function tipFor(box) {
+    let tip = box.querySelector(".tip");
+    if (!tip) { tip = document.createElement("div"); tip.className = "tip"; box.appendChild(tip); }
+    return tip;
+  }
+  function showTip(box, svg, x, y, W, H, text) {
+    const tip = tipFor(box);
+    const r = svg.getBoundingClientRect();
+    tip.style.left = (x / W) * r.width + "px";
+    tip.style.top = (y / H) * r.height + "px";
+    tip.textContent = text;
+    tip.style.display = "block";
+  }
+  function hideTip(box) { const tip = box.querySelector(".tip"); if (tip) tip.style.display = "none"; }
+
+  function lineChart(box, pts, o) {
+    box.innerHTML = "";
+    const W = 560, H = 240, L = 44, R = 16, T0 = 14, B = 26;
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.label }, box);
+    const xs = pts.map(p => p[0]);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs);
+    const ymax = niceMax(Math.max(...pts.filter(p => p[1] != null).map(p => p[1])) * 1.05);
+    const X = x => L + (x - x0) / (x1 - x0) * (W - L - R);
+    const Y = y => T0 + (1 - y / ymax) * (H - T0 - B);
+    for (let i = 0; i <= 4; i++) {
+      const v = ymax * i / 4;
+      el("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: "grid" }, svg);
+      el("text", { x: L - 8, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = o.tick(v);
+    }
+    const step = (x1 - x0) > 15 ? 5 : 2;
+    for (let x = x0; x <= x1; x++) if ((x - x0) % step === 0 || x === x1) el("text", { x: X(x), y: H - 6, "text-anchor": "middle" }, svg).textContent = x;
+    // segments continus (les années sans donnée coupent la courbe)
+    const segs = []; let cur = [];
+    pts.forEach(p => { if (p[1] == null) { if (cur.length) segs.push(cur); cur = []; } else cur.push(p); });
+    if (cur.length) segs.push(cur);
+    segs.forEach(s => {
+      const d = s.map((p, i) => (i ? "L" : "M") + X(p[0]).toFixed(1) + " " + Y(p[1]).toFixed(1)).join("");
+      if (s.length > 1) el("path", { d: d + `L${X(s[s.length - 1][0])} ${Y(0)}L${X(s[0][0])} ${Y(0)}Z`, fill: "var(--accent)", "fill-opacity": 0.08 }, svg);
+      el("path", { d, fill: "none", stroke: "var(--accent)", "stroke-width": 2.2, "stroke-linejoin": "round" }, svg);
+    });
+    const last = pts.filter(p => p[1] != null).slice(-1)[0];
+    el("circle", { cx: X(last[0]), cy: Y(last[1]), r: 4.5, fill: "var(--accent)" }, svg);
+    const lt = el("text", { x: X(last[0]) - 8, y: Y(last[1]) - 10, "text-anchor": "end" }, svg);
+    lt.textContent = o.fmt(last[1]); lt.style.fill = "var(--ink)"; lt.style.fontWeight = 600;
+    const dot = el("circle", { r: 4, fill: "var(--surface)", stroke: "var(--accent)", "stroke-width": 2, visibility: "hidden" }, svg);
+    const bw = (W - L - R) / (x1 - x0);
+    pts.forEach(p => {
+      const hit = el("rect", { x: X(p[0]) - bw / 2, y: T0, width: bw, height: H - T0 - B, fill: "transparent" }, svg);
+      hit.addEventListener("mouseenter", () => {
+        if (p[1] == null) { showTip(box, svg, X(p[0]), Y(0), W, H, p[0] + " : –"); dot.setAttribute("visibility", "hidden"); return; }
+        dot.setAttribute("cx", X(p[0])); dot.setAttribute("cy", Y(p[1])); dot.setAttribute("visibility", "visible");
+        showTip(box, svg, X(p[0]), Y(p[1]), W, H, p[0] + " : " + o.fmt(p[1]));
+      });
+    });
+    svg.addEventListener("mouseleave", () => { hideTip(box); dot.setAttribute("visibility", "hidden"); });
+  }
+
+  function hbarChart(box, rows, o) {
+    box.innerHTML = "";
+    const W = o.w || 560, rowH = 34, L = 140, R = 90, T0 = 6;
+    const H = T0 + rows.length * rowH + 6;
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.label }, box);
+    const max = Math.max(...rows.map(r => r.v));
+    rows.forEach((r, i) => {
+      const y = T0 + i * rowH;
+      const w = (r.v / max) * (W - L - R);
+      const hl = r.key === "TCD";
+      const name = el("text", { x: L - 10, y: y + 21, "text-anchor": "end" }, svg);
+      name.textContent = r.name; if (hl) { name.style.fill = "var(--ink)"; name.style.fontWeight = 700; }
+      el("rect", { x: L, y: y + 7, width: Math.max(w, 2), height: 20, rx: 4, fill: hl ? "var(--accent)" : "var(--line)" }, svg);
+      const v = el("text", { x: L + w + 8, y: y + 21 }, svg);
+      v.textContent = r.label; v.style.fill = "var(--ink)"; if (hl) v.style.fontWeight = 700;
+    });
+  }
+
+  function groupedBars(box, rows, o) {
+    box.innerHTML = "";
+    const W = 1000, H = 300, L = 52, R = 12, T0 = 14, B = 26;
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.label }, box);
+    const ymax = niceMax(Math.max(...rows.map(r => Math.max(r[1], r[2]))) * 1.05);
+    const Y = y => T0 + (1 - y / ymax) * (H - T0 - B);
+    const gw = (W - L - R) / rows.length, bw = Math.min(22, gw / 2.8);
+    for (let i = 0; i <= 4; i++) {
+      const v = ymax * i / 4;
+      el("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: "grid" }, svg);
+      el("text", { x: L - 8, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = nf(v / 1e6, 1) + " M";
+    }
+    rows.forEach((r, i) => {
+      const cx = L + gw * i + gw / 2;
+      el("text", { x: cx, y: H - 6, "text-anchor": "middle" }, svg).textContent = r[0];
+      const a = el("rect", { x: cx - bw - 1, y: Y(r[1]), width: bw, height: Y(0) - Y(r[1]), rx: 3, fill: "var(--accent)" }, svg);
+      const b = el("rect", { x: cx + 1, y: Y(r[2]), width: bw, height: Y(0) - Y(r[2]), rx: 3, fill: "var(--gold)" }, svg);
+      a.addEventListener("mouseenter", () => showTip(box, svg, cx - bw / 2, Y(r[1]), W, H, `${r[0]} · ${t("refugees")} : ${nf(r[1], 0)}`));
+      b.addEventListener("mouseenter", () => showTip(box, svg, cx + bw / 2, Y(r[2]), W, H, `${r[0]} · ${t("idps")} : ${nf(r[2], 0)}`));
+    });
+    const lr = rows[rows.length - 1];
+    const lt = el("text", { x: L + gw * (rows.length - 1) + gw / 2 - bw / 2, y: Y(lr[1]) - 8, "text-anchor": "end" }, svg);
+    lt.textContent = fmt(lr[1], "mio"); lt.style.fill = "var(--ink)"; lt.style.fontWeight = 600;
+    svg.addEventListener("mouseleave", () => hideTip(box));
+  }
+
+  /* ---------- Rendu des sections ---------- */
+  const series = obj => Object.keys(obj).map(Number).sort((a, b) => a - b).map(y => [y, obj[y]]);
+  let cmpId = "gdppc";
+
+  function renderTiles() {
+    const tiles = [
+      { k: "tPop", v: fmt(20299123, "mio"), m: "2024 · " + t("wbank") },
+      { k: "tGdp", v: fmt(19906706689.76, "bn"), m: "2024 · " + t("wbank") },
+      { k: "tGdppc", v: lang === "fr" ? nf(980.67, 0) + " $" : "$" + nf(980.67, 0), m: "2024 · " + t("wbank") },
+      { k: "tLife", v: nf(55.24, 1) + " " + t("yrs"), m: "2024 · " + t("wbank") },
+      { k: "tElec", v: nf(13.4, 1) + " %", m: "2024 · " + t("wbank"), alert: true },
+      { k: "tUrb", v: nf(26.93, 1) + " %", m: "2024 · " + t("wbank") },
+      { k: "tRef", v: fmt(1502263, "mio"), m: "2025 · " + t("unhcr"), alert: true }
+    ];
+    document.getElementById("tiles").innerHTML = tiles.map(x =>
+      `<div class="tile${x.alert ? " alert" : ""}"><span class="label">${t(x.k)}</span><span class="value">${x.v}</span><span class="meta">${x.m}</span></div>`).join("");
+  }
+
+  function renderCountry() {
+    const p0 = pop[2004], p1 = pop[2024], g0 = gdp[2004], g1 = gdp[2024];
+    const cagr = (Math.pow(p1 / p0, 1 / 20) - 1) * 100;
+    const peak = Math.max(...Object.values(gdp)), peakYear = Object.keys(gdp).find(y => gdp[y] === peak);
+    const ratio = g1 / g0;
+    document.getElementById("countryInsight").textContent = lang === "fr"
+      ? `La population a plus que doublé en 20 ans (${fmt(p0, "mio")} en 2004, ${fmt(p1, "mio")} en 2024), soit ${nf(cagr, 1)} % de croissance par an. Le PIB a été multiplié par ${nf(ratio, 1)} sur la même période, mais il a chuté après 2014 avec la baisse des prix du pétrole et n'a retrouvé son niveau de 2014 qu'en 2023.`
+      : `The population more than doubled in 20 years (${fmt(p0, "mio")} in 2004, ${fmt(p1, "mio")} in 2024), or ${nf(cagr, 1)}% growth a year. GDP grew ${nf(ratio, 1)}-fold over the same period, but it fell after 2014 as oil prices dropped and only got back to its 2014 level in 2023.`;
+    lineChart(document.getElementById("chartGdp"), series(gdp), { label: t("gdpTitle"), tick: v => nf(v / 1e9, 0), fmt: v => fmt(v, "bn") });
+    lineChart(document.getElementById("chartPop"), series(pop), { label: t("popTitle"), tick: v => nf(v / 1e6, 0), fmt: v => fmt(v, "mio") });
+  }
+
+  function renderCompare() {
+    document.getElementById("cmpChips").innerHTML = CMP.map(c =>
+      `<button type="button" data-id="${c.id}" aria-pressed="${c.id === cmpId}">${c[lang]}</button>`).join("");
+    const c = CMP.find(x => x.id === cmpId);
+    const rows = COUNTRIES.map(k => ({ key: k, name: CNAME[lang][k], v: c.v[k][0], year: c.v[k][1] }))
+      .sort((a, b) => b.v - a.v)
+      .map(r => ({ ...r, label: c.fmt === "usd" ? (lang === "fr" ? nf(r.v, 0) + " $" : "$" + nf(r.v, 0)) : fmt(r.v, c.fmt) }));
+    const rank = rows.findIndex(r => r.key === "TCD") + 1;
+    const best = rows[0];
+    document.getElementById("cmpTitle").textContent = c[lang];
+    document.getElementById("cmpSub").textContent = lang === "fr" ? c.unitFr : c.unitEn;
+    const src = document.getElementById("cmpSrc");
+    src.href = WB + c.code; src.textContent = t("wbank") + ", " + c.code;
+    const tcd = rows.find(r => r.key === "TCD");
+    document.getElementById("cmpInsight").textContent = lang === "fr"
+      ? `${c.fr} : le Tchad se classe ${rank}${rank === 1 ? "er" : "e"} sur 6 (${tcd.label}). En tête : ${best.name} (${best.label}).`
+      : `${c.en}: Chad ranks ${rank} of 6 (${tcd.label}). Top: ${best.name} (${best.label}).`;
+    hbarChart(document.getElementById("chartCmp"), rows, { label: c[lang], w: 1000 });
+    CSV.cmp = () => "country,iso3,year," + c.code + "\n" + rows.map(r => `${r.name},${r.key},${r.year},${c.v[r.key][0]}`).join("\n");
+  }
+
+  function renderEducation() {
+    const s = series(enr);
+    lineChart(document.getElementById("chartEnr"), s, { label: t("enrTitle"), tick: v => nf(v, 0), fmt: v => nf(v, 1) + " %" });
+    const litRows = Object.keys(LIT).map(k => ({ key: k, name: CNAME[lang][k] + " (" + LIT[k][1] + ")", v: LIT[k][0], label: nf(LIT[k][0], 1) + " %" })).sort((a, b) => b.v - a.v);
+    hbarChart(document.getElementById("chartLit"), litRows, { label: t("litTitle") });
+    document.getElementById("eduInsight").textContent = lang === "fr"
+      ? `La scolarisation primaire est passée de ${nf(enr[2000], 0)} % en 2000 à ${nf(enr[2024], 0)} % en 2024, après un pic à ${nf(enr[2014], 0)} % en 2014. Seuls ${nf(LIT.TCD[0], 0)} % des adultes savent lire et écrire (2019), le plus bas des pays comparés.`
+      : `Primary enrolment rose from ${nf(enr[2000], 0)}% in 2000 to ${nf(enr[2024], 0)}% in 2024, after peaking at ${nf(enr[2014], 0)}% in 2014. Only ${nf(LIT.TCD[0], 0)}% of adults can read and write (2019), the lowest of the countries compared.`;
+  }
+
+  function renderHuman() {
+    groupedBars(document.getElementById("chartHum"), hum, { label: t("humTitle") });
+    const r22 = hum.find(r => r[0] === 2022)[1], r23 = hum.find(r => r[0] === 2023)[1], r25 = hum.find(r => r[0] === 2025)[1];
+    document.getElementById("humInsight").textContent = lang === "fr"
+      ? `Le Tchad accueillait ${fmt(r25, "mio")} de réfugiés fin 2025, contre ${nf(r22 / 1000, 0)} 000 fin 2022. Le nombre a presque doublé en 2023 avec l'arrivée de personnes fuyant la guerre au Soudan.`
+      : `Chad hosted ${fmt(r25, "mio")} refugees at the end of 2025, up from ${nf(r22 / 1000, 0)},000 at the end of 2022. The number nearly doubled in 2023 as people fled the war in Sudan.`;
+    void r23;
+  }
+
+  function renderSources() {
+    const rows = [
+      [t("tPop"), t("wbank"), "SP.POP.TOTL", "2004-2024", WB + "SP.POP.TOTL?locations=TD"],
+      [t("tGdp"), t("wbank"), "NY.GDP.MKTP.CD", "2004-2024", WB + "NY.GDP.MKTP.CD?locations=TD"],
+      [t("tGdppc"), t("wbank"), "NY.GDP.PCAP.CD", "2024", WB + "NY.GDP.PCAP.CD"],
+      [t("tLife"), t("wbank"), "SP.DYN.LE00.IN", "2024", WB + "SP.DYN.LE00.IN"],
+      [t("tElec"), t("wbank"), "EG.ELC.ACCS.ZS", "2024", WB + "EG.ELC.ACCS.ZS"],
+      [t("tNet"), t("wbank"), "IT.NET.USER.ZS", "2017-2024", WB + "IT.NET.USER.ZS"],
+      [t("tUrb"), t("wbank"), "SP.URB.TOTL.IN.ZS", "2024", WB + "SP.URB.TOTL.IN.ZS?locations=TD"],
+      [t("enrolment"), t("wbank") + " / UNESCO", "SE.PRM.ENRR", "2000-2024", WB + "SE.PRM.ENRR?locations=TD"],
+      [t("literacy"), t("wbank") + " / UNESCO", "SE.ADT.LITR.ZS", "2018-2024", WB + "SE.ADT.LITR.ZS"],
+      [t("tRef") + ", " + t("idpsL"), t("unhcr"), "population/v1", "2015-2025", "https://www.unhcr.org/refugee-statistics/"]
+    ];
+    document.getElementById("srcRows").innerHTML = rows.map(r =>
+      `<tr><td>${r[0]}</td><td><a href="${r[4]}">${r[1]}</a></td><td><code>${r[2]}</code></td><td class="num">${r[3]}</td></tr>`).join("");
+  }
+
+  /* ---------- CSV ---------- */
+  const CSV = {
+    gdp: () => "year,gdp_current_usd\n" + series(gdp).map(p => p.join(",")).join("\n"),
+    pop: () => "year,population\n" + series(pop).map(p => p.join(",")).join("\n"),
+    enr: () => "year,primary_gross_enrolment_pct\n" + series(enr).map(p => p[0] + "," + (p[1] == null ? "" : p[1])).join("\n"),
+    lit: () => "iso3,year,adult_literacy_pct\n" + Object.keys(LIT).map(k => `${k},${LIT[k][1]},${LIT[k][0]}`).join("\n"),
+    hum: () => "year,refugees,idps\n" + hum.map(r => r.join(",")).join("\n")
+  };
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-csv]");
+    if (b) {
+      const fn = CSV[b.dataset.csv];
+      const done = msg => { b.textContent = msg; setTimeout(() => { b.textContent = t("copyCsv"); }, 1600); };
+      try {
+        navigator.clipboard.writeText(fn()).then(() => done(t("copied")), () => done(t("copyFail")));
+      } catch (err) { done(t("copyFail")); }
+      return;
+    }
+    const chip = e.target.closest("#cmpChips button");
+    if (chip) { cmpId = chip.dataset.id; renderCompare(); }
+  });
+
+  /* ---------- Recherche ---------- */
+  const INDEX = () => [
+    { n: t("tPop"), v: fmt(20299123, "mio"), h: "#pays", kw: "population habitants démographie people" },
+    { n: t("tGdp"), v: fmt(19906706689.76, "bn"), h: "#pays", kw: "pib gdp économie economy croissance" },
+    { n: t("tGdppc"), v: lang === "fr" ? nf(980.67, 0) + " $" : "$" + nf(980.67, 0), h: "#comparer", kw: "pib par habitant gdp per capita revenu income" },
+    { n: t("tElec"), v: nf(13.4, 1) + " %", h: "#comparer", kw: "électricité electricity énergie energy" },
+    { n: t("tNet"), v: nf(12.63, 1) + " %", h: "#comparer", kw: "internet numérique digital télécommunications" },
+    { n: t("tLife"), v: nf(55.24, 1) + " " + t("yrs"), h: "#comparer", kw: "espérance de vie life expectancy santé health" },
+    { n: t("enrolment"), v: nf(88.46, 1) + " %", h: "#education", kw: "scolarisation école enrolment school éducation education primaire" },
+    { n: t("literacy"), v: nf(30.63, 1) + " %", h: "#education", kw: "alphabétisation literacy lire écrire" },
+    { n: t("tRef"), v: fmt(1502263, "mio"), h: "#humanitaire", kw: "réfugiés refugees soudan sudan hcr unhcr humanitaire" },
+    { n: t("idpsL"), v: nf(219595, 0), h: "#humanitaire", kw: "déplacés internes idp displaced humanitaire" },
+    { n: t("tUrb"), v: nf(26.93, 1) + " %", h: "#pays", kw: "urbanisation urban villes cities" }
+  ];
+  const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  const q = document.getElementById("q"), res = document.getElementById("results");
+  function search() {
+    const v = norm(q.value.trim());
+    if (!v) { res.classList.remove("open"); res.innerHTML = ""; return; }
+    const hits = INDEX().filter(x => norm(x.n + " " + x.kw).includes(v));
+    res.innerHTML = hits.length
+      ? hits.map(x => `<li><a href="${x.h}"><span>${x.n}</span><span class="num">${x.v}</span></a></li>`).join("")
+      : `<li class="empty">${t("noResult")}</li>`;
+    res.classList.add("open");
+  }
+  q.addEventListener("input", search);
+  q.addEventListener("focus", search);
+  res.addEventListener("click", () => { res.classList.remove("open"); });
+  document.addEventListener("click", e => { if (!e.target.closest(".search")) res.classList.remove("open"); });
+  q.addEventListener("keydown", e => { if (e.key === "Escape") { res.classList.remove("open"); q.blur(); } });
+
+  /* ---------- Langue ---------- */
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(n => { n.textContent = t(n.dataset.i18n); });
+    document.querySelectorAll("[data-i18n-ph]").forEach(n => { n.placeholder = t(n.dataset.i18nPh); });
+    document.getElementById("lang-fr").setAttribute("aria-pressed", String(lang === "fr"));
+    document.getElementById("lang-en").setAttribute("aria-pressed", String(lang === "en"));
+    renderTiles(); renderCountry(); renderCompare(); renderEducation(); renderHuman(); renderSources();
+    if (q.value) search();
+  }
+  ["fr", "en"].forEach(l => document.getElementById("lang-" + l).addEventListener("click", () => {
+    lang = l; try { localStorage.setItem("ci-lang", l); } catch (e) {} applyLang();
+  }));
+
+  applyLang();
+})();
+</script>
+</body>
+</html>
