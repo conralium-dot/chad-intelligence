@@ -146,6 +146,21 @@ table.prov td.n, table.prov th.n { text-align: right; font-variant-numeric: tabu
 table.prov tr.sel td { background: var(--accent-soft); }
 table.prov tbody tr { cursor: pointer; }
 table.prov tbody tr:hover td { background: var(--accent-soft); }
+.pbars .row { display: grid; grid-template-columns: 1fr; gap: 4px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.pbars .row:last-child { border-bottom: 0; }
+.pbars .top { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+.pbars .top a { color: var(--ink); text-decoration: none; font-weight: 500; }
+.pbars .top a:hover { color: var(--accent); text-decoration: underline; }
+.pbars .top .num { color: var(--muted); white-space: nowrap; }
+.pbars .track { position: relative; height: 10px; border-radius: 5px; background: var(--accent-soft); overflow: hidden; }
+.pbars .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); border-radius: 5px; }
+.pbars .meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.tag-s { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.tag-s.closed { background: var(--line); color: var(--muted); }
+.portals { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.portals a.card { text-decoration: none; color: var(--ink); display: grid; gap: 4px; }
+.portals a.card:hover { border-color: var(--accent); }
+.portals .sub { margin: 0; }
 footer { padding: 28px 0 40px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
 </style>
@@ -159,6 +174,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <a href="#pays" data-i18n="navCountry">Fiche pays</a>
       <a href="#economie" data-i18n="navEco">Économie</a>
       <a href="#provinces" data-i18n="navProv">Provinces</a>
+      <a href="#projets" data-i18n="navProj">Projets</a>
       <a href="#comparer" data-i18n="navCompare">Comparer</a>
       <a href="#education" data-i18n="navEducation">Éducation</a>
       <a href="#humanitaire" data-i18n="navHuman">Humanitaire</a>
@@ -264,6 +280,48 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <tbody id="provRows"></tbody>
         </table>
         <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://en.wikipedia.org/wiki/Provinces_of_Chad" data-i18n="provSrc1">INSEED, recensement 2009 et estimations mi-2023</a> · <a href="https://www.unhcr.org/refugee-statistics/" data-i18n="provSrc2">HCR, réfugiés par province (déc. 2024)</a></span><button class="btn" data-csv="prov" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="projets">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="projTitle">Projets financés et appels d'offres</h2><span class="tag" data-i18n="projTag">Où va l'argent des bailleurs, et ce qui reste à dépenser</span></div>
+      <p class="insight" id="projInsight"></p>
+      <div class="minis" id="projMinis"></div>
+      <div class="grid2 two">
+        <div class="card">
+          <h3 data-i18n="remTitle">Reste à décaisser par secteur</h3>
+          <p class="sub" data-i18n="remSub">Projets Banque mondiale nationaux et régionaux, millions de dollars, au 14 février 2026</p>
+          <div class="chart" id="chartRem"></div>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://documents1.worldbank.org/curated/en/099926304102627179/pdf/SECBOS-a04c4094-2b56-4c7e-8395-ef04e4ba3221.pdf" data-i18n="projSrc">Banque mondiale, cadre de partenariat pays 2026-2031</a></span></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="ifcTitle">Investissements privés de l'IFC</h3>
+          <p class="sub" data-i18n="ifcSub">Engagements de la filiale secteur privé de la Banque mondiale, millions de dollars</p>
+          <div class="chart" id="chartIfc"></div>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://documents1.worldbank.org/curated/en/099926304102627179/pdf/SECBOS-a04c4094-2b56-4c7e-8395-ef04e4ba3221.pdf" data-i18n="projSrc">Banque mondiale, cadre de partenariat pays 2026-2031</a></span></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3 data-i18n="plistTitle">Projets en cours de la Banque mondiale</h3>
+        <p class="sub" data-i18n="plistSub">Barre bleue : part déjà décaissée. Le reste sera dépensé en travaux, fournitures et missions de conseil.</p>
+        <div class="prov-tools">
+          <div class="chips" id="projScope" role="group" aria-label="Portée" style="margin:0"></div>
+          <label for="projSector" data-i18n="projSectorL">Secteur</label>
+          <select id="projSector"></select>
+          <label for="projSort" data-i18n="projSortL">Trier par</label>
+          <select id="projSort"></select>
+        </div>
+        <div class="pbars" id="projList"></div>
+        <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://documents1.worldbank.org/curated/en/099926304102627179/pdf/SECBOS-a04c4094-2b56-4c7e-8395-ef04e4ba3221.pdf" data-i18n="projSrc">Banque mondiale, cadre de partenariat pays 2026-2031</a></span><button class="btn" data-csv="proj" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+      </div>
+      <h3 style="margin:28px 0 6px" data-i18n="tendTitle">Où trouver les appels d'offres</h3>
+      <p class="sub" style="margin:0 0 12px; color: var(--muted)" data-i18n="tendSub">Chaque projet ci-dessus publie ses marchés sur ces portails. Le suivi automatique des appels d'offres du Tchad, avec alertes, arrive dans la prochaine version.</p>
+      <div class="portals">
+        <a class="card" href="https://projects.worldbank.org/en/projects-operations/procurement"><h3 data-i18n="tp1">Banque mondiale</h3><p class="sub" data-i18n="tp1d">Avis de marché, manifestations d'intérêt et attributions. Filtrer sur « Chad ».</p></a>
+        <a class="card" href="https://www.afdb.org/en/projects-and-operations/procurement"><h3 data-i18n="tp2">Banque africaine de développement</h3><p class="sub" data-i18n="tp2d">Avis généraux et spécifiques de passation de marchés des projets BAD.</p></a>
+        <a class="card" href="https://www.ungm.org/Public/Notice"><h3 data-i18n="tp3">Nations unies (UNGM)</h3><p class="sub" data-i18n="tp3d">Appels d'offres des agences de l'ONU (PNUD, UNICEF, PAM, HCR…). Filtrer sur « Chad ».</p></a>
       </div>
     </div>
   </section>
@@ -386,6 +444,22 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   /* ---------- Textes FR / EN ---------- */
   const T = {
     fr: {
+      navProj: "Projets", projTitle: "Projets financés et appels d'offres", projTag: "Où va l'argent des bailleurs, et ce qui reste à dépenser",
+      remTitle: "Reste à décaisser par secteur", remSub: "Projets Banque mondiale nationaux et régionaux, millions de dollars, au 14 février 2026",
+      ifcTitle: "Investissements privés de l'IFC", ifcSub: "Engagements de la filiale secteur privé de la Banque mondiale, millions de dollars",
+      projSrc: "Banque mondiale, cadre de partenariat pays 2026-2031",
+      plistTitle: "Projets en cours de la Banque mondiale", plistSub: "Barre bleue : part déjà décaissée. Le reste sera dépensé en travaux, fournitures et missions de conseil.",
+      projSectorL: "Secteur", projSortL: "Trier par", scAll: "Tous", scNat: "Nationaux", scReg: "Régionaux", secAll: "Tous les secteurs",
+      sortRem: "Reste à décaisser", sortAmt: "Montant", sortClose: "Date de clôture", sortAppr: "Plus récents",
+      pApproved: "Approuvé", pCloses: "Clôture", pDisb: "décaissé", pRemain: "reste", pNat: "National", pReg: "Régional", pClosed: "date de clôture passée",
+      mCommit: "Engagements nationaux", mRemain: "Reste à décaisser (national)", mReg: "Projets régionaux incluant le Tchad", mNew: "Nouveau en 2026",
+      mCommitM: "11 projets · Banque mondiale", mRemainM: "au 14 févr. 2026", mRegM: "dont 516 M$ à décaisser", mNewM: "eau et climat, juin 2026",
+      tendTitle: "Où trouver les appels d'offres", tendSub: "Chaque projet ci-dessus publie ses marchés sur ces portails. Le suivi automatique des appels d'offres du Tchad, avec alertes, arrive dans la prochaine version.",
+      tp1: "Banque mondiale", tp1d: "Avis de marché, manifestations d'intérêt et attributions. Filtrer sur « Chad ».",
+      tp2: "Banque africaine de développement", tp2d: "Avis généraux et spécifiques de passation de marchés des projets BAD.",
+      tp3: "Nations unies (UNGM)", tp3d: "Appels d'offres des agences de l'ONU (PNUD, UNICEF, PAM, HCR…). Filtrer sur « Chad ».",
+      s_transport: "Transport", s_health: "Santé", s_energy: "Énergie", s_education: "Éducation", s_urban: "Villes et résilience", s_agri: "Agriculture et élevage", s_digital: "Numérique", s_social: "Protection sociale", s_finance: "Finance et PME", s_stats: "Statistiques",
+      i_tel: "Télécoms", i_infra: "Énergie", i_fin: "Services financiers", i_man: "Industrie", i_hea: "Santé",
       navEco: "Économie", navProv: "Provinces",
       ecoTitle: "Économie", ecoTag: "Croissance, prix, structure et dépendance au pétrole",
       growthTitle: "Croissance du PIB réel, 2005-2026", growthSub: "% par an · PIB total et PIB hors pétrole", gTotal: "PIB total", gNonOil: "PIB hors pétrole",
@@ -423,6 +497,22 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       yrs: "ans", wbank: "Banque mondiale", ssaAvg: "Afr. subsah.", ssaTotal: "Afr. subsah. (total)", ssaNone: "Afr. subsah. : non dispo.", tSsa: "Moyennes Afrique subsaharienne", unhcr: "HCR", enrolment: "Scolarisation primaire (brut)", literacy: "Alphabétisation des adultes", idpsL: "Déplacés internes"
     },
     en: {
+      navProj: "Projects", projTitle: "Funded projects and tenders", projTag: "Where donor money goes, and what is left to spend",
+      remTitle: "Undisbursed funds by sector", remSub: "World Bank national and regional projects, million dollars, as of 14 February 2026",
+      ifcTitle: "IFC private investments", ifcSub: "Commitments of the World Bank's private-sector arm, million dollars",
+      projSrc: "World Bank, Country Partnership Framework 2026-2031",
+      plistTitle: "Active World Bank projects", plistSub: "Blue bar: share already disbursed. The rest will be spent on works, goods and consulting assignments.",
+      projSectorL: "Sector", projSortL: "Sort by", scAll: "All", scNat: "National", scReg: "Regional", secAll: "All sectors",
+      sortRem: "Left to disburse", sortAmt: "Amount", sortClose: "Closing date", sortAppr: "Most recent",
+      pApproved: "Approved", pCloses: "Closes", pDisb: "disbursed", pRemain: "left", pNat: "National", pReg: "Regional", pClosed: "closing date passed",
+      mCommit: "National commitments", mRemain: "Left to disburse (national)", mReg: "Regional projects including Chad", mNew: "New in 2026",
+      mCommitM: "11 projects · World Bank", mRemainM: "as of 14 Feb. 2026", mRegM: "of which $516M left to disburse", mNewM: "water and climate, June 2026",
+      tendTitle: "Where to find tenders", tendSub: "Each project above publishes its procurement on these portals. Automatic tracking of Chad tenders, with alerts, comes in the next release.",
+      tp1: "World Bank", tp1d: "Procurement notices, expressions of interest and awards. Filter on “Chad”.",
+      tp2: "African Development Bank", tp2d: "General and specific procurement notices for AfDB projects.",
+      tp3: "United Nations (UNGM)", tp3d: "Tenders from UN agencies (UNDP, UNICEF, WFP, UNHCR…). Filter on “Chad”.",
+      s_transport: "Transport", s_health: "Health", s_energy: "Energy", s_education: "Education", s_urban: "Cities and resilience", s_agri: "Agriculture and livestock", s_digital: "Digital", s_social: "Social protection", s_finance: "Finance and SMEs", s_stats: "Statistics",
+      i_tel: "Telecoms", i_infra: "Energy", i_fin: "Financial services", i_man: "Manufacturing", i_hea: "Health",
       navEco: "Economy", navProv: "Provinces",
       ecoTitle: "Economy", ecoTag: "Growth, prices, structure and oil dependence",
       growthTitle: "Real GDP growth, 2005-2026", growthSub: "% a year · total GDP and non-oil GDP", gTotal: "Total GDP", gNonOil: "Non-oil GDP",
@@ -551,7 +641,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   function hbarChart(box, rows, o) {
     box.innerHTML = "";
-    const W = o.w || 560, rowH = o.rowH || 34, L = o.l || 140, R = 90, T0 = 6, BH = o.bar || 20;
+    const W = o.w || 560, rowH = o.rowH || 34, L = o.l || 140, R = o.r || 90, T0 = 6, BH = o.bar || 20;
     const H = T0 + rows.length * rowH + 6;
     const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.label }, box);
     const max = o.max || Math.max(...rows.map(r => r.v));
@@ -685,6 +775,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       [t("oilTitle"), t("wbank"), "Country overview", "2025", "https://www.worldbank.org/en/country/chad/overview"],
       [t("provTitle"), "INSEED (RGPH2 2009), estimations mi-2023", "–", "2009, 2023", "https://en.wikipedia.org/wiki/Provinces_of_Chad"],
       [t("pRef"), t("unhcr") + " Tchad", "–", "déc. 2024", "https://www.ecoi.net/en/file/local/2119766/"],
+      [t("projTitle"), t("wbank") + " (CPF FY26-31)", "IDA, IFC", "14/02/2026", "https://documents1.worldbank.org/curated/en/099926304102627179/pdf/SECBOS-a04c4094-2b56-4c7e-8395-ef04e4ba3221.pdf"],
+      [t("mNew"), t("wbank"), "PASER", "18/06/2026", "https://www.worldbank.org/en/news/press-release/2026/06/18/banque-mondiale-soutient-efforts-tchad-ameliorer-acces-eau-et-renforcer-adaptation-popupulations-changement-climatique"],
       [t("tSsa"), t("wbank") + " (SSF)", "SP.POP.TOTL, NY.GDP.PCAP.CD, SP.DYN.LE00.IN, EG.ELC.ACCS.ZS, SP.URB.TOTL", "2024", "https://data.worldbank.org/region/sub-saharan-africa"]
     ];
     document.getElementById("srcRows").innerHTML = rows.map(r =>
@@ -864,6 +956,86 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     document.getElementById("provSel").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
+
+  /* ---------- Projets (Banque mondiale, CPF 2026-2031, portefeuille au 14 févr. 2026) ---------- */
+  // [id, nom officiel, secteur, approbation, clôture, engagement net $, décaissé $, reste à décaisser $]
+  const toP = (scope, r) => ({ scope, id: r[0], name: r[1], sec: r[2], appr: r[3], close: r[4], amt: r[5], disb: r[6], rem: r[7] });
+  const PROJ = [
+    ["P164747", "Chad Rural Mobility and Connectivity Project", "transport", "2018-12-19", "2026-04-30", 45000000, 39293734.23, 5041821.57],
+    ["P172504", "Health System Performance Strengthening Project", "health", "2021-08-06", "2026-12-31", 240000000, 230610415.17, 9207534.45],
+    ["P174495", "Chad Energy Access Scale Up Project", "energy", "2022-03-24", "2027-06-30", 295000000, 105173290.03, 183592904.03],
+    ["P175803", "CHAD Improving Learning Outcomes Project", "education", "2022-04-15", "2027-10-29", 144118580.69, 80069191.90, 59719563.05],
+    ["P177044", "N'Djamena Urban Resilience Project", "urban", "2023-03-31", "2029-08-31", 200000000, 44236796.68, 161394434.13],
+    ["P177163", "Chad Territorial Development and Resilience Project", "urban", "2023-06-14", "2028-06-29", 140000000, 44826254.53, 96347905.24],
+    ["P179238", "Chad Agribusiness and Rural Transformation Project", "agri", "2024-04-25", "2030-07-31", 150000000, 27486682.94, 126815225.90],
+    ["P180000", "Chad Digital Transformation Project", "digital", "2024-09-25", "2029-04-30", 92200000, 10992351.19, 83461074.49],
+    ["P180915", "Chad Connectivity and Integration Project", "transport", "2025-02-18", "2031-02-27", 170000000, 14232029.15, 164083246.72],
+    ["P502142", "Chad Adaptive and Productive Safety Nets Project", "social", "2024-06-21", "2029-06-29", 100000000, 6015425.48, 97776306.52],
+    ["P507617", "Chad MSME Development and Access to Finance", "finance", "2025-10-31", "2031-12-31", 100000000, 0, 99914542.00]
+  ].map(r => toP("nat", r)).concat([
+    ["P508837", "Health Security Program in Western and Central Africa - Phase III", "health", "2025-10-29", "2030-12-31", 60000000, 0, 60496523],
+    ["P180260", "Sahel Regional Engagement for Learning and Collaboration in Education Project", "education", "2025-03-21", "2030-09-30", 36500000, 0, 37654925],
+    ["P180085", "Harmonizing and Improving Statistics in West and Central Africa (HISWACA - SOP 2)", "stats", "2023-09-28", "2029-12-31", 105000000, 45656440.41, 61727454.38],
+    ["P179267", "Regional Emergency Solar Power Intervention Project", "energy", "2022-12-20", "2027-06-30", 60000000, 31306054.58, 32653710.13],
+    ["P178132", "West Africa Food System Resilience Program (FSRP) Phase 2", "agri", "2022-07-29", "2028-09-30", 105000000, 28836195.60, 77881626.19],
+    ["P176693", "Sub-Saharan Africa Women's Empowerment and Demographic Dividend Plus Project", "health", "2023-09-29", "2030-06-30", 82500000, 33523677.26, 50657692.31],
+    ["P173197", "Regional Sahel Pastoralism Support Project II", "agri", "2021-03-30", "2027-12-31", 100000000, 49299863.91, 45023825.85],
+    ["P168185", "Cameroon - Chad Power Interconnection Project", "energy", "2020-06-16", "2027-12-31", 90000000, 37810078.01, 52331728.19],
+    ["P167798", "Cameroon-Chad Transport Corridor", "transport", "2022-02-15", "2032-06-30", 225000000, 120678780.22, 97530264.01],
+    ["P161706", "Lake Chad Region Recovery and Development Project", "social", "2020-05-26", "2026-06-30", 45000000, 44382196.38, 18379.54]
+  ].map(r => toP("reg", r)));
+  const IFC = [["Moov Africa Tchad", "i_tel", 99.7], ["Airtel Tchad", "i_tel", 32.2], ["Release Chad", "i_infra", 19.0], ["CIMAF Chad", "i_man", 4.1], ["Providence Clinic Chad", "i_hea", 1.3], ["Express Union Tchad", "i_fin", 1.1]];
+  let projScope = "all", projSec = "all", projSortKey = "rem";
+  const musd = v => (lang === "fr" ? nf(v / 1e6, 0) + " M$" : "$" + nf(v / 1e6, 0) + "M");
+  const fdate = d => new Date(d + "T00:00:00Z").toLocaleDateString(loc(), { month: "short", year: "numeric", timeZone: "UTC" });
+
+  function renderProjects() {
+    const nat = PROJ.filter(p => p.scope === "nat"), reg = PROJ.filter(p => p.scope === "reg");
+    const sum = (a, k) => a.reduce((x, p) => x + p[k], 0);
+    const natAmt = sum(nat, "amt"), natRem = sum(nat, "rem"), regAmt = sum(reg, "amt"), regRem = sum(reg, "rem");
+    document.getElementById("projMinis").innerHTML = [
+      [t("mCommit"), musd(natAmt), t("mCommitM")],
+      [t("mRemain"), musd(natRem), t("mRemainM")],
+      [t("mReg"), musd(regAmt), t("mRegM")],
+      [t("mNew"), musd(160e6), t("mNewM")]
+    ].map(m => `<div class="mini"><span class="label">${m[0]}</span><span class="value">${m[1]}</span><span class="meta">${m[2]}</span></div>`).join("");
+    const bySec = {};
+    PROJ.forEach(p => { bySec[p.sec] = (bySec[p.sec] || 0) + p.rem; });
+    const secRows = Object.keys(bySec).map(k => ({ key: k, name: t("s_" + k), v: bySec[k] / 1e6, label: nf(bySec[k] / 1e6, 0) })).sort((a, b) => b.v - a.v);
+    secRows[0].key = "TOP";
+    hbarChart(document.getElementById("chartRem"), secRows, { label: t("remTitle"), w: 560, l: 170, rowH: 28, bar: 16, hl: "TOP" });
+    hbarChart(document.getElementById("chartIfc"), IFC.map(r => ({ key: r[0], name: r[0], v: r[2], label: nf(r[2], 1) + " · " + t(r[1]) })), { label: t("ifcTitle"), w: 560, l: 170, rowH: 30, bar: 16, hl: "Moov Africa Tchad", r: 150 });
+    const top = secRows.slice(0, 3);
+    document.getElementById("projInsight").textContent = lang === "fr"
+      ? `Sur les ${musd(natAmt)} engagés par la Banque mondiale dans 11 projets nationaux, ${musd(natRem)} restaient à décaisser en février 2026, auxquels s'ajoutent ${musd(regRem)} dans des projets régionaux. C'est l'argent qui sera dépensé en contrats d'ici 2031, surtout en ${top.map(r => r.name.toLowerCase()).join(", ")}.`
+      : `Of the ${musd(natAmt)} committed by the World Bank to 11 national projects, ${musd(natRem)} was still to be disbursed in February 2026, plus ${musd(regRem)} in regional projects. This money will be spent through contracts by 2031, mostly in ${top.map(r => r.name.toLowerCase()).join(", ")}.`;
+    document.getElementById("projScope").innerHTML = [["all", "scAll"], ["nat", "scNat"], ["reg", "scReg"]].map(c => `<button type="button" data-scope="${c[0]}" aria-pressed="${projScope === c[0]}">${t(c[1])}</button>`).join("");
+    const secs = [...new Set(PROJ.map(p => p.sec))].sort((a, b) => t("s_" + a).localeCompare(t("s_" + b), loc()));
+    document.getElementById("projSector").innerHTML = `<option value="all">${t("secAll")}</option>` + secs.map(k => `<option value="${k}"${projSec === k ? " selected" : ""}>${t("s_" + k)}</option>`).join("");
+    document.getElementById("projSort").innerHTML = [["rem", "sortRem"], ["amt", "sortAmt"], ["close", "sortClose"], ["appr", "sortAppr"]].map(c => `<option value="${c[0]}"${projSortKey === c[0] ? " selected" : ""}>${t(c[1])}</option>`).join("");
+    renderProjList();
+  }
+
+  function renderProjList() {
+    const today = new Date().toISOString().slice(0, 10);
+    let list = PROJ.filter(p => (projScope === "all" || p.scope === projScope) && (projSec === "all" || p.sec === projSec));
+    const cmp = { rem: (a, b) => b.rem - a.rem, amt: (a, b) => b.amt - a.amt, close: (a, b) => a.close.localeCompare(b.close), appr: (a, b) => b.appr.localeCompare(a.appr) }[projSortKey];
+    list = list.sort(cmp);
+    document.getElementById("projList").innerHTML = list.map(p => {
+      const pct = p.disb / (p.disb + p.rem) * 100;
+      const closed = p.close < today;
+      return `<div class="row">
+        <div class="top"><a href="https://projects.worldbank.org/en/projects-operations/project-detail/${p.id}">${p.name}</a><span class="num">${musd(p.amt)}</span></div>
+        <div class="track" role="img" aria-label="${nf(pct, 0)} % ${t("pDisb")}"><i style="width:${pct.toFixed(1)}%"></i></div>
+        <div class="meta"><span class="tag-s${closed ? " closed" : ""}">${t("s_" + p.sec)}</span><span>${p.scope === "nat" ? t("pNat") : t("pReg")}</span><span>${t("pApproved")} ${fdate(p.appr)}</span><span>${t("pCloses")} ${fdate(p.close)}${closed ? " (" + t("pClosed") + ")" : ""}</span><span>${nf(pct, 0)} % ${t("pDisb")} · <b style="color:var(--ink)">${musd(p.rem)}</b> ${t("pRemain")}</span></div>
+      </div>`;
+    }).join("");
+  }
+
+  document.getElementById("projScope").addEventListener("click", e => { const b = e.target.closest("[data-scope]"); if (!b) return; projScope = b.dataset.scope; renderProjects(); });
+  document.getElementById("projSector").addEventListener("change", e => { projSec = e.target.value; renderProjList(); });
+  document.getElementById("projSort").addEventListener("change", e => { projSortKey = e.target.value; renderProjList(); });
+
   /* ---------- CSV ---------- */
   const CSV = {
     gdp: () => "year,gdp_current_usd\n" + series(gdp).map(p => p.join(",")).join("\n"),
@@ -875,6 +1047,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     infl: () => "year,cpi_inflation_pct,projection\n" + Object.keys(INFL).map(y => `${y},${INFL[y]},${+y >= PROJ_FROM}`).join("\n"),
     sec: () => "sector,value_added_pct_gdp_2024\n" + SECTORS.map(s => `${T.en[s[0]]},${s[1]}`).join("\n"),
     oil: () => "measure,oil_share_pct\n" + OIL.map(s => `${T.en[s[0]]},${s[1]}`).join("\n"),
+    proj: () => "project_id,name,scope,sector,approval,closing,net_commitment_usd,disbursed_usd,undisbursed_usd\n" + PROJ.map(p => `${p.id},"${p.name}",${p.scope},${p.sec},${p.appr},${p.close},${p.amt},${p.disb},${p.rem}`).join("\n"),
     prov: () => "province,capital,pop_2009,pop_mid2023,area_km2,density_2023,growth_pct_per_year,refugees_dec2024\n" + PROV.map(r => `"${r.name}","${r.cap}",${r.p09},${r.p23},${r.area},${r.dens.toFixed(1)},${r.grow.toFixed(2)},${r.ref}`).join("\n")
   };
   document.addEventListener("click", e => {
@@ -909,6 +1082,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     { n: t("mDebt"), v: nf(34.2, 1) + " %", h: "#economie", kw: "dette debt finances publiques" },
     { n: t("oilTitle"), v: "76 % " + t("oilExp"), h: "#economie", kw: "pétrole oil brut crude exportations exports recettes" },
     { n: t("secAgr"), v: nf(37.7, 1) + " %", h: "#economie", kw: "agriculture élevage livestock secteurs sectors" },
+    { n: t("projTitle"), v: musd(1087354558.10), h: "#projets", kw: "projets projects bailleurs donors banque mondiale world bank appels d'offres tenders marchés procurement financement" },
+    { n: t("ifcTitle"), v: musd(157.4e6), h: "#projets", kw: "ifc investissement privé private investment télécoms moov airtel" },
+    ...PROJ.map(p => ({ n: p.name, v: musd(p.amt), h: "#projets", kw: p.id + " " + t("s_" + p.sec) })),
     ...PROV.map(r => ({ n: r.name, v: nf(r.p23, 0), h: "#provinces", kw: "province région region " + r.cap, prov: r.name }))
   ];
   const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
@@ -939,7 +1115,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     document.querySelectorAll("[data-i18n-ph]").forEach(n => { n.placeholder = t(n.dataset.i18nPh); });
     document.getElementById("lang-fr").setAttribute("aria-pressed", String(lang === "fr"));
     document.getElementById("lang-en").setAttribute("aria-pressed", String(lang === "en"));
-    renderTiles(); renderCountry(); renderEconomy(); renderProvinces(); renderCompare(); renderEducation(); renderHuman(); renderSources();
+    renderTiles(); renderCountry(); renderEconomy(); renderProvinces(); renderProjects(); renderCompare(); renderEducation(); renderHuman(); renderSources();
     if (q.value) search();
   }
   ["fr", "en"].forEach(l => document.getElementById("lang-" + l).addEventListener("click", () => {
