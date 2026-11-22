@@ -245,6 +245,30 @@ table.prov tbody tr:hover td { background: var(--accent-soft); }
 .charter h3 { font-size: 16px; margin-bottom: 8px; }
 .charter ul { padding-left: 18px; margin: 0; display: grid; gap: 6px; color: var(--muted); }
 .charter .note { margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: rgba(179, 38, 30, .08); border-left: 3px solid var(--critical); font-size: 13px; }
+#voix .vstats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+@media (max-width: 760px) { #voix .vstats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+#voix .vstats div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+#voix .vstats b { display: block; font: 600 26px var(--font-mono); color: var(--ink); }
+#voix .vstats span { font-size: 13px; color: var(--muted); }
+#voix .vbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+#voix .vbar input, #voix .vbar select { font: 14px var(--font-body); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+#voix .vbar input { flex: 1 1 220px; }
+#voix .vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+#voix .vcard { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; border-top: 3px solid var(--gold); }
+#voix .vcard .meta { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); }
+#voix .vcard h3 { font-size: 17px; margin: 0; line-height: 1.3; }
+#voix .vcard .au button { border: 0; background: none; padding: 0; font: 600 14px var(--font-body); color: var(--accent); cursor: pointer; text-align: left; }
+#voix .vcard .au button:hover { text-decoration: underline; }
+#voix .vcard .prize { font-size: 13px; color: var(--ink); }
+#voix .vcard .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+#voix .vcard .tags span { font-size: 11px; padding: 2px 7px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); color: var(--muted); }
+#voix .vcard .stars { color: var(--gold); letter-spacing: 1px; font-size: 13px; }
+#voix .vcard a.src { font-size: 13px; font-weight: 600; }
+#voix .vperson { background: var(--accent-soft); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; display: none; }
+#voix .vperson.open { display: block; }
+#voix .vperson h3 { margin: 0 0 4px; }
+#voix .vperson .x { float: right; border: 0; background: none; font-size: 20px; cursor: pointer; color: var(--muted); }
+#voix .vfoot { font-size: 13px; color: var(--muted); margin-top: 14px; }
 #apropos .doors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 760px) { #apropos .doors { grid-template-columns: 1fr; } }
 #apropos .door { border-top: 4px solid var(--accent); }
@@ -282,6 +306,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <a href="#comparer" data-i18n="navCompare">Comparer</a>
       <a href="#education" data-i18n="navEducation">Éducation et orientation</a>
       <a href="#humanitaire" data-i18n="navHuman">Humanitaire</a>
+      <a href="#voix" data-i18n="navVoix">Les voix</a>
       <a href="#apropos" data-i18n="navAbout">À propos</a>
       <a href="#contribuer" data-i18n="navContrib">Contribuer</a>
       <a href="#sources" data-i18n="navSources">Sources</a>
@@ -592,6 +617,26 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     </div>
   </section>
 
+  <section class="block" id="voix">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="vTitle">Les voix du Tchad</h2><span class="tag" data-i18n="vTag">Cinéma, littérature, histoire, sciences sociales, musique</span><button type="button" class="contrib-btn" data-contrib="voix" data-i18n="cBtn">Corriger ou compléter</button></div>
+      <p class="insight" data-i18n="vLead">Un pays ne se résume pas à ses statistiques. Ce catalogue rassemble les œuvres et les travaux qui racontent le Tchad, de l'intérieur comme de l'extérieur. Il est tenu à jour par l'équipe éditoriale et s'enrichit des propositions des contributeurs.</p>
+      <div class="vstats" id="vStats"></div>
+      <div class="chips" id="vDom" role="group" aria-label="Domaine"></div>
+      <div class="vbar">
+        <label class="sr" for="vQ" style="position:absolute;left:-9999px" data-i18n="vSearch">Rechercher une œuvre, un auteur, un thème</label>
+        <input id="vQ" type="search" autocomplete="off" data-i18n-ph="vSearch" placeholder="Rechercher une œuvre, un auteur, un thème">
+        <label class="sr" for="vType" style="position:absolute;left:-9999px" data-i18n="vTypeL">Type</label>
+        <select id="vType"></select>
+        <label class="sr" for="vSort" style="position:absolute;left:-9999px" data-i18n="vSortL">Trier</label>
+        <select id="vSort"><option value="imp" data-i18n="vSortImp">Les plus marquantes</option><option value="new" data-i18n="vSortNew">Les plus récentes</option><option value="old" data-i18n="vSortOld">Les plus anciennes</option></select>
+      </div>
+      <div class="vperson" id="vPerson" aria-live="polite"></div>
+      <div class="vgrid" id="vGrid"></div>
+      <p class="vfoot" id="vFoot"></p>
+    </div>
+  </section>
+
   <section class="block" id="bientot">
     <div class="wrap">
       <div class="head"><h2 data-i18n="soonTitle">Prochainement</h2></div>
@@ -657,6 +702,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
               <option value="education" data-i18n="navEducation">Éducation et orientation</option>
               <option value="etablissements" data-i18n="csInst">Établissements et formations</option>
               <option value="humanitaire" data-i18n="navHuman">Humanitaire</option>
+              <option value="voix" data-i18n="navVoix">Les voix</option>
             </select></div>
           <div><label for="cMsg" id="cMsgLabel" data-i18n="cMsgCorr">Quelle donnée est inexacte, et quelle est la bonne valeur ?</label>
             <textarea id="cMsg" name="message" required></textarea></div>
@@ -791,6 +837,14 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   /* ---------- Textes FR / EN ---------- */
   const T = {
     fr: {
+      navVoix: "Les voix", vTitle: "Les voix du Tchad", vTag: "Cinéma, littérature, histoire, sciences sociales, musique",
+      vLead: "Un pays ne se résume pas à ses statistiques. Ce catalogue rassemble les œuvres et les travaux qui racontent le Tchad, de l'intérieur comme de l'extérieur. Il est tenu à jour par l'équipe éditoriale et s'enrichit des propositions des contributeurs.",
+      vSearch: "Rechercher une œuvre, un auteur, un thème", vTypeL: "Type", vSortL: "Trier", vSortImp: "Les plus marquantes", vSortNew: "Les plus récentes", vSortOld: "Les plus anciennes",
+      vAll: "Tous", vAllTypes: "Tous les types", vSWorks: "œuvres et travaux", vSPeople: "auteurs et institutions", vSDom: "domaines", vSSpan: "d'histoire couverte",
+      vSrcLink: "Voir la source", vNone: "Aucune œuvre ne correspond. Élargissez la recherche ou proposez un ajout.", vBy: "par", vWorks: "Œuvres au catalogue",
+      vFootSnap: "Catalogue éditorial Chad Intelligence (base Airtable « Tchad Open Data »), instantané du {d}. Le niveau d'importance (1 à 5 étoiles) est une appréciation éditoriale.",
+      vFootLive: "Catalogue éditorial Chad Intelligence, lu en direct depuis la base Airtable « Tchad Open Data » le {d}. Le niveau d'importance (1 à 5 étoiles) est une appréciation éditoriale.",
+      vImp: "Importance éditoriale", vPropose: "Proposer une œuvre",
       navAbout: "À propos", abTitle: "À propos de Chad Intelligence", abTag: "Pourquoi ce site, et comment il est construit",
       abLead: "Chad Intelligence rend lisible, en un seul endroit, ce que la donnée publique et la production intellectuelle, artistique et scientifique disent du Tchad. Notre ambition : devenir pour le Tchad ce que Data USA est pour les États-Unis, avec un service sur mesure pour les organisations qui ont besoin d'aller plus loin.",
       abD1: "Les chiffres", abD1p: "Des indicateurs publics, sourcés et datés : population, économie, éducation, sécurité, projets financés, appels d'offres. Chaque chiffre renvoie à son origine et peut être téléchargé.", abD1a: "Explorer les données",
@@ -906,6 +960,14 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       yrs: "ans", wbank: "Banque mondiale", ssaAvg: "Afr. subsah.", ssaTotal: "Afr. subsah. (total)", ssaNone: "Afr. subsah. : non dispo.", tSsa: "Moyennes Afrique subsaharienne", unhcr: "HCR", enrolment: "Scolarisation primaire (brut)", literacy: "Alphabétisation des adultes", idpsL: "Déplacés internes"
     },
     en: {
+      navVoix: "Voices", vTitle: "Voices of Chad", vTag: "Film, literature, history, social science, music",
+      vLead: "A country is more than its statistics. This catalogue brings together the works and research that tell Chad's story, from inside and outside. It is maintained by the editorial team and grows with contributors' suggestions.",
+      vSearch: "Search a work, an author, a theme", vTypeL: "Type", vSortL: "Sort", vSortImp: "Most significant", vSortNew: "Most recent", vSortOld: "Oldest",
+      vAll: "All", vAllTypes: "All types", vSWorks: "works and studies", vSPeople: "authors and institutions", vSDom: "fields", vSSpan: "of history covered",
+      vSrcLink: "View source", vNone: "No work matches. Broaden your search or suggest an addition.", vBy: "by", vWorks: "Works in the catalogue",
+      vFootSnap: "Chad Intelligence editorial catalogue (Airtable base “Tchad Open Data”), snapshot of {d}. The significance level (1 to 5 stars) is an editorial judgement.",
+      vFootLive: "Chad Intelligence editorial catalogue, read live from the Airtable base “Tchad Open Data” on {d}. The significance level (1 to 5 stars) is an editorial judgement.",
+      vImp: "Editorial significance", vPropose: "Suggest a work",
       navAbout: "About", abTitle: "About Chad Intelligence", abTag: "Why this site exists, and how it is built",
       abLead: "Chad Intelligence makes readable, in one place, what public data and intellectual, artistic and scientific work say about Chad. Our ambition: to be for Chad what Data USA is for the United States, with tailored services for organisations that need to go further.",
       abD1: "The numbers", abD1p: "Public indicators, sourced and dated: population, economy, education, security, funded projects, tenders. Every figure links to its origin and can be downloaded.", abD1a: "Explore the data",
@@ -1242,6 +1304,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       [t("growthTitle"), "FMI / IMF REO (FRED)", "TCDNGDPRPCPPPT, TCDNGDPXORPCPPPT", "2005-2026", "https://fred.stlouisfed.org/series/TCDNGDPRPCPPPT"],
       [t("inflTitle"), "FMI / IMF REO (FRED)", "TCDPCPIPCPPPT", "2010-2026", "https://fred.stlouisfed.org/series/TCDPCPIPCPPPT"],
       [t("mDebt"), "FMI / IMF", "Article IV 2024", "2023", "https://www.imf.org/en/News/Articles/2024/12/09/pr-24457-chad-imf-executive-board-concludes-2024-article-iv-consultation"],
+      [t("vTitle"), "Chad Intelligence (Airtable)", "Oeuvres_Acteurs, Personnes", "1957-2025", "#voix"],
       [t("secTitle"), t("wbank"), "NV.AGR.TOTL.ZS, NV.IND.TOTL.ZS, NV.SRV.TOTL.ZS", "2024", "https://data.worldbank.org/indicator/NV.AGR.TOTL.ZS?locations=TD"],
       [t("oilTitle"), t("wbank"), "Country overview", "2025", "https://www.worldbank.org/en/country/chad/overview"],
       [t("provTitle"), "INSEED (RGPH2 2009), estimations mi-2023", "–", "2009, 2023", "https://en.wikipedia.org/wiki/Provinces_of_Chad"],
@@ -1900,6 +1963,85 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     document.getElementById("abPrinciples").innerHTML = PRINCIPLES.map(x => `<div><b>${x[0][L]}</b><span>${x[1][L]}</span></div>`).join("");
   }
 
+  /* ---------- Les voix (catalogue Airtable) ---------- */
+  let VOIX = {"asof":"2026-11-22","works":[{"id":"rec0Nz0GSSfzsvHt2","t":"Le Tchad (Lugan)","ty":"Essai","y":"2013","dom":["Histoire"],"th":["Histoire longue durée"],"lg":["Français"],"url":"","prize":"","imp":3,"au":["recepUXg1qnCaNSu2"]},{"id":"rec1yPMtWDtpDF1f9","t":"Les Teda-Daza","ty":"Essai","y":"1985","dom":["Anthropologie"],"th":["Toubou","Teda","Daza"],"lg":["Français"],"url":"","prize":"","imp":4,"au":["reci8VDJBukfMXK65"]},{"id":"rec3wzXtPHiupybKx","t":"Gentleman of Chad","ty":"Album musical","y":"Années 2000","dom":["Musique"],"th":["Rap","Scène urbaine"],"lg":["Français","Arabe tchadien"],"url":"","prize":"","imp":3,"au":["recWzIcflKwZEOsMp"]},{"id":"rec5NFMkybstkeQu6","t":"La Rouille de la vie","ty":"Roman","y":"2001","dom":["Littérature"],"th":["Société contemporaine"],"lg":["Français"],"url":"","prize":"","imp":3,"au":["recFbsiJZKGT33NVx"]},{"id":"rec5T7ffrR56RctY6","t":"Mobilité humaine et pastoralisme au Tchad","ty":"Essai","y":"2015","dom":["Anthropologie"],"th":["Nomadisme","Mobilité","Toubou"],"lg":["Français","Anglais"],"url":"","prize":"","imp":4,"au":["recETdJvWEBq9jBYJ"]},{"id":"rec5mQSku4HDZWkIv","t":"Un enfant du Tchad","ty":"Roman","y":"1967","dom":["Littérature"],"th":["Enfance","Tradition"],"lg":["Français"],"url":"","prize":"","imp":4,"au":["recXbK7Jz6PNkCFBd"]},{"id":"rec6vH19ltEI2wneu","t":"Tchad : conflit Nord-Sud, mythe ou réalité","ty":"Essai","y":"2003","dom":["Science politique"],"th":["Clivages Nord-Sud","Religion"],"lg":["Français"],"url":"","prize":"","imp":4,"au":["recmLAK9wZ2pItAtz"]},{"id":"rec8wMu85lKTDKvK0","t":"Daratt, saison sèche","ty":"Film","y":"2006","dom":["Cinéma"],"th":["Guerre civile","Pardon"],"lg":["Français"],"url":"https://www.imdb.com/title/tt0479952/","prize":"Prix Spécial Jury Venise 2006","imp":5,"au":["recVT8IxDHURIaUMf"]},{"id":"rec9gav8FUpjzssFI","t":"Un homme qui crie","ty":"Film","y":"2010","dom":["Cinéma"],"th":["Guerre civile","Père-fils"],"lg":["Français"],"url":"https://www.imdb.com/title/tt1526578/","prize":"Prix du Jury Cannes 2010","imp":5,"au":["recVT8IxDHURIaUMf"]},{"id":"recFM3g4ypCB0PZ02","t":"Rapport ITIE Tchad (série annuelle)","ty":"Rapport","y":"2010-","dom":["Économie"],"th":["Pétrole","Transparence"],"lg":["Français"],"url":"https://eiti.org/fr/implementing_country/48","prize":"","imp":4,"au":["recG5L6yyw4C2tV6x"]},{"id":"recFewnJnVGPyGyD2","t":"Afrotronix","ty":"Album musical","y":"2016-","dom":["Musique"],"th":["Électro","Fusion","Diaspora"],"lg":["Français","Anglais"],"url":"https://afrotronix.com","prize":"","imp":4,"au":["recTqj5xFV6CVVyWa"]},{"id":"recG8nh0DFYkQJ6Sw","t":"EDS-MICS Tchad 2014-2015","ty":"Enquête","y":"2014-2015","dom":["Sociologie"],"th":["Démographie","Santé","Éducation"],"lg":["Français"],"url":"https://dhsprogram.com","prize":"","imp":5,"au":["reck2yGkrlzUdGcBF"]},{"id":"recI5QO4MO38A7LD8","t":"Annuaire statistique de l'éducation 2024-2025","ty":"Rapport","y":"2025","dom":["Sociologie"],"th":["Éducation","Statistiques"],"lg":["Français"],"url":"https://www.inseed.td","prize":"","imp":5,"au":["reck2yGkrlzUdGcBF"]},{"id":"recImfcuF0vY1Y74B","t":"Talou","ty":"Album musical","y":"2008","dom":["Musique"],"th":["Chant féminin","Tradition"],"lg":["Arabe tchadien"],"url":"","prize":"","imp":4,"au":["recoq8Xrru247fiRm"]},{"id":"recKzKoI5Fwnczg6k","t":"Archives INA - guerre du Tchad","ty":"Documentaire","y":"1970-1990","dom":["Histoire"],"th":["Archives audiovisuelles","Guerre"],"lg":["Français"],"url":"https://www.ina.fr","prize":"","imp":4,"au":["recyGGpd7DwmTlLSL"]},{"id":"recLA7J4ZwrZVxpax","t":"Lingui, les liens sacrés","ty":"Film","y":"2021","dom":["Cinéma"],"th":["Femmes","Avortement","Religion"],"lg":["Français"],"url":"https://www.imdb.com/title/tt14124284/","prize":"Sélection officielle Cannes 2021","imp":5,"au":["recVT8IxDHURIaUMf"]},{"id":"recPnOPKGxSgmT31f","t":"Hissène Habré, une tragédie tchadienne","ty":"Documentaire","y":"2016","dom":["Cinéma"],"th":["Habré","Justice","Mémoire"],"lg":["Français"],"url":"https://www.imdb.com/title/tt5536132/","prize":"","imp":5,"au":["recVT8IxDHURIaUMf"]},{"id":"recTLic9IfukmU4t1","t":"Abouna, notre père","ty":"Film","y":"2002","dom":["Cinéma"],"th":["Famille","Enfance","Migration"],"lg":["Français"],"url":"https://www.imdb.com/title/tt0303805/","prize":"","imp":4,"au":["recVT8IxDHURIaUMf"]},{"id":"recUIhqwef1oiH9aY","t":"Le métier des armes au Tchad","ty":"Essai","y":"2013","dom":["Science politique"],"th":["Économie de la violence","Combattants"],"lg":["Français"],"url":"https://www.karthala.com","prize":"","imp":5,"au":["rectYnxwiTeTDSrNa"]},{"id":"recXJooOjswqV03Q3","t":"Au Tchad sous les étoiles","ty":"Recueil","y":"1962","dom":["Littérature"],"th":["Contes","Tradition orale"],"lg":["Français"],"url":"","prize":"","imp":4,"au":["recXbK7Jz6PNkCFBd"]},{"id":"recYjCzLug1JalnRP","t":"Nomades noirs du Sahara","ty":"Essai","y":"1957","dom":["Anthropologie"],"th":["Toubou","Nomadisme"],"lg":["Français"],"url":"","prize":"","imp":4,"au":["recfvfor21mQblzTa"]},{"id":"recZKalVsQujwTvf2","t":"Le Souffle de l'harmattan","ty":"Roman","y":"1980","dom":["Littérature"],"th":["Société contemporaine"],"lg":["Français"],"url":"","prize":"","imp":4,"au":["recSpKhQ5xYWUvZWc"]},{"id":"reccCuT8eMLja3fEy","t":"Discographie Clément Masdongar","ty":"Album musical","y":"1980-2015","dom":["Musique"],"th":["Chanson engagée","Mémoire"],"lg":["Sara","Français"],"url":"","prize":"","imp":4,"au":["recyWOzTctI77nVQs"]},{"id":"reccNoa3PIoAQj1ks","t":"Fespaco - sélections tchadiennes","ty":"Catalogue","y":"1969-","dom":["Cinéma"],"th":["Festival panafricain"],"lg":["Français"],"url":"https://www.fespaco.org","prize":"","imp":4,"au":["rec3YnMJQm0ReVOhw"]},{"id":"rechGvzm6RaQYk9e1","t":"Mbaïbarem","ty":"Roman","y":"1994","dom":["Littérature"],"th":["Guerre civile"],"lg":["Français"],"url":"","prize":"","imp":4,"au":["recs8F0pMYJ62nmYH"]},{"id":"recizRZYSamewszXt","t":"RGPH2 - Deuxième Recensement Général","ty":"Enquête","y":"2009","dom":["Sociologie"],"th":["Démographie","Population"],"lg":["Français"],"url":"https://www.inseed.td","prize":"","imp":5,"au":["reck2yGkrlzUdGcBF"]},{"id":"reclYnHC5Qg5RNSVa","t":"Roots of Violence: A History of War in Chad","ty":"Essai","y":"1998","dom":["Histoire"],"th":["Violence politique","Guerre civile"],"lg":["Anglais"],"url":"","prize":"","imp":5,"au":["recB04hjvOt0fUsdc"]},{"id":"recnrgD3I5ZWmaaPN","t":"Sahelanthropus tchadensis (Toumaï)","ty":"Article académique","y":"2002","dom":["Sciences"],"th":["Paléontologie","Origines humanité"],"lg":["Anglais"],"url":"https://www.nature.com/articles/nature00879","prize":"","imp":5,"au":["recDlI4vBwB7Jm0PZ"]},{"id":"recspiNd90nhuiYGN","t":"La Guerre du Tchad 1977-1984","ty":"Essai","y":"1987","dom":["Histoire"],"th":["Frolinat","Rébellions"],"lg":["Français"],"url":"","prize":"","imp":5,"au":["recqRJely8gB4vsH2"]},{"id":"recwfd2MEPFTWLjDs","t":"L'État au Tchad (travaux CERI)","ty":"Thèse","y":"2000-","dom":["Science politique"],"th":["État","Institutions"],"lg":["Français"],"url":"https://www.sciencespo.fr/ceri","prize":"","imp":4,"au":["reclbcr4UYikvqony"]}],"people":{"rec3YnMJQm0ReVOhw":{"n":"FESPACO","r":["Institution"],"nat":"Institution internationale","yr":"","bio":"Festival Panafricain du Cinéma et de la Télévision de Ouagadougou.","bioEn":"Pan-African Film and Television Festival of Ouagadougou.","url":"https://www.fespaco.org"},"recB04hjvOt0fUsdc":{"n":"Mario Azevedo","r":["Historien"],"nat":"Mozambicaine","yr":"","bio":"Historien mozambicain, professeur aux États-Unis. Auteur de référence anglo-saxonne sur la violence politique au Tchad.","bioEn":"Mozambican historian and US-based professor. A key English-language authority on political violence in Chad.","url":""},"recDlI4vBwB7Jm0PZ":{"n":"Michel Brunet","r":["Chercheur"],"nat":"Française","yr":"1940-","bio":"Paléontologue français, Collège de France. Découvreur de Toumaï (Sahelanthropus tchadensis) dans le désert du Djourab en 2001.","bioEn":"French palaeontologist, Collège de France. Discovered Toumaï (Sahelanthropus tchadensis) in the Djurab desert in 2001.","url":""},"recETdJvWEBq9jBYJ":{"n":"Mirjam de Bruijn","r":["Anthropologue","Chercheur"],"nat":"Néerlandaise","yr":"","bio":"Anthropologue néerlandaise, travaux au long cours sur mobilité et pastoralisme au Tchad (Toubou notamment).","bioEn":"Dutch anthropologist with long-term research on mobility and pastoralism in Chad, notably among the Toubou.","url":""},"recFbsiJZKGT33NVx":{"n":"Nétonon Noël Ndjékéry","r":["Écrivain"],"nat":"Tchadienne","yr":"1956-","bio":"Romancier contemporain tchadien, basé en Suisse.","bioEn":"Contemporary Chadian novelist based in Switzerland.","url":""},"recG5L6yyw4C2tV6x":{"n":"ITIE Tchad","r":["Institution"],"nat":"Institution tchadienne","yr":"","bio":"Initiative pour la Transparence dans les Industries Extractives, section tchadienne.","bioEn":"Chad chapter of the Extractive Industries Transparency Initiative (EITI).","url":"https://eiti.org/fr/implementing_country/48"},"recSpKhQ5xYWUvZWc":{"n":"Baba Moustapha","r":["Écrivain"],"nat":"Tchadienne","yr":"1952-1982","bio":"Romancier et dramaturge tchadien, référence post-indépendance.","bioEn":"Chadian novelist and playwright, a post-independence reference.","url":""},"recTqj5xFV6CVVyWa":{"n":"Afrotronix (Caleb Rimtobaye)","r":["Musicien"],"nat":"Tchado-canadienne","yr":"","bio":"Projet musical tchado-canadien de fusion électro, figure de la nouvelle scène.","bioEn":"Chadian-Canadian electro-fusion project, a leading name of the new scene.","url":"https://afrotronix.com"},"recVT8IxDHURIaUMf":{"n":"Mahamat-Saleh Haroun","r":["Cinéaste","Écrivain"],"nat":"Franco-tchadienne","yr":"1960-","bio":"Cinéaste tchadien de référence, ancien ministre de la Culture du Tchad. Prix du Jury Cannes 2010 pour Un homme qui crie.","bioEn":"Chad's leading filmmaker and a former Minister of Culture. Cannes Jury Prize 2010 for A Screaming Man.","url":""},"recWzIcflKwZEOsMp":{"n":"Ahmat Pecos","r":["Musicien"],"nat":"Tchadienne","yr":"","bio":"Figure du hip-hop tchadien.","bioEn":"A leading figure of Chadian hip-hop.","url":""},"recXbK7Jz6PNkCFBd":{"n":"Joseph Brahim Seid","r":["Écrivain","Homme politique"],"nat":"Tchadienne","yr":"1927-1980","bio":"Écrivain pionnier de la littérature tchadienne francophone, ancien ministre de la Justice.","bioEn":"Pioneer of French-language Chadian literature and a former Minister of Justice.","url":""},"recepUXg1qnCaNSu2":{"n":"Bernard Lugan","r":["Historien"],"nat":"Française","yr":"1946-","bio":"Historien français spécialiste de l'Afrique, propose une lecture civilisationnelle de longue durée.","bioEn":"French historian of Africa offering a long-term, civilisational reading.","url":""},"recfvfor21mQblzTa":{"n":"Jean Chapelle","r":["Anthropologue"],"nat":"Française","yr":"1914-1998","bio":"Administrateur colonial puis ethnologue, auteur du classique Nomades noirs du Sahara (1957) sur les Toubou.","bioEn":"Colonial administrator turned ethnologist, author of the classic Nomades noirs du Sahara (1957) on the Toubou.","url":""},"reci8VDJBukfMXK65":{"n":"Catherine Baroin","r":["Anthropologue","Chercheur"],"nat":"Française","yr":"","bio":"Anthropologue française, référence ethnographique sur les Teda-Daza du Nord Tchad.","bioEn":"French anthropologist, the ethnographic reference on the Teda-Daza of northern Chad.","url":""},"reck2yGkrlzUdGcBF":{"n":"INSEED","r":["Institution"],"nat":"Institution tchadienne","yr":"","bio":"Institut National de la Statistique, des Études Économiques et Démographiques du Tchad.","bioEn":"Chad's National Institute of Statistics, Economic and Demographic Studies.","url":"https://www.inseed.td"},"reclbcr4UYikvqony":{"n":"CERI Sciences Po","r":["Institution"],"nat":"Institution internationale","yr":"","bio":"Centre de recherches internationales de Sciences Po Paris, travaux sur l'État tchadien (Roland Marchal).","bioEn":"Sciences Po Paris's Centre for International Studies, with research on the Chadian state (Roland Marchal).","url":"https://www.sciencespo.fr/ceri"},"recmLAK9wZ2pItAtz":{"n":"Bichara Idriss Haggar","r":["Politiste","Écrivain"],"nat":"Tchadienne","yr":"","bio":"Essayiste tchadien, propose une lecture tchadienne du clivage Nord-Sud.","bioEn":"Chadian essayist offering a Chadian reading of the North-South divide.","url":""},"recoq8Xrru247fiRm":{"n":"Mounira Mitchala","r":["Musicien"],"nat":"Tchadienne","yr":"","bio":"Chanteuse tchadienne, Prix Découvertes RFI 2007. Voix féminine majeure de la scène tchadienne.","bioEn":"Chadian singer, RFI Discoveries Prize 2007. A major female voice of the Chadian scene.","url":""},"recqRJely8gB4vsH2":{"n":"Robert Buijtenhuijs","r":["Historien","Chercheur"],"nat":"Néerlandaise","yr":"1936-2007","bio":"Historien néerlandais, référence absolue sur le Frolinat et la guerre du Tchad.","bioEn":"Dutch historian, the leading authority on Frolinat and the Chadian war.","url":""},"recs8F0pMYJ62nmYH":{"n":"Koulsy Lamko","r":["Écrivain"],"nat":"Tchadienne","yr":"1959-","bio":"Dramaturge, romancier et poète tchadien, initiateur de Fest'Africa.","bioEn":"Chadian playwright, novelist and poet, co-founder of Fest'Africa.","url":""},"rectYnxwiTeTDSrNa":{"n":"Marielle Debos","r":["Politiste","Chercheur"],"nat":"Française","yr":"","bio":"Politiste française (Paris-Nanterre). Référence contemporaine sur l'économie politique de la violence au Tchad.","bioEn":"French political scientist (Paris-Nanterre). A contemporary reference on the political economy of violence in Chad.","url":""},"recyGGpd7DwmTlLSL":{"n":"INA","r":["Institution"],"nat":"Institution internationale","yr":"","bio":"Institut National de l'Audiovisuel (France), fonds d'archives sur le Tchad.","bioEn":"France's National Audiovisual Institute, holding archives on Chad.","url":"https://www.ina.fr"},"recyWOzTctI77nVQs":{"n":"Clément Masdongar","r":["Musicien"],"nat":"Tchadienne","yr":"1952-2018","bio":"Monument de la musique tchadienne, chanson engagée et mémoire.","bioEn":"A monument of Chadian music: protest song and memory.","url":""}}};
+  const VOIX_EN = Object.fromEntries(Object.entries(VOIX.people).map(([k, p]) => [k, p.bioEn]));
+  const VEN = {
+    "Cinéma": "Film", "Littérature": "Literature", "Histoire": "History", "Anthropologie": "Anthropology", "Science politique": "Political science",
+    "Sociologie": "Sociology and statistics", "Économie": "Economy", "Sciences": "Science", "Musique": "Music",
+    "Essai": "Essay", "Album musical": "Album", "Roman": "Novel", "Film": "Film", "Rapport": "Report", "Enquête": "Survey", "Documentaire": "Documentary",
+    "Recueil": "Collection", "Catalogue": "Catalogue", "Article académique": "Academic article", "Thèse": "Thesis",
+    "Français": "French", "Anglais": "English", "Arabe tchadien": "Chadian Arabic", "Sara": "Sara",
+    "Historien": "Historian", "Chercheur": "Researcher", "Anthropologue": "Anthropologist", "Écrivain": "Writer", "Institution": "Institution", "Musicien": "Musician",
+    "Cinéaste": "Filmmaker", "Homme politique": "Politician", "Politiste": "Political scientist",
+    "Institution internationale": "International institution", "Institution tchadienne": "Chadian institution", "Française": "French", "Tchadienne": "Chadian",
+    "Néerlandaise": "Dutch", "Mozambicaine": "Mozambican", "Franco-tchadienne": "French-Chadian", "Tchado-canadienne": "Chadian-Canadian",
+    "Guerre civile": "Civil war", "Pardon": "Forgiveness", "Père-fils": "Father and son", "Femmes": "Women", "Avortement": "Abortion", "Religion": "Religion",
+    "Mémoire": "Memory", "Justice": "Justice", "Famille": "Family", "Enfance": "Childhood", "Migration": "Migration", "Tradition": "Tradition",
+    "Contes": "Folk tales", "Tradition orale": "Oral tradition", "Société contemporaine": "Contemporary society", "Histoire longue durée": "Long-term history",
+    "Violence politique": "Political violence", "Rébellions": "Rebellions", "Archives audiovisuelles": "Audiovisual archives", "Guerre": "War",
+    "Nomadisme": "Nomadism", "Mobilité": "Mobility", "Clivages Nord-Sud": "North-South divide", "Économie de la violence": "Economy of violence",
+    "Combattants": "Fighters", "État": "State", "Institutions": "Institutions", "Pétrole": "Oil", "Transparence": "Transparency", "Démographie": "Demography",
+    "Santé": "Health", "Éducation": "Education", "Statistiques": "Statistics", "Population": "Population", "Paléontologie": "Palaeontology",
+    "Origines humanité": "Human origins", "Rap": "Rap", "Scène urbaine": "Urban scene", "Électro": "Electro", "Fusion": "Fusion", "Diaspora": "Diaspora",
+    "Chant féminin": "Women's song", "Chanson engagée": "Protest song", "Festival panafricain": "Pan-African festival", "Prix du Jury Cannes 2010": "Cannes Jury Prize 2010",
+    "Prix Spécial Jury Venise 2006": "Venice Special Jury Prize 2006", "Sélection officielle Cannes 2021": "Cannes Official Selection 2021", "Années 2000": "2000s"
+  };
+  const vt = x => (lang === "en" && VEN[x]) || x;
+  const yr = y => { const m = String(y).match(/\d{4}/g); return m ? +m[m.length - 1] : 0; };
+  const yr0 = y => { const m = String(y).match(/\d{4}/); return m ? +m[0] : 0; };
+  let vDom = "", vPers = "";
+  function renderVoix() {
+    const W = VOIX.works, Pp = VOIX.people;
+    const doms = [...new Set(W.flatMap(w => w.dom))].sort((a, b) => W.filter(w => w.dom.includes(b)).length - W.filter(w => w.dom.includes(a)).length);
+    const types = [...new Set(W.map(w => w.ty))].sort();
+    const ys = W.map(w => yr0(w.y)).filter(Boolean);
+    const span = Math.max(...W.map(w => yr(w.y))) - Math.min(...ys);
+    const authors = new Set(W.flatMap(w => w.au));
+    document.getElementById("vStats").innerHTML = [[W.length, t("vSWorks")], [authors.size, t("vSPeople")], [doms.length, t("vSDom")], [span + (lang === "fr" ? " ans" : " years"), t("vSSpan")]]
+      .map(x => `<div><b>${x[0]}</b><span>${x[1]}</span></div>`).join("");
+    document.getElementById("vDom").innerHTML = [["", t("vAll") + " · " + W.length], ...doms.map(d => [d, vt(d) + " · " + W.filter(w => w.dom.includes(d)).length])]
+      .map(([k, l]) => `<button type="button" data-vdom="${k}" aria-pressed="${vDom === k}">${l}</button>`).join("");
+    const ts = document.getElementById("vType"), tv = ts.value;
+    ts.innerHTML = `<option value="">${t("vAllTypes")}</option>` + types.map(x => `<option value="${x}">${vt(x)}</option>`).join("");
+    ts.value = tv;
+    const qv = norm(document.getElementById("vQ").value.trim()), sort = document.getElementById("vSort").value;
+    let list = W.filter(w => (!vDom || w.dom.includes(vDom)) && (!ts.value || w.ty === ts.value) && (!vPers || w.au.includes(vPers)));
+    if (qv) list = list.filter(w => norm([w.t, w.y, w.ty, vt(w.ty), ...w.dom.map(vt), ...w.th, ...w.th.map(vt), w.prize, ...w.au.map(a => (Pp[a] || {}).n || "")].join(" ")).includes(qv));
+    list.sort(sort === "imp" ? (a, b) => b.imp - a.imp || yr(b.y) - yr(a.y) : sort === "new" ? (a, b) => yr(b.y) - yr(a.y) : (a, b) => yr0(a.y) - yr0(b.y));
+    const esc = x => String(x).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    document.getElementById("vGrid").innerHTML = list.length ? list.map(w => `<article class="vcard">
+      <div class="meta"><span>${[vt(w.ty), ...w.dom.map(vt)].filter((x, i, a) => x && a.indexOf(x) === i).map(esc).join(" · ")}</span><span class="num">${esc(vt(w.y))}</span></div>
+      <h3>${esc(w.t)}</h3>
+      <div class="au">${w.au.map(a => Pp[a] ? `<button type="button" data-vpers="${a}">${esc(Pp[a].n)}</button>` : "").join(", ")}</div>
+      ${w.prize ? `<div class="prize">🏆 ${esc(vt(w.prize))}</div>` : ""}
+      ${w.sum ? `<p class="sub" style="margin:0">${esc(w.sum)}</p>` : ""}
+      <div class="tags">${w.th.map(x => `<span>${esc(vt(x))}</span>`).join("")}${w.lg.map(x => `<span>${esc(vt(x))}</span>`).join("")}</div>
+      <div class="meta"><span class="stars" title="${t("vImp")}" aria-label="${t("vImp")} : ${w.imp}/5">${"★".repeat(w.imp)}${"☆".repeat(5 - w.imp)}</span>${w.url ? `<a class="src" href="${esc(w.url)}" target="_blank" rel="noopener">${t("vSrcLink")} ↗</a>` : ""}</div>
+    </article>`).join("") : `<p class="sub">${t("vNone")}</p>`;
+    const pb = document.getElementById("vPerson"), p = Pp[vPers];
+    if (p) {
+      const bio = lang === "en" ? (p.bioEn || VOIX_EN[vPers] || p.bio) : p.bio;
+      pb.innerHTML = `<button type="button" class="x" data-vclose aria-label="Fermer">×</button><h3>${esc(p.n)}</h3>
+        <p class="sub" style="margin:0 0 6px">${[...p.r.map(vt), vt(p.nat), p.yr].filter(Boolean).map(esc).join(" · ")}</p>
+        <p style="margin:0 0 6px">${esc(bio)}</p>${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.url.replace(/^https?:\/\//, ""))} ↗</a>` : ""}`;
+      pb.classList.add("open");
+    } else { pb.classList.remove("open"); pb.innerHTML = ""; }
+    document.getElementById("vFoot").textContent = t(VOIX.live ? "vFootLive" : "vFootSnap").replace("{d}", new Date(VOIX.asof + "T12:00:00").toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", { day: "numeric", month: "long", year: "numeric" }));
+  }
+  document.getElementById("vDom").addEventListener("click", e => { const b = e.target.closest("[data-vdom]"); if (!b) return; vDom = b.dataset.vdom; renderVoix(); });
+  document.getElementById("vGrid").addEventListener("click", e => { const b = e.target.closest("[data-vpers]"); if (!b) return; vPers = b.dataset.vpers; renderVoix(); document.getElementById("vPerson").scrollIntoView({ behavior: "smooth", block: "nearest" }); });
+  document.getElementById("vPerson").addEventListener("click", e => { if (e.target.closest("[data-vclose]")) { vPers = ""; renderVoix(); } });
+  ["vQ", "vType", "vSort"].forEach(id => document.getElementById(id).addEventListener(id === "vQ" ? "input" : "change", renderVoix));
+  async function loadVoix() {
+    try {
+      const r = await fetch("/api/voix");
+      if (!r.ok) return;
+      const j = await r.json();
+      if (j.works && j.works.length) { VOIX = j; renderVoix(); }
+    } catch (e) { /* instantané conservé */ }
+  }
+
   /* ---------- CSV ---------- */
   const CSV = {
     gdp: () => "year,gdp_current_usd\n" + series(gdp).map(p => p.join(",")).join("\n"),
@@ -1951,6 +2093,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     { n: t("secAgr"), v: nf(37.7, 1) + " %", h: "#economie", kw: "agriculture élevage livestock secteurs sectors" },
     { n: t("projTitle"), v: musd(1087354558.10), h: "#projets", kw: "projets projects bailleurs donors banque mondiale world bank appels d'offres tenders marchés procurement financement" },
     { n: t("abTitle"), v: "", h: "#apropos", kw: "à propos about mission méthode method inseed blocages grille équipe" },
+    { n: t("vTitle"), v: "30", h: "#voix", kw: "voix voices culture cinéma film littérature literature roman novel histoire history anthropologie musique music livres books haroun toumaï auteurs authors" },
+    ...VOIX.works.map(w => ({ n: w.t, v: w.y, h: "#voix", kw: w.dom.join(" ") + " " + w.au.map(a => (VOIX.people[a] || {}).n || "").join(" ") })),
     { n: t("cTitle"), v: "", h: "#contribuer", kw: "contribuer contribute corriger correct ajouter add commenter comment signaler report dénoncer abus erreur" },
     { n: t("eGuideTitle"), v: "", h: "#edu-guide", kw: "orientation guidance étudiants students familles métiers jobs formation training" },
     { n: t("eEtabTitle"), v: "13", h: "#edu-etab", kw: "universités universities écoles instituts ens ena enstp enastic" },
@@ -1991,7 +2135,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     document.querySelectorAll("[data-i18n-ph]").forEach(n => { n.placeholder = t(n.dataset.i18nPh); });
     document.getElementById("lang-fr").setAttribute("aria-pressed", String(lang === "fr"));
     document.getElementById("lang-en").setAttribute("aria-pressed", String(lang === "en"));
-    renderTiles(); renderCountry(); renderEduMore(); renderEconomy(); renderProvinces(); renderSecurity(); renderProjects(); renderTenders(); renderContrib(); renderAbout(); renderCompare(); renderEducation(); renderHuman(); renderSources();
+    renderTiles(); renderCountry(); renderEduMore(); renderEconomy(); renderProvinces(); renderSecurity(); renderProjects(); renderTenders(); renderContrib(); renderAbout(); renderVoix(); renderCompare(); renderEducation(); renderHuman(); renderSources();
     if (q.value) search();
   }
   ["fr", "en"].forEach(l => document.getElementById("lang-" + l).addEventListener("click", () => {
@@ -2000,6 +2144,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   applyLang();
   loadTenders();
+  loadVoix();
 })();
 </script>
 </body>

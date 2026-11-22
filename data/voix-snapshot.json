@@ -1,0 +1,933 @@
+{
+ "asof": "2026-11-22",
+ "works": [
+  {
+   "id": "rec0Nz0GSSfzsvHt2",
+   "t": "Le Tchad (Lugan)",
+   "ty": "Essai",
+   "y": "2013",
+   "dom": [
+    "Histoire"
+   ],
+   "th": [
+    "Histoire longue durée"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 3,
+   "au": [
+    "recepUXg1qnCaNSu2"
+   ]
+  },
+  {
+   "id": "rec1yPMtWDtpDF1f9",
+   "t": "Les Teda-Daza",
+   "ty": "Essai",
+   "y": "1985",
+   "dom": [
+    "Anthropologie"
+   ],
+   "th": [
+    "Toubou",
+    "Teda",
+    "Daza"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "reci8VDJBukfMXK65"
+   ]
+  },
+  {
+   "id": "rec3wzXtPHiupybKx",
+   "t": "Gentleman of Chad",
+   "ty": "Album musical",
+   "y": "Années 2000",
+   "dom": [
+    "Musique"
+   ],
+   "th": [
+    "Rap",
+    "Scène urbaine"
+   ],
+   "lg": [
+    "Français",
+    "Arabe tchadien"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 3,
+   "au": [
+    "recWzIcflKwZEOsMp"
+   ]
+  },
+  {
+   "id": "rec5NFMkybstkeQu6",
+   "t": "La Rouille de la vie",
+   "ty": "Roman",
+   "y": "2001",
+   "dom": [
+    "Littérature"
+   ],
+   "th": [
+    "Société contemporaine"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 3,
+   "au": [
+    "recFbsiJZKGT33NVx"
+   ]
+  },
+  {
+   "id": "rec5T7ffrR56RctY6",
+   "t": "Mobilité humaine et pastoralisme au Tchad",
+   "ty": "Essai",
+   "y": "2015",
+   "dom": [
+    "Anthropologie"
+   ],
+   "th": [
+    "Nomadisme",
+    "Mobilité",
+    "Toubou"
+   ],
+   "lg": [
+    "Français",
+    "Anglais"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recETdJvWEBq9jBYJ"
+   ]
+  },
+  {
+   "id": "rec5mQSku4HDZWkIv",
+   "t": "Un enfant du Tchad",
+   "ty": "Roman",
+   "y": "1967",
+   "dom": [
+    "Littérature"
+   ],
+   "th": [
+    "Enfance",
+    "Tradition"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recXbK7Jz6PNkCFBd"
+   ]
+  },
+  {
+   "id": "rec6vH19ltEI2wneu",
+   "t": "Tchad : conflit Nord-Sud, mythe ou réalité",
+   "ty": "Essai",
+   "y": "2003",
+   "dom": [
+    "Science politique"
+   ],
+   "th": [
+    "Clivages Nord-Sud",
+    "Religion"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recmLAK9wZ2pItAtz"
+   ]
+  },
+  {
+   "id": "rec8wMu85lKTDKvK0",
+   "t": "Daratt, saison sèche",
+   "ty": "Film",
+   "y": "2006",
+   "dom": [
+    "Cinéma"
+   ],
+   "th": [
+    "Guerre civile",
+    "Pardon"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.imdb.com/title/tt0479952/",
+   "prize": "Prix Spécial Jury Venise 2006",
+   "imp": 5,
+   "au": [
+    "recVT8IxDHURIaUMf"
+   ]
+  },
+  {
+   "id": "rec9gav8FUpjzssFI",
+   "t": "Un homme qui crie",
+   "ty": "Film",
+   "y": "2010",
+   "dom": [
+    "Cinéma"
+   ],
+   "th": [
+    "Guerre civile",
+    "Père-fils"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.imdb.com/title/tt1526578/",
+   "prize": "Prix du Jury Cannes 2010",
+   "imp": 5,
+   "au": [
+    "recVT8IxDHURIaUMf"
+   ]
+  },
+  {
+   "id": "recFM3g4ypCB0PZ02",
+   "t": "Rapport ITIE Tchad (série annuelle)",
+   "ty": "Rapport",
+   "y": "2010-",
+   "dom": [
+    "Économie"
+   ],
+   "th": [
+    "Pétrole",
+    "Transparence"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://eiti.org/fr/implementing_country/48",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recG5L6yyw4C2tV6x"
+   ]
+  },
+  {
+   "id": "recFewnJnVGPyGyD2",
+   "t": "Afrotronix",
+   "ty": "Album musical",
+   "y": "2016-",
+   "dom": [
+    "Musique"
+   ],
+   "th": [
+    "Électro",
+    "Fusion",
+    "Diaspora"
+   ],
+   "lg": [
+    "Français",
+    "Anglais"
+   ],
+   "url": "https://afrotronix.com",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recTqj5xFV6CVVyWa"
+   ]
+  },
+  {
+   "id": "recG8nh0DFYkQJ6Sw",
+   "t": "EDS-MICS Tchad 2014-2015",
+   "ty": "Enquête",
+   "y": "2014-2015",
+   "dom": [
+    "Sociologie"
+   ],
+   "th": [
+    "Démographie",
+    "Santé",
+    "Éducation"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://dhsprogram.com",
+   "prize": "",
+   "imp": 5,
+   "au": [
+    "reck2yGkrlzUdGcBF"
+   ]
+  },
+  {
+   "id": "recI5QO4MO38A7LD8",
+   "t": "Annuaire statistique de l'éducation 2024-2025",
+   "ty": "Rapport",
+   "y": "2025",
+   "dom": [
+    "Sociologie"
+   ],
+   "th": [
+    "Éducation",
+    "Statistiques"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.inseed.td",
+   "prize": "",
+   "imp": 5,
+   "au": [
+    "reck2yGkrlzUdGcBF"
+   ]
+  },
+  {
+   "id": "recImfcuF0vY1Y74B",
+   "t": "Talou",
+   "ty": "Album musical",
+   "y": "2008",
+   "dom": [
+    "Musique"
+   ],
+   "th": [
+    "Chant féminin",
+    "Tradition"
+   ],
+   "lg": [
+    "Arabe tchadien"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recoq8Xrru247fiRm"
+   ]
+  },
+  {
+   "id": "recKzKoI5Fwnczg6k",
+   "t": "Archives INA - guerre du Tchad",
+   "ty": "Documentaire",
+   "y": "1970-1990",
+   "dom": [
+    "Histoire"
+   ],
+   "th": [
+    "Archives audiovisuelles",
+    "Guerre"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.ina.fr",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recyGGpd7DwmTlLSL"
+   ]
+  },
+  {
+   "id": "recLA7J4ZwrZVxpax",
+   "t": "Lingui, les liens sacrés",
+   "ty": "Film",
+   "y": "2021",
+   "dom": [
+    "Cinéma"
+   ],
+   "th": [
+    "Femmes",
+    "Avortement",
+    "Religion"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.imdb.com/title/tt14124284/",
+   "prize": "Sélection officielle Cannes 2021",
+   "imp": 5,
+   "au": [
+    "recVT8IxDHURIaUMf"
+   ]
+  },
+  {
+   "id": "recPnOPKGxSgmT31f",
+   "t": "Hissène Habré, une tragédie tchadienne",
+   "ty": "Documentaire",
+   "y": "2016",
+   "dom": [
+    "Cinéma"
+   ],
+   "th": [
+    "Habré",
+    "Justice",
+    "Mémoire"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.imdb.com/title/tt5536132/",
+   "prize": "",
+   "imp": 5,
+   "au": [
+    "recVT8IxDHURIaUMf"
+   ]
+  },
+  {
+   "id": "recTLic9IfukmU4t1",
+   "t": "Abouna, notre père",
+   "ty": "Film",
+   "y": "2002",
+   "dom": [
+    "Cinéma"
+   ],
+   "th": [
+    "Famille",
+    "Enfance",
+    "Migration"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.imdb.com/title/tt0303805/",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recVT8IxDHURIaUMf"
+   ]
+  },
+  {
+   "id": "recUIhqwef1oiH9aY",
+   "t": "Le métier des armes au Tchad",
+   "ty": "Essai",
+   "y": "2013",
+   "dom": [
+    "Science politique"
+   ],
+   "th": [
+    "Économie de la violence",
+    "Combattants"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.karthala.com",
+   "prize": "",
+   "imp": 5,
+   "au": [
+    "rectYnxwiTeTDSrNa"
+   ]
+  },
+  {
+   "id": "recXJooOjswqV03Q3",
+   "t": "Au Tchad sous les étoiles",
+   "ty": "Recueil",
+   "y": "1962",
+   "dom": [
+    "Littérature"
+   ],
+   "th": [
+    "Contes",
+    "Tradition orale"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recXbK7Jz6PNkCFBd"
+   ]
+  },
+  {
+   "id": "recYjCzLug1JalnRP",
+   "t": "Nomades noirs du Sahara",
+   "ty": "Essai",
+   "y": "1957",
+   "dom": [
+    "Anthropologie"
+   ],
+   "th": [
+    "Toubou",
+    "Nomadisme"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recfvfor21mQblzTa"
+   ]
+  },
+  {
+   "id": "recZKalVsQujwTvf2",
+   "t": "Le Souffle de l'harmattan",
+   "ty": "Roman",
+   "y": "1980",
+   "dom": [
+    "Littérature"
+   ],
+   "th": [
+    "Société contemporaine"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recSpKhQ5xYWUvZWc"
+   ]
+  },
+  {
+   "id": "reccCuT8eMLja3fEy",
+   "t": "Discographie Clément Masdongar",
+   "ty": "Album musical",
+   "y": "1980-2015",
+   "dom": [
+    "Musique"
+   ],
+   "th": [
+    "Chanson engagée",
+    "Mémoire"
+   ],
+   "lg": [
+    "Sara",
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recyWOzTctI77nVQs"
+   ]
+  },
+  {
+   "id": "reccNoa3PIoAQj1ks",
+   "t": "Fespaco - sélections tchadiennes",
+   "ty": "Catalogue",
+   "y": "1969-",
+   "dom": [
+    "Cinéma"
+   ],
+   "th": [
+    "Festival panafricain"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.fespaco.org",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "rec3YnMJQm0ReVOhw"
+   ]
+  },
+  {
+   "id": "rechGvzm6RaQYk9e1",
+   "t": "Mbaïbarem",
+   "ty": "Roman",
+   "y": "1994",
+   "dom": [
+    "Littérature"
+   ],
+   "th": [
+    "Guerre civile"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "recs8F0pMYJ62nmYH"
+   ]
+  },
+  {
+   "id": "recizRZYSamewszXt",
+   "t": "RGPH2 - Deuxième Recensement Général",
+   "ty": "Enquête",
+   "y": "2009",
+   "dom": [
+    "Sociologie"
+   ],
+   "th": [
+    "Démographie",
+    "Population"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.inseed.td",
+   "prize": "",
+   "imp": 5,
+   "au": [
+    "reck2yGkrlzUdGcBF"
+   ]
+  },
+  {
+   "id": "reclYnHC5Qg5RNSVa",
+   "t": "Roots of Violence: A History of War in Chad",
+   "ty": "Essai",
+   "y": "1998",
+   "dom": [
+    "Histoire"
+   ],
+   "th": [
+    "Violence politique",
+    "Guerre civile"
+   ],
+   "lg": [
+    "Anglais"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 5,
+   "au": [
+    "recB04hjvOt0fUsdc"
+   ]
+  },
+  {
+   "id": "recnrgD3I5ZWmaaPN",
+   "t": "Sahelanthropus tchadensis (Toumaï)",
+   "ty": "Article académique",
+   "y": "2002",
+   "dom": [
+    "Sciences"
+   ],
+   "th": [
+    "Paléontologie",
+    "Origines humanité"
+   ],
+   "lg": [
+    "Anglais"
+   ],
+   "url": "https://www.nature.com/articles/nature00879",
+   "prize": "",
+   "imp": 5,
+   "au": [
+    "recDlI4vBwB7Jm0PZ"
+   ]
+  },
+  {
+   "id": "recspiNd90nhuiYGN",
+   "t": "La Guerre du Tchad 1977-1984",
+   "ty": "Essai",
+   "y": "1987",
+   "dom": [
+    "Histoire"
+   ],
+   "th": [
+    "Frolinat",
+    "Rébellions"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "",
+   "prize": "",
+   "imp": 5,
+   "au": [
+    "recqRJely8gB4vsH2"
+   ]
+  },
+  {
+   "id": "recwfd2MEPFTWLjDs",
+   "t": "L'État au Tchad (travaux CERI)",
+   "ty": "Thèse",
+   "y": "2000-",
+   "dom": [
+    "Science politique"
+   ],
+   "th": [
+    "État",
+    "Institutions"
+   ],
+   "lg": [
+    "Français"
+   ],
+   "url": "https://www.sciencespo.fr/ceri",
+   "prize": "",
+   "imp": 4,
+   "au": [
+    "reclbcr4UYikvqony"
+   ]
+  }
+ ],
+ "people": {
+  "rec3YnMJQm0ReVOhw": {
+   "n": "FESPACO",
+   "r": [
+    "Institution"
+   ],
+   "nat": "Institution internationale",
+   "yr": "",
+   "bio": "Festival Panafricain du Cinéma et de la Télévision de Ouagadougou.",
+   "bioEn": "Pan-African Film and Television Festival of Ouagadougou.",
+   "url": "https://www.fespaco.org"
+  },
+  "recB04hjvOt0fUsdc": {
+   "n": "Mario Azevedo",
+   "r": [
+    "Historien"
+   ],
+   "nat": "Mozambicaine",
+   "yr": "",
+   "bio": "Historien mozambicain, professeur aux États-Unis. Auteur de référence anglo-saxonne sur la violence politique au Tchad.",
+   "bioEn": "Mozambican historian and US-based professor. A key English-language authority on political violence in Chad.",
+   "url": ""
+  },
+  "recDlI4vBwB7Jm0PZ": {
+   "n": "Michel Brunet",
+   "r": [
+    "Chercheur"
+   ],
+   "nat": "Française",
+   "yr": "1940-",
+   "bio": "Paléontologue français, Collège de France. Découvreur de Toumaï (Sahelanthropus tchadensis) dans le désert du Djourab en 2001.",
+   "bioEn": "French palaeontologist, Collège de France. Discovered Toumaï (Sahelanthropus tchadensis) in the Djurab desert in 2001.",
+   "url": ""
+  },
+  "recETdJvWEBq9jBYJ": {
+   "n": "Mirjam de Bruijn",
+   "r": [
+    "Anthropologue",
+    "Chercheur"
+   ],
+   "nat": "Néerlandaise",
+   "yr": "",
+   "bio": "Anthropologue néerlandaise, travaux au long cours sur mobilité et pastoralisme au Tchad (Toubou notamment).",
+   "bioEn": "Dutch anthropologist with long-term research on mobility and pastoralism in Chad, notably among the Toubou.",
+   "url": ""
+  },
+  "recFbsiJZKGT33NVx": {
+   "n": "Nétonon Noël Ndjékéry",
+   "r": [
+    "Écrivain"
+   ],
+   "nat": "Tchadienne",
+   "yr": "1956-",
+   "bio": "Romancier contemporain tchadien, basé en Suisse.",
+   "bioEn": "Contemporary Chadian novelist based in Switzerland.",
+   "url": ""
+  },
+  "recG5L6yyw4C2tV6x": {
+   "n": "ITIE Tchad",
+   "r": [
+    "Institution"
+   ],
+   "nat": "Institution tchadienne",
+   "yr": "",
+   "bio": "Initiative pour la Transparence dans les Industries Extractives, section tchadienne.",
+   "bioEn": "Chad chapter of the Extractive Industries Transparency Initiative (EITI).",
+   "url": "https://eiti.org/fr/implementing_country/48"
+  },
+  "recSpKhQ5xYWUvZWc": {
+   "n": "Baba Moustapha",
+   "r": [
+    "Écrivain"
+   ],
+   "nat": "Tchadienne",
+   "yr": "1952-1982",
+   "bio": "Romancier et dramaturge tchadien, référence post-indépendance.",
+   "bioEn": "Chadian novelist and playwright, a post-independence reference.",
+   "url": ""
+  },
+  "recTqj5xFV6CVVyWa": {
+   "n": "Afrotronix (Caleb Rimtobaye)",
+   "r": [
+    "Musicien"
+   ],
+   "nat": "Tchado-canadienne",
+   "yr": "",
+   "bio": "Projet musical tchado-canadien de fusion électro, figure de la nouvelle scène.",
+   "bioEn": "Chadian-Canadian electro-fusion project, a leading name of the new scene.",
+   "url": "https://afrotronix.com"
+  },
+  "recVT8IxDHURIaUMf": {
+   "n": "Mahamat-Saleh Haroun",
+   "r": [
+    "Cinéaste",
+    "Écrivain"
+   ],
+   "nat": "Franco-tchadienne",
+   "yr": "1960-",
+   "bio": "Cinéaste tchadien de référence, ancien ministre de la Culture du Tchad. Prix du Jury Cannes 2010 pour Un homme qui crie.",
+   "bioEn": "Chad's leading filmmaker and a former Minister of Culture. Cannes Jury Prize 2010 for A Screaming Man.",
+   "url": ""
+  },
+  "recWzIcflKwZEOsMp": {
+   "n": "Ahmat Pecos",
+   "r": [
+    "Musicien"
+   ],
+   "nat": "Tchadienne",
+   "yr": "",
+   "bio": "Figure du hip-hop tchadien.",
+   "bioEn": "A leading figure of Chadian hip-hop.",
+   "url": ""
+  },
+  "recXbK7Jz6PNkCFBd": {
+   "n": "Joseph Brahim Seid",
+   "r": [
+    "Écrivain",
+    "Homme politique"
+   ],
+   "nat": "Tchadienne",
+   "yr": "1927-1980",
+   "bio": "Écrivain pionnier de la littérature tchadienne francophone, ancien ministre de la Justice.",
+   "bioEn": "Pioneer of French-language Chadian literature and a former Minister of Justice.",
+   "url": ""
+  },
+  "recepUXg1qnCaNSu2": {
+   "n": "Bernard Lugan",
+   "r": [
+    "Historien"
+   ],
+   "nat": "Française",
+   "yr": "1946-",
+   "bio": "Historien français spécialiste de l'Afrique, propose une lecture civilisationnelle de longue durée.",
+   "bioEn": "French historian of Africa offering a long-term, civilisational reading.",
+   "url": ""
+  },
+  "recfvfor21mQblzTa": {
+   "n": "Jean Chapelle",
+   "r": [
+    "Anthropologue"
+   ],
+   "nat": "Française",
+   "yr": "1914-1998",
+   "bio": "Administrateur colonial puis ethnologue, auteur du classique Nomades noirs du Sahara (1957) sur les Toubou.",
+   "bioEn": "Colonial administrator turned ethnologist, author of the classic Nomades noirs du Sahara (1957) on the Toubou.",
+   "url": ""
+  },
+  "reci8VDJBukfMXK65": {
+   "n": "Catherine Baroin",
+   "r": [
+    "Anthropologue",
+    "Chercheur"
+   ],
+   "nat": "Française",
+   "yr": "",
+   "bio": "Anthropologue française, référence ethnographique sur les Teda-Daza du Nord Tchad.",
+   "bioEn": "French anthropologist, the ethnographic reference on the Teda-Daza of northern Chad.",
+   "url": ""
+  },
+  "reck2yGkrlzUdGcBF": {
+   "n": "INSEED",
+   "r": [
+    "Institution"
+   ],
+   "nat": "Institution tchadienne",
+   "yr": "",
+   "bio": "Institut National de la Statistique, des Études Économiques et Démographiques du Tchad.",
+   "bioEn": "Chad's National Institute of Statistics, Economic and Demographic Studies.",
+   "url": "https://www.inseed.td"
+  },
+  "reclbcr4UYikvqony": {
+   "n": "CERI Sciences Po",
+   "r": [
+    "Institution"
+   ],
+   "nat": "Institution internationale",
+   "yr": "",
+   "bio": "Centre de recherches internationales de Sciences Po Paris, travaux sur l'État tchadien (Roland Marchal).",
+   "bioEn": "Sciences Po Paris's Centre for International Studies, with research on the Chadian state (Roland Marchal).",
+   "url": "https://www.sciencespo.fr/ceri"
+  },
+  "recmLAK9wZ2pItAtz": {
+   "n": "Bichara Idriss Haggar",
+   "r": [
+    "Politiste",
+    "Écrivain"
+   ],
+   "nat": "Tchadienne",
+   "yr": "",
+   "bio": "Essayiste tchadien, propose une lecture tchadienne du clivage Nord-Sud.",
+   "bioEn": "Chadian essayist offering a Chadian reading of the North-South divide.",
+   "url": ""
+  },
+  "recoq8Xrru247fiRm": {
+   "n": "Mounira Mitchala",
+   "r": [
+    "Musicien"
+   ],
+   "nat": "Tchadienne",
+   "yr": "",
+   "bio": "Chanteuse tchadienne, Prix Découvertes RFI 2007. Voix féminine majeure de la scène tchadienne.",
+   "bioEn": "Chadian singer, RFI Discoveries Prize 2007. A major female voice of the Chadian scene.",
+   "url": ""
+  },
+  "recqRJely8gB4vsH2": {
+   "n": "Robert Buijtenhuijs",
+   "r": [
+    "Historien",
+    "Chercheur"
+   ],
+   "nat": "Néerlandaise",
+   "yr": "1936-2007",
+   "bio": "Historien néerlandais, référence absolue sur le Frolinat et la guerre du Tchad.",
+   "bioEn": "Dutch historian, the leading authority on Frolinat and the Chadian war.",
+   "url": ""
+  },
+  "recs8F0pMYJ62nmYH": {
+   "n": "Koulsy Lamko",
+   "r": [
+    "Écrivain"
+   ],
+   "nat": "Tchadienne",
+   "yr": "1959-",
+   "bio": "Dramaturge, romancier et poète tchadien, initiateur de Fest'Africa.",
+   "bioEn": "Chadian playwright, novelist and poet, co-founder of Fest'Africa.",
+   "url": ""
+  },
+  "rectYnxwiTeTDSrNa": {
+   "n": "Marielle Debos",
+   "r": [
+    "Politiste",
+    "Chercheur"
+   ],
+   "nat": "Française",
+   "yr": "",
+   "bio": "Politiste française (Paris-Nanterre). Référence contemporaine sur l'économie politique de la violence au Tchad.",
+   "bioEn": "French political scientist (Paris-Nanterre). A contemporary reference on the political economy of violence in Chad.",
+   "url": ""
+  },
+  "recyGGpd7DwmTlLSL": {
+   "n": "INA",
+   "r": [
+    "Institution"
+   ],
+   "nat": "Institution internationale",
+   "yr": "",
+   "bio": "Institut National de l'Audiovisuel (France), fonds d'archives sur le Tchad.",
+   "bioEn": "France's National Audiovisual Institute, holding archives on Chad.",
+   "url": "https://www.ina.fr"
+  },
+  "recyWOzTctI77nVQs": {
+   "n": "Clément Masdongar",
+   "r": [
+    "Musicien"
+   ],
+   "nat": "Tchadienne",
+   "yr": "1952-2018",
+   "bio": "Monument de la musique tchadienne, chanson engagée et mémoire.",
+   "bioEn": "A monument of Chadian music: protest song and memory.",
+   "url": ""
+  }
+ }
+}
