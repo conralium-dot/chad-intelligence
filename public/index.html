@@ -75,12 +75,14 @@ nav.main a:hover { color: var(--ink); background: var(--accent-soft); }
 .results li .num { color: var(--muted); }
 .results .empty { padding: 10px; color: var(--muted); font-size: 14px; }
 
-.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(136px, 1fr)); gap: 12px; margin-top: 28px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 28px; }
 .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 2px; }
 .tile .label { font-size: 13px; color: var(--muted); }
 .tile .value { font-family: var(--font-display); font-weight: 700; font-size: 26px; font-variant-numeric: tabular-nums; }
 .tile .meta { font-size: 12px; color: var(--muted); }
 .tile.alert { border-left: 4px solid var(--critical); }
+.tile .ssa { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.tile .ssa b { color: var(--ink); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* Sections */
 section.block { padding: 40px 0; border-top: 1px solid var(--line); }
@@ -295,7 +297,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     fr: {
       navCountry: "Fiche pays", navCompare: "Comparer", navEducation: "Éducation", navHuman: "Humanitaire", navSources: "Sources",
       heroTitle: "La référence des données sur le Tchad",
-      heroLead: "Données publiques de la Banque mondiale, du HCR et de l'INSEED, rassemblées, vérifiées et expliquées. Chaque chiffre renvoie à sa source.",
+      heroLead: "Données publiques de la Banque mondiale, du HCR et de l'INSEED, rassemblées, vérifiées et expliquées. Chaque chiffre renvoie à sa source. Sous chaque chiffre clé : la valeur de l'Afrique subsaharienne.",
       searchLabel: "Rechercher un indicateur", searchPh: "Rechercher : population, PIB, réfugiés, électricité…", noResult: "Aucun indicateur trouvé. Essayez « PIB » ou « réfugiés ».",
       countryTitle: "Tchad, fiche pays", countryTag: "Mise à jour : données 2024 publiées par la Banque mondiale",
       gdpTitle: "PIB, 2004-2024", gdpSub: "Milliards de dollars US courants", popTitle: "Population, 2004-2024", popSub: "Millions d'habitants",
@@ -314,12 +316,12 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       thIndicator: "Indicateur", thSource: "Source", thCode: "Code", thYear: "Année",
       footer: "Version de démonstration, données consultées le 22 novembre 2026", footer2: "Données ouvertes : Banque mondiale (CC BY 4.0), HCR",
       tPop: "Population", tGdp: "PIB", tGdppc: "PIB par habitant", tLife: "Espérance de vie", tElec: "Accès à l'électricité", tNet: "Internet", tUrb: "Population urbaine", tRef: "Réfugiés accueillis",
-      yrs: "ans", wbank: "Banque mondiale", unhcr: "HCR", enrolment: "Scolarisation primaire (brut)", literacy: "Alphabétisation des adultes", idpsL: "Déplacés internes"
+      yrs: "ans", wbank: "Banque mondiale", ssaAvg: "Afr. subsah.", ssaTotal: "Afr. subsah. (total)", ssaNone: "Afr. subsah. : non dispo.", tSsa: "Moyennes Afrique subsaharienne", unhcr: "HCR", enrolment: "Scolarisation primaire (brut)", literacy: "Alphabétisation des adultes", idpsL: "Déplacés internes"
     },
     en: {
       navCountry: "Country profile", navCompare: "Compare", navEducation: "Education", navHuman: "Humanitarian", navSources: "Sources",
       heroTitle: "The reference for data on Chad",
-      heroLead: "Public data from the World Bank, UNHCR and INSEED, gathered, checked and explained. Every figure links to its source.",
+      heroLead: "Public data from the World Bank, UNHCR and INSEED, gathered, checked and explained. Every figure links to its source. Under each key figure: the Sub-Saharan Africa value.",
       searchLabel: "Search an indicator", searchPh: "Search: population, GDP, refugees, electricity…", noResult: "No indicator found. Try “GDP” or “refugees”.",
       countryTitle: "Chad, country profile", countryTag: "Updated: 2024 data published by the World Bank",
       gdpTitle: "GDP, 2004-2024", gdpSub: "Billion current US dollars", popTitle: "Population, 2004-2024", popSub: "Million people",
@@ -338,7 +340,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       thIndicator: "Indicator", thSource: "Source", thCode: "Code", thYear: "Year",
       footer: "Demo version, data retrieved on 22 November 2026", footer2: "Open data: World Bank (CC BY 4.0), UNHCR",
       tPop: "Population", tGdp: "GDP", tGdppc: "GDP per capita", tLife: "Life expectancy", tElec: "Access to electricity", tNet: "Internet", tUrb: "Urban population", tRef: "Refugees hosted",
-      yrs: "years", wbank: "World Bank", unhcr: "UNHCR", enrolment: "Primary enrolment (gross)", literacy: "Adult literacy", idpsL: "Internally displaced"
+      yrs: "years", wbank: "World Bank", ssaAvg: "Sub-Saharan Afr.", ssaTotal: "Sub-Saharan Afr. (total)", ssaNone: "Sub-Saharan Afr.: n/a", tSsa: "Sub-Saharan Africa averages", unhcr: "UNHCR", enrolment: "Primary enrolment (gross)", literacy: "Adult literacy", idpsL: "Internally displaced"
     }
   };
 
@@ -479,17 +481,18 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   let cmpId = "gdppc";
 
   function renderTiles() {
+    const usd = v => lang === "fr" ? nf(v, 0) + " $" : "$" + nf(v, 0);
     const tiles = [
-      { k: "tPop", v: fmt(20299123, "mio"), m: "2024 · " + t("wbank") },
-      { k: "tGdp", v: fmt(19906706689.76, "bn"), m: "2024 · " + t("wbank") },
-      { k: "tGdppc", v: lang === "fr" ? nf(980.67, 0) + " $" : "$" + nf(980.67, 0), m: "2024 · " + t("wbank") },
-      { k: "tLife", v: nf(55.24, 1) + " " + t("yrs"), m: "2024 · " + t("wbank") },
-      { k: "tElec", v: nf(13.4, 1) + " %", m: "2024 · " + t("wbank"), alert: true },
-      { k: "tUrb", v: nf(26.93, 1) + " %", m: "2024 · " + t("wbank") },
-      { k: "tRef", v: fmt(1502263, "mio"), m: "2025 · " + t("unhcr"), alert: true }
+      { k: "tPop", v: fmt(20299123, "mio"), m: "2024 · " + t("wbank"), s: (lang === "fr" ? nf(1.291, 2) + " Md" : nf(1.291, 2) + " bn"), sl: t("ssaTotal") },
+      { k: "tGdp", v: fmt(19906706689.76, "bn"), m: "2024 · " + t("wbank"), s: (lang === "fr" ? nf(1979, 0) + " Md$" : nf(1979, 0) + " bn $"), sl: t("ssaTotal") },
+      { k: "tGdppc", v: usd(980.67), m: "2024 · " + t("wbank"), s: usd(1532.93), sl: t("ssaAvg") },
+      { k: "tLife", v: nf(55.24, 1) + " " + t("yrs"), m: "2024 · " + t("wbank"), s: nf(62.80, 1) + " " + t("yrs"), sl: t("ssaAvg") },
+      { k: "tElec", v: nf(13.4, 1) + " %", m: "2024 · " + t("wbank"), alert: true, s: nf(55.1, 1) + " %", sl: t("ssaAvg") },
+      { k: "tUrb", v: nf(26.93, 1) + " %", m: "2024 · " + t("wbank"), s: nf(44.1, 1) + " %", sl: t("ssaAvg") },
+      { k: "tRef", v: fmt(1502263, "mio"), m: "2025 · " + t("unhcr"), alert: true, s: "–", sl: t("ssaNone") }
     ];
     document.getElementById("tiles").innerHTML = tiles.map(x =>
-      `<div class="tile${x.alert ? " alert" : ""}"><span class="label">${t(x.k)}</span><span class="value">${x.v}</span><span class="meta">${x.m}</span></div>`).join("");
+      `<div class="tile${x.alert ? " alert" : ""}"><span class="label">${t(x.k)}</span><span class="value">${x.v}</span><span class="meta">${x.m}</span><span class="ssa"><span>${x.sl}</span><b>${x.s}</b></span></div>`).join("");
   }
 
   function renderCountry() {
@@ -555,7 +558,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       [t("tUrb"), t("wbank"), "SP.URB.TOTL.IN.ZS", "2024", WB + "SP.URB.TOTL.IN.ZS?locations=TD"],
       [t("enrolment"), t("wbank") + " / UNESCO", "SE.PRM.ENRR", "2000-2024", WB + "SE.PRM.ENRR?locations=TD"],
       [t("literacy"), t("wbank") + " / UNESCO", "SE.ADT.LITR.ZS", "2018-2024", WB + "SE.ADT.LITR.ZS"],
-      [t("tRef") + ", " + t("idpsL"), t("unhcr"), "population/v1", "2015-2025", "https://www.unhcr.org/refugee-statistics/"]
+      [t("tRef") + ", " + t("idpsL"), t("unhcr"), "population/v1", "2015-2025", "https://www.unhcr.org/refugee-statistics/"],
+      [t("tSsa"), t("wbank") + " (SSF)", "SP.POP.TOTL, NY.GDP.PCAP.CD, SP.DYN.LE00.IN, EG.ELC.ACCS.ZS, SP.URB.TOTL", "2024", "https://data.worldbank.org/region/sub-saharan-africa"]
     ];
     document.getElementById("srcRows").innerHTML = rows.map(r =>
       `<tr><td>${r[0]}</td><td><a href="${r[4]}">${r[1]}</a></td><td><code>${r[2]}</code></td><td class="num">${r[3]}</td></tr>`).join("");
