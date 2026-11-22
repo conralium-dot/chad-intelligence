@@ -221,6 +221,30 @@ table.prov tbody tr:hover td { background: var(--accent-soft); }
 .guide .res h3 { font-size: 20px; }
 .guide .res ol { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 6px; }
 .guide .res .warn { border-left: 3px solid var(--gold); padding: 8px 12px; background: rgba(201,148,0,.08); border-radius: 0 8px 8px 0; font-size: 13px; margin-top: 12px; }
+.contrib-btn { border: 1px dashed var(--accent); background: transparent; color: var(--accent); font: 600 12px var(--font-body); padding: 4px 10px; border-radius: 999px; cursor: pointer; }
+.contrib-btn:hover { background: var(--accent-soft); }
+.ctypes { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.ctypes button { text-align: left; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; padding: 12px 14px; cursor: pointer; display: grid; gap: 4px; font: 14px var(--font-body); }
+.ctypes button b { font-size: 15px; }
+.ctypes button span { color: var(--muted); font-size: 13px; }
+.ctypes button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.ctypes button.alert[aria-pressed="true"] { border-color: var(--critical); background: rgba(179, 38, 30, .08); }
+.cform { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 20px; }
+@media (max-width: 860px) { .cform { grid-template-columns: 1fr; } }
+.cform form { display: grid; gap: 12px; }
+.cform label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 4px; }
+.cform input[type=text], .cform input[type=email], .cform input[type=url], .cform select, .cform textarea { width: 100%; font: 15px var(--font-body); padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+.cform textarea { min-height: 130px; resize: vertical; }
+.cform .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 560px) { .cform .row2 { grid-template-columns: 1fr; } }
+.cform .chk { font-size: 14px; color: var(--ink); display: flex; gap: 8px; align-items: flex-start; }
+.cform .chk input { margin-top: 3px; }
+.cform button[type=submit] { justify-self: start; border: 0; background: var(--accent); color: #fff; font: 700 15px var(--font-body); padding: 11px 18px; border-radius: 8px; cursor: pointer; }
+.cform .msg { font-size: 14px; min-height: 1.2em; }
+.charter { font-size: 14px; }
+.charter h3 { font-size: 16px; margin-bottom: 8px; }
+.charter ul { padding-left: 18px; margin: 0; display: grid; gap: 6px; color: var(--muted); }
+.charter .note { margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: rgba(179, 38, 30, .08); border-left: 3px solid var(--critical); font-size: 13px; }
 footer { padding: 28px 0 40px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
 </style>
@@ -239,6 +263,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <a href="#comparer" data-i18n="navCompare">Comparer</a>
       <a href="#education" data-i18n="navEducation">Éducation et orientation</a>
       <a href="#humanitaire" data-i18n="navHuman">Humanitaire</a>
+      <a href="#contribuer" data-i18n="navContrib">Contribuer</a>
       <a href="#sources" data-i18n="navSources">Sources</a>
     </nav>
     <div class="lang" role="group" aria-label="Langue / Language">
@@ -263,7 +288,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   <section class="block" id="pays">
     <div class="wrap">
-      <div class="head"><h2 data-i18n="countryTitle">Tchad, fiche pays</h2><span class="tag" data-i18n="countryTag">Mise à jour : données 2024 publiées par la Banque mondiale</span></div>
+      <div class="head"><h2 data-i18n="countryTitle">Tchad, fiche pays</h2><span class="tag" data-i18n="countryTag">Mise à jour : données 2024 publiées par la Banque mondiale</span><button type="button" class="contrib-btn" data-contrib="pays" data-i18n="cBtn">Corriger ou compléter</button></div>
       <p class="insight" id="countryInsight"></p>
       <div class="grid2">
         <div class="card">
@@ -284,7 +309,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   <section class="block" id="economie">
     <div class="wrap">
-      <div class="head"><h2 data-i18n="ecoTitle">Économie</h2><span class="tag" data-i18n="ecoTag">Croissance, prix, structure et dépendance au pétrole</span></div>
+      <div class="head"><h2 data-i18n="ecoTitle">Économie</h2><span class="tag" data-i18n="ecoTag">Croissance, prix, structure et dépendance au pétrole</span><button type="button" class="contrib-btn" data-contrib="economie" data-i18n="cBtn">Corriger ou compléter</button></div>
       <p class="insight" id="ecoInsight"></p>
       <div class="minis" id="ecoMinis"></div>
       <div class="grid2 two">
@@ -321,7 +346,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   <section class="block" id="provinces">
     <div class="wrap">
-      <div class="head"><h2 data-i18n="provTitle">Les 23 provinces</h2><span class="tag" data-i18n="provTag">Population, superficie, densité, croissance et réfugiés</span></div>
+      <div class="head"><h2 data-i18n="provTitle">Les 23 provinces</h2><span class="tag" data-i18n="provTag">Population, superficie, densité, croissance et réfugiés</span><button type="button" class="contrib-btn" data-contrib="provinces" data-i18n="cBtn">Corriger ou compléter</button></div>
       <p class="insight" id="provInsight"></p>
       <div class="card" style="margin-bottom:16px">
         <h3 data-i18n="mapTitle">Carte des provinces</h3>
@@ -374,7 +399,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   <section class="block" id="projets">
     <div class="wrap">
-      <div class="head"><h2 data-i18n="projTitle">Projets financés et appels d'offres</h2><span class="tag" data-i18n="projTag">Où va l'argent des bailleurs, et ce qui reste à dépenser</span></div>
+      <div class="head"><h2 data-i18n="projTitle">Projets financés et appels d'offres</h2><span class="tag" data-i18n="projTag">Où va l'argent des bailleurs, et ce qui reste à dépenser</span><button type="button" class="contrib-btn" data-contrib="projets" data-i18n="cBtn">Corriger ou compléter</button></div>
       <p class="insight" id="projInsight"></p>
       <div class="minis" id="projMinis"></div>
       <div class="grid2 two">
@@ -426,7 +451,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   <section class="block" id="comparer">
     <div class="wrap">
-      <div class="head"><h2 data-i18n="compareTitle">Le Tchad face à ses voisins</h2><span class="tag" data-i18n="compareTag">Cameroun, Niger, Nigeria, Soudan, République centrafricaine</span></div>
+      <div class="head"><h2 data-i18n="compareTitle">Le Tchad face à ses voisins</h2><span class="tag" data-i18n="compareTag">Cameroun, Niger, Nigeria, Soudan, République centrafricaine</span><button type="button" class="contrib-btn" data-contrib="comparer" data-i18n="cBtn">Corriger ou compléter</button></div>
       <div class="chips" id="cmpChips" role="group" aria-label="Indicateur"></div>
       <p class="insight" id="cmpInsight"></p>
       <div class="card">
@@ -440,7 +465,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   <section class="block" id="education">
     <div class="wrap">
-      <div class="head"><h2 data-i18n="eduTitle">Éducation, formation et orientation</h2><span class="tag" data-i18n="eduTag">Du pré-primaire à l'université, et les métiers dont le pays a besoin</span></div>
+      <div class="head"><h2 data-i18n="eduTitle">Éducation, formation et orientation</h2><span class="tag" data-i18n="eduTag">Du pré-primaire à l'université, et les métiers dont le pays a besoin</span><button type="button" class="contrib-btn" data-contrib="education" data-i18n="cBtn">Corriger ou compléter</button></div>
       <div class="chips" role="group" aria-label="Sous-sections" style="margin-bottom:14px">
         <a class="btn" href="#edu-parcours" data-i18n="eNav1">Le parcours scolaire</a>
         <a class="btn" href="#edu-offre" data-i18n="eNav2">Public, privé, formation pro</a>
@@ -537,7 +562,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   <section class="block" id="humanitaire">
     <div class="wrap">
-      <div class="head"><h2 data-i18n="humTitle">Humanitaire</h2><span class="tag" data-i18n="humTag">Personnes réfugiées et déplacées au Tchad, fin d'année</span></div>
+      <div class="head"><h2 data-i18n="humTitle">Humanitaire</h2><span class="tag" data-i18n="humTag">Personnes réfugiées et déplacées au Tchad, fin d'année</span><button type="button" class="contrib-btn" data-contrib="humanitaire" data-i18n="cBtn">Corriger ou compléter</button></div>
       <p class="insight" id="humInsight"></p>
       <div class="card">
         <div class="legend"><span style="--c: var(--accent)" data-i18n="refugees">Réfugiés accueillis</span><span style="--c: var(--gold)" data-i18n="idps">Déplacés internes</span></div>
@@ -555,6 +580,63 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <div class="card"><span class="pill" data-i18n="soonV1">Prochaine version</span><h3 data-i18n="soon2">Filières économiques</h3><p class="sub" data-i18n="soon2d">Élevage, coton, gomme arabique : production, exportations, acteurs.</p></div>
         <div class="card"><span class="pill" data-i18n="soonV2">Version 2</span><h3 data-i18n="soon3">Assistant IA</h3><p class="sub" data-i18n="soon3d">Posez vos questions en français ou en anglais ; chaque réponse cite ses sources.</p></div>
         <div class="card"><span class="pill" data-i18n="soonV2">Version 2</span><h3 data-i18n="soon4">API et offre Pro</h3><p class="sub" data-i18n="soon4d">Accès programmatique, alertes et graphiques personnalisés pour les organisations.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="contribuer">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="cTitle">Contribuer à Chad Intelligence</h2><span class="tag" data-i18n="cTag">Corriger, compléter, commenter, signaler</span></div>
+      <p class="insight" data-i18n="cLead">Vous connaissez le terrain ? Aidez-nous à rendre ces données plus justes et plus complètes. Chaque contribution est relue par l'équipe avant d'être intégrée, et créditée si vous le souhaitez.</p>
+      <div class="ctypes" id="cTypes" role="group" aria-label="Type de contribution"></div>
+      <div class="card cform">
+        <form name="contributions" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" id="cForm">
+          <input type="hidden" name="form-name" value="contributions">
+          <input type="hidden" name="type" id="cType" value="correction">
+          <input type="hidden" name="langue" id="cLang" value="fr">
+          <p style="position:absolute;left:-9999px"><label>Ne pas remplir <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <div><label for="cSection" data-i18n="cSection">Partie du site concernée</label>
+            <select id="cSection" name="section">
+              <option value="general" data-i18n="csGeneral">Général</option>
+              <option value="chiffres-cles" data-i18n="csTiles">Chiffres clés</option>
+              <option value="pays" data-i18n="navCountry">Fiche pays</option>
+              <option value="economie" data-i18n="navEco">Économie</option>
+              <option value="provinces" data-i18n="navProv">Provinces</option>
+              <option value="securite" data-i18n="csSecu">Sécurité</option>
+              <option value="projets" data-i18n="navProj">Projets</option>
+              <option value="appels" data-i18n="navTend">Appels d'offres</option>
+              <option value="comparer" data-i18n="navCompare">Comparer</option>
+              <option value="education" data-i18n="navEducation">Éducation et orientation</option>
+              <option value="etablissements" data-i18n="csInst">Établissements et formations</option>
+              <option value="humanitaire" data-i18n="navHuman">Humanitaire</option>
+            </select></div>
+          <div><label for="cMsg" id="cMsgLabel" data-i18n="cMsgCorr">Quelle donnée est inexacte, et quelle est la bonne valeur ?</label>
+            <textarea id="cMsg" name="message" required></textarea></div>
+          <div><label for="cSrc" data-i18n="cSrc">Source ou lien (rapport, texte officiel, article) : fortement recommandé</label>
+            <input id="cSrc" type="url" name="source" placeholder="https://"></div>
+          <div><label for="cFile" data-i18n="cFile">Document justificatif (PDF ou image, 8 Mo maximum, facultatif)</label>
+            <input id="cFile" type="file" name="piece-jointe" accept=".pdf,.png,.jpg,.jpeg,.xlsx,.csv,.docx"></div>
+          <div class="row2">
+            <div><label for="cName" data-i18n="cName">Nom ou organisation (facultatif)</label><input id="cName" type="text" name="nom" autocomplete="name"></div>
+            <div><label for="cEmail" data-i18n="cEmail">E-mail, pour vous répondre (facultatif)</label><input id="cEmail" type="email" name="email" autocomplete="email"></div>
+          </div>
+          <label class="chk" id="cAnonWrap"><input type="checkbox" name="anonyme" value="oui" id="cAnon"> <span data-i18n="cAnon">Je souhaite rester anonyme : ne pas me citer, même si je laisse mes coordonnées</span></label>
+          <label class="chk"><input type="checkbox" name="credit" value="oui" id="cCredit"> <span data-i18n="cCredit">J'accepte d'être cité comme contributeur si ma contribution est retenue</span></label>
+          <label class="chk"><input type="checkbox" name="charte" value="acceptee" required> <span data-i18n="cCharter">J'ai lu la charte du contributeur et je certifie que ma contribution est sincère</span></label>
+          <button type="submit" data-i18n="cSend">Envoyer ma contribution</button>
+          <p class="msg" id="cMsgOut" role="status" aria-live="polite"></p>
+        </form>
+        <div class="charter">
+          <h3 data-i18n="chTitle">Charte du contributeur</h3>
+          <ul>
+            <li data-i18n="ch1">Appuyez vos propos sur une source vérifiable chaque fois que possible.</li>
+            <li data-i18n="ch2">Pas d'attaque personnelle, d'insulte ni de propos discriminatoires.</li>
+            <li data-i18n="ch3">Ne publiez pas de données personnelles sur des tiers (adresse, téléphone, santé).</li>
+            <li data-i18n="ch4">Les accusations visant une personne nommée ne sont pas publiées : elles sont transmises, si elles sont étayées, aux autorités ou organismes compétents.</li>
+            <li data-i18n="ch5">L'équipe peut reformuler, regrouper ou refuser une contribution. Les contributions retenues sont intégrées avec leur source.</li>
+          </ul>
+          <div class="note" id="cAlertNote" data-i18n="chAlert">Pour un signalement d'abus (établissement non reconnu, fausse information, irrégularité dans un marché public), décrivez des faits précis, datés et si possible documentés. Vous pouvez rester anonyme. En cas de danger immédiat, contactez d'abord les autorités.</div>
+        </div>
       </div>
     </div>
   </section>
@@ -661,6 +743,23 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   /* ---------- Textes FR / EN ---------- */
   const T = {
     fr: {
+      navContrib: "Contribuer", cTitle: "Contribuer à Chad Intelligence", cTag: "Corriger, compléter, commenter, signaler",
+      cLead: "Vous connaissez le terrain ? Aidez-nous à rendre ces données plus justes et plus complètes. Chaque contribution est relue par l'équipe avant d'être intégrée, et créditée si vous le souhaitez.",
+      cBtn: "Corriger ou compléter",
+      ct_correction: "Corriger une donnée", ct_correction_d: "Un chiffre faux, daté ou mal sourcé.",
+      ct_ajout: "Ajouter une information", ct_ajout_d: "Un établissement, une formation, une source, un projet, un appel d'offres.",
+      ct_commentaire: "Commenter ou suggérer", ct_commentaire_d: "Une idée, une analyse, une nouvelle rubrique.",
+      ct_signalement: "Signaler un abus", ct_signalement_d: "Établissement non reconnu, fausse information, irrégularité. Anonymat possible.",
+      cSection: "Partie du site concernée", csGeneral: "Général", csTiles: "Chiffres clés", csSecu: "Sécurité", csInst: "Établissements et formations",
+      cMsgCorr: "Quelle donnée est inexacte, et quelle est la bonne valeur ?", cMsgAdd: "Quelle information souhaitez-vous ajouter ? (nom, lieu, chiffres, dates…)", cMsgCom: "Votre commentaire ou suggestion", cMsgAlert: "Décrivez les faits : quoi, où, quand, qui est concerné (organisation), et comment vous le savez",
+      cSrc: "Source ou lien (rapport, texte officiel, article) : fortement recommandé", cFile: "Document justificatif (PDF ou image, 8 Mo maximum, facultatif)",
+      cName: "Nom ou organisation (facultatif)", cEmail: "E-mail, pour vous répondre (facultatif)",
+      cAnon: "Je souhaite rester anonyme : ne pas me citer, même si je laisse mes coordonnées", cCredit: "J'accepte d'être cité comme contributeur si ma contribution est retenue",
+      cCharter: "J'ai lu la charte du contributeur et je certifie que ma contribution est sincère", cSend: "Envoyer ma contribution",
+      cOk: "Merci ! Votre contribution a bien été reçue. Elle sera relue avant d'être intégrée.", cErr: "L'envoi n'a pas pu aboutir depuis cette page. Réessayez sur chad-intelligence.netlify.app.", cTooBig: "Le fichier dépasse 8 Mo : réduisez-le ou envoyez plutôt un lien.",
+      chTitle: "Charte du contributeur", ch1: "Appuyez vos propos sur une source vérifiable chaque fois que possible.", ch2: "Pas d'attaque personnelle, d'insulte ni de propos discriminatoires.", ch3: "Ne publiez pas de données personnelles sur des tiers (adresse, téléphone, santé).",
+      ch4: "Les accusations visant une personne nommée ne sont pas publiées : elles sont transmises, si elles sont étayées, aux autorités ou organismes compétents.", ch5: "L'équipe peut reformuler, regrouper ou refuser une contribution. Les contributions retenues sont intégrées avec leur source.",
+      chAlert: "Pour un signalement d'abus (établissement non reconnu, fausse information, irrégularité dans un marché public), décrivez des faits précis, datés et si possible documentés. Vous pouvez rester anonyme. En cas de danger immédiat, contactez d'abord les autorités.",
       eNav1: "Le parcours scolaire", eNav2: "Public, privé, formation pro", eNav3: "Établissements", eNav4: "Formations et besoins", eNav5: "Guide d'orientation",
       eParTitle: "Le parcours scolaire, niveau par niveau", eFunTitle: "Taux de scolarisation et d'achèvement, Tchad et Afrique subsaharienne", eFunSub: "% de la classe d'âge concernée · dernière année disponible entre parenthèses", eTcd: "Tchad", eSsa: "Afrique subsaharienne",
       fPre: "Pré-primaire (inscrits)", fPrim: "Primaire (inscrits)", fPrimC: "Primaire (achèvent)", fLowC: "Collège (achèvent)", fSec: "Secondaire (inscrits)", fUp: "Lycée (inscrits)", fTer: "Supérieur (inscrits)",
@@ -750,6 +849,23 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       yrs: "ans", wbank: "Banque mondiale", ssaAvg: "Afr. subsah.", ssaTotal: "Afr. subsah. (total)", ssaNone: "Afr. subsah. : non dispo.", tSsa: "Moyennes Afrique subsaharienne", unhcr: "HCR", enrolment: "Scolarisation primaire (brut)", literacy: "Alphabétisation des adultes", idpsL: "Déplacés internes"
     },
     en: {
+      navContrib: "Contribute", cTitle: "Contribute to Chad Intelligence", cTag: "Correct, add, comment, report",
+      cLead: "Know the ground? Help us make this data more accurate and complete. Every contribution is reviewed by the team before it is added, and credited if you wish.",
+      cBtn: "Correct or add",
+      ct_correction: "Correct a figure", ct_correction_d: "A figure that is wrong, outdated or poorly sourced.",
+      ct_ajout: "Add information", ct_ajout_d: "An institution, a course, a source, a project, a tender.",
+      ct_commentaire: "Comment or suggest", ct_commentaire_d: "An idea, an analysis, a new section.",
+      ct_signalement: "Report abuse", ct_signalement_d: "Unrecognised institution, false information, irregularity. Anonymity possible.",
+      cSection: "Part of the site", csGeneral: "General", csTiles: "Key figures", csSecu: "Security", csInst: "Institutions and courses",
+      cMsgCorr: "Which figure is wrong, and what is the correct value?", cMsgAdd: "What information would you like to add? (name, place, figures, dates…)", cMsgCom: "Your comment or suggestion", cMsgAlert: "Describe the facts: what, where, when, which organisation is involved, and how you know",
+      cSrc: "Source or link (report, official text, article): strongly recommended", cFile: "Supporting document (PDF or image, max 8 MB, optional)",
+      cName: "Name or organisation (optional)", cEmail: "Email, so we can reply (optional)",
+      cAnon: "I want to stay anonymous: do not quote me, even if I leave my details", cCredit: "I agree to be credited as a contributor if my contribution is used",
+      cCharter: "I have read the contributor charter and confirm my contribution is made in good faith", cSend: "Send my contribution",
+      cOk: "Thank you! Your contribution has been received. It will be reviewed before being added.", cErr: "Sending failed from this page. Please try again on chad-intelligence.netlify.app.", cTooBig: "The file is over 8 MB: reduce it or send a link instead.",
+      chTitle: "Contributor charter", ch1: "Back your input with a verifiable source whenever possible.", ch2: "No personal attacks, insults or discriminatory remarks.", ch3: "Do not share personal data about others (address, phone, health).",
+      ch4: "Accusations against a named person are not published: if substantiated, they are passed on to the competent authorities or bodies.", ch5: "The team may rephrase, group or decline a contribution. Contributions used are added with their source.",
+      chAlert: "To report abuse (unrecognised institution, false information, irregularity in a public tender), describe precise, dated and ideally documented facts. You can stay anonymous. In case of immediate danger, contact the authorities first.",
       eNav1: "The school pathway", eNav2: "Public, private, vocational", eNav3: "Institutions", eNav4: "Training and needs", eNav5: "Guidance tool",
       eParTitle: "The school pathway, level by level", eFunTitle: "Enrolment and completion rates, Chad and Sub-Saharan Africa", eFunSub: "% of the relevant age group · latest year available in brackets", eTcd: "Chad", eSsa: "Sub-Saharan Africa",
       fPre: "Pre-primary (enrolled)", fPrim: "Primary (enrolled)", fPrimC: "Primary (complete)", fLowC: "Lower secondary (complete)", fSec: "Secondary (enrolled)", fUp: "Upper secondary (enrolled)", fTer: "Tertiary (enrolled)",
@@ -1661,6 +1777,39 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   document.getElementById("gProfile").addEventListener("click", e => { const b = e.target.closest("[data-gp]"); if (!b) return; gProf = b.dataset.gp; renderGuide(); });
   document.getElementById("gDomain").addEventListener("click", e => { const b = e.target.closest("[data-gd]"); if (!b) return; gDom = b.dataset.gd; renderGuide(); });
 
+
+  /* ---------- Contributions (Netlify Forms, modération avant publication) ---------- */
+  const CTYPES = ["correction", "ajout", "commentaire", "signalement"];
+  const CMSG = { correction: "cMsgCorr", ajout: "cMsgAdd", commentaire: "cMsgCom", signalement: "cMsgAlert" };
+  let cType = "correction";
+  function renderContrib() {
+    document.getElementById("cTypes").innerHTML = CTYPES.map(k => `<button type="button" data-ct="${k}" aria-pressed="${cType === k}"${k === "signalement" ? ' class="alert"' : ""}><b>${t("ct_" + k)}</b><span>${t("ct_" + k + "_d")}</span></button>`).join("");
+    document.getElementById("cType").value = cType;
+    document.getElementById("cMsgLabel").textContent = t(CMSG[cType]);
+    document.getElementById("cAnonWrap").style.display = cType === "signalement" ? "flex" : "flex";
+    document.getElementById("cAlertNote").style.display = cType === "signalement" ? "block" : "none";
+  }
+  document.getElementById("cTypes").addEventListener("click", e => { const b = e.target.closest("[data-ct]"); if (!b) return; cType = b.dataset.ct; renderContrib(); });
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-contrib]"); if (!b) return;
+    cType = "correction"; renderContrib();
+    const sel = document.getElementById("cSection"); sel.value = b.dataset.contrib;
+    document.getElementById("contribuer").scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => document.getElementById("cMsg").focus({ preventScroll: true }), 500);
+  });
+  document.getElementById("cForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const f = e.target, out = document.getElementById("cMsgOut");
+    const file = document.getElementById("cFile").files[0];
+    if (file && file.size > 8 * 1024 * 1024) { out.textContent = t("cTooBig"); return; }
+    document.getElementById("cLang").value = lang;
+    try {
+      const r = await fetch("/", { method: "POST", body: new FormData(f) });
+      if (!r.ok) throw new Error(r.status);
+      out.textContent = t("cOk"); f.reset(); renderContrib();
+    } catch (err) { out.textContent = t("cErr"); }
+  });
+
   /* ---------- CSV ---------- */
   const CSV = {
     gdp: () => "year,gdp_current_usd\n" + series(gdp).map(p => p.join(",")).join("\n"),
@@ -1711,6 +1860,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     { n: t("oilTitle"), v: "76 % " + t("oilExp"), h: "#economie", kw: "pétrole oil brut crude exportations exports recettes" },
     { n: t("secAgr"), v: nf(37.7, 1) + " %", h: "#economie", kw: "agriculture élevage livestock secteurs sectors" },
     { n: t("projTitle"), v: musd(1087354558.10), h: "#projets", kw: "projets projects bailleurs donors banque mondiale world bank appels d'offres tenders marchés procurement financement" },
+    { n: t("cTitle"), v: "", h: "#contribuer", kw: "contribuer contribute corriger correct ajouter add commenter comment signaler report dénoncer abus erreur" },
     { n: t("eGuideTitle"), v: "", h: "#edu-guide", kw: "orientation guidance étudiants students familles métiers jobs formation training" },
     { n: t("eEtabTitle"), v: "13", h: "#edu-etab", kw: "universités universities écoles instituts ens ena enstp enastic" },
     { n: t("eTvetTitle"), v: "1,4 %", h: "#edu-offre", kw: "formation professionnelle vocational fonap cftp lycée technique apprentissage" },
@@ -1750,7 +1900,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     document.querySelectorAll("[data-i18n-ph]").forEach(n => { n.placeholder = t(n.dataset.i18nPh); });
     document.getElementById("lang-fr").setAttribute("aria-pressed", String(lang === "fr"));
     document.getElementById("lang-en").setAttribute("aria-pressed", String(lang === "en"));
-    renderTiles(); renderCountry(); renderEduMore(); renderEconomy(); renderProvinces(); renderSecurity(); renderProjects(); renderTenders(); renderCompare(); renderEducation(); renderHuman(); renderSources();
+    renderTiles(); renderCountry(); renderEduMore(); renderEconomy(); renderProvinces(); renderSecurity(); renderProjects(); renderTenders(); renderContrib(); renderCompare(); renderEducation(); renderHuman(); renderSources();
     if (q.value) search();
   }
   ["fr", "en"].forEach(l => document.getElementById("lang-" + l).addEventListener("click", () => {
