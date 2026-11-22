@@ -245,6 +245,25 @@ table.prov tbody tr:hover td { background: var(--accent-soft); }
 .charter h3 { font-size: 16px; margin-bottom: 8px; }
 .charter ul { padding-left: 18px; margin: 0; display: grid; gap: 6px; color: var(--muted); }
 .charter .note { margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: rgba(179, 38, 30, .08); border-left: 3px solid var(--critical); font-size: 13px; }
+#apropos .doors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { #apropos .doors { grid-template-columns: 1fr; } }
+#apropos .door { border-top: 4px solid var(--accent); }
+#apropos .door.gold { border-top-color: var(--gold); }
+#apropos .door h3 { font-size: 20px; }
+#apropos .door p { margin: 8px 0 0; color: var(--muted); }
+#apropos .door a { display: inline-block; margin-top: 10px; font-weight: 600; }
+#apropos .blocks8 { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+#apropos .b8 { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+#apropos .b8 .n { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+#apropos .b8 h4 { margin: 0; font-family: var(--font-display); font-size: 16px; }
+#apropos .b8 p { margin: 0; font-size: 14px; color: var(--muted); }
+#apropos .b8.act { border-color: var(--accent); box-shadow: inset 4px 0 0 var(--accent); }
+#apropos .b8 .pill { justify-self: start; margin: 4px 0 0; }
+#apropos .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+#apropos .principles div { padding: 12px 14px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 8px 8px 0; }
+#apropos .principles b { display: block; margin-bottom: 4px; }
+#apropos .principles span { font-size: 14px; color: var(--muted); }
+#apropos h3.edu-sub { margin-top: 28px; }
 footer { padding: 28px 0 40px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
 </style>
@@ -263,6 +282,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <a href="#comparer" data-i18n="navCompare">Comparer</a>
       <a href="#education" data-i18n="navEducation">Éducation et orientation</a>
       <a href="#humanitaire" data-i18n="navHuman">Humanitaire</a>
+      <a href="#apropos" data-i18n="navAbout">À propos</a>
       <a href="#contribuer" data-i18n="navContrib">Contribuer</a>
       <a href="#sources" data-i18n="navSources">Sources</a>
     </nav>
@@ -584,6 +604,34 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     </div>
   </section>
 
+  <section class="block" id="apropos">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="abTitle">À propos de Chad Intelligence</h2><span class="tag" data-i18n="abTag">Pourquoi ce site, et comment il est construit</span></div>
+      <p class="insight" data-i18n="abLead">Chad Intelligence rend lisible, en un seul endroit, ce que la donnée publique et la production intellectuelle, artistique et scientifique disent du Tchad. Notre ambition : devenir pour le Tchad ce que Data USA est pour les États-Unis, avec un service sur mesure pour les organisations qui ont besoin d'aller plus loin.</p>
+
+      <div class="doors">
+        <div class="card door"><h3 data-i18n="abD1">Les chiffres</h3><p data-i18n="abD1p">Des indicateurs publics, sourcés et datés : population, économie, éducation, sécurité, projets financés, appels d'offres. Chaque chiffre renvoie à son origine et peut être téléchargé.</p><a href="#pays" data-i18n="abD1a">Explorer les données</a></div>
+        <div class="card door gold"><h3 data-i18n="abD2">Les voix</h3><p data-i18n="abD2p">Les œuvres et les travaux qui racontent le pays de l'intérieur et de l'extérieur : cinéma, littérature, histoire, anthropologie, sciences, musique. Parce qu'un pays ne se résume pas à ses statistiques.</p><a href="#voix" data-i18n="abD2a">Découvrir le catalogue</a></div>
+      </div>
+
+      <h3 class="edu-sub" data-i18n="abPosT">Notre position</h3>
+      <div class="grid2 two">
+        <div class="card"><h3 data-i18n="abPos1">Un complément de l'INSEED, pas un remplaçant</h3><p class="sub" style="margin-top:8px" data-i18n="abPos1p">L'Institut national de la statistique produit les données officielles et dispose de son propre portail. Chad Intelligence est une couche indépendante qui rassemble ces données avec celles des organisations internationales, les met en perspective et les rend accessibles au plus grand nombre, en français et en anglais.</p></div>
+        <div class="card"><h3 data-i18n="abPos2">Indépendant et éditorialisé</h3><p class="sub" style="margin-top:8px" data-i18n="abPos2p">Nous ne nous contentons pas d'empiler des tableaux : chaque section propose une lecture, signalée comme telle, à côté des données brutes. Nos interprétations sont distinctes des chiffres officiels et peuvent être discutées via l'espace contributeurs.</p></div>
+      </div>
+
+      <h3 class="edu-sub" data-i18n="abGridT">Notre grille de lecture : 8 blocages structurels</h3>
+      <p class="sub" style="color:var(--muted); margin:0 0 12px; max-width:80ch" data-i18n="abGridP">Cette grille synthétise les analyses de la Banque mondiale, du PNUD, des Nations unies, de l'Union africaine et de plusieurs historiens et politistes du Tchad. Elle sert à orienter nos choix éditoriaux. En bleu, les blocages sur lesquels une plateforme de données peut agir directement.</p>
+      <div class="blocks8" id="abBlocks"></div>
+
+      <h3 class="edu-sub" data-i18n="abMethT">Notre méthode</h3>
+      <div class="principles" id="abPrinciples"></div>
+
+      <h3 class="edu-sub" data-i18n="abRoadT">Ce qui arrive</h3>
+      <p class="sub" style="color:var(--muted); max-width:80ch" data-i18n="abRoadP">Nous avons choisi l'éducation comme premier secteur approfondi, après une notation de cinq secteurs sur l'accessibilité des sources et leur stabilité. Prochaines étapes : les annuaires statistiques de l'éducation de l'INSEED par province, puis le pétrole et la transparence des industries extractives, l'agriculture et la santé.</p>
+    </div>
+  </section>
+
   <section class="block" id="contribuer">
     <div class="wrap">
       <div class="head"><h2 data-i18n="cTitle">Contribuer à Chad Intelligence</h2><span class="tag" data-i18n="cTag">Corriger, compléter, commenter, signaler</span></div>
@@ -743,6 +791,15 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   /* ---------- Textes FR / EN ---------- */
   const T = {
     fr: {
+      navAbout: "À propos", abTitle: "À propos de Chad Intelligence", abTag: "Pourquoi ce site, et comment il est construit",
+      abLead: "Chad Intelligence rend lisible, en un seul endroit, ce que la donnée publique et la production intellectuelle, artistique et scientifique disent du Tchad. Notre ambition : devenir pour le Tchad ce que Data USA est pour les États-Unis, avec un service sur mesure pour les organisations qui ont besoin d'aller plus loin.",
+      abD1: "Les chiffres", abD1p: "Des indicateurs publics, sourcés et datés : population, économie, éducation, sécurité, projets financés, appels d'offres. Chaque chiffre renvoie à son origine et peut être téléchargé.", abD1a: "Explorer les données",
+      abD2: "Les voix", abD2p: "Les œuvres et les travaux qui racontent le pays de l'intérieur et de l'extérieur : cinéma, littérature, histoire, anthropologie, sciences, musique. Parce qu'un pays ne se résume pas à ses statistiques.", abD2a: "Découvrir le catalogue",
+      abPosT: "Notre position", abPos1: "Un complément de l'INSEED, pas un remplaçant", abPos1p: "L'Institut national de la statistique produit les données officielles et dispose de son propre portail. Chad Intelligence est une couche indépendante qui rassemble ces données avec celles des organisations internationales, les met en perspective et les rend accessibles au plus grand nombre, en français et en anglais.",
+      abPos2: "Indépendant et éditorialisé", abPos2p: "Nous ne nous contentons pas d'empiler des tableaux : chaque section propose une lecture, signalée comme telle, à côté des données brutes. Nos interprétations sont distinctes des chiffres officiels et peuvent être discutées via l'espace contributeurs.",
+      abGridT: "Notre grille de lecture : 8 blocages structurels", abGridP: "Cette grille synthétise les analyses de la Banque mondiale, du PNUD, des Nations unies, de l'Union africaine et de plusieurs historiens et politistes du Tchad. Elle sert à orienter nos choix éditoriaux. En bleu, les blocages sur lesquels une plateforme de données peut agir directement.",
+      abAct: "La plateforme peut agir", abActR: "Par ricochet : redevabilité",
+      abMethT: "Notre méthode", abRoadT: "Ce qui arrive", abRoadP: "Nous avons choisi l'éducation comme premier secteur approfondi, après une notation de cinq secteurs sur l'accessibilité des sources et leur stabilité. Prochaines étapes : les annuaires statistiques de l'éducation de l'INSEED par province, puis le pétrole et la transparence des industries extractives, l'agriculture et la santé.",
       navContrib: "Contribuer", cTitle: "Contribuer à Chad Intelligence", cTag: "Corriger, compléter, commenter, signaler",
       cLead: "Vous connaissez le terrain ? Aidez-nous à rendre ces données plus justes et plus complètes. Chaque contribution est relue par l'équipe avant d'être intégrée, et créditée si vous le souhaitez.",
       cBtn: "Corriger ou compléter",
@@ -849,6 +906,15 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       yrs: "ans", wbank: "Banque mondiale", ssaAvg: "Afr. subsah.", ssaTotal: "Afr. subsah. (total)", ssaNone: "Afr. subsah. : non dispo.", tSsa: "Moyennes Afrique subsaharienne", unhcr: "HCR", enrolment: "Scolarisation primaire (brut)", literacy: "Alphabétisation des adultes", idpsL: "Déplacés internes"
     },
     en: {
+      navAbout: "About", abTitle: "About Chad Intelligence", abTag: "Why this site exists, and how it is built",
+      abLead: "Chad Intelligence makes readable, in one place, what public data and intellectual, artistic and scientific work say about Chad. Our ambition: to be for Chad what Data USA is for the United States, with tailored services for organisations that need to go further.",
+      abD1: "The numbers", abD1p: "Public indicators, sourced and dated: population, economy, education, security, funded projects, tenders. Every figure links to its origin and can be downloaded.", abD1a: "Explore the data",
+      abD2: "The voices", abD2p: "The works and research that tell the country's story from inside and outside: film, literature, history, anthropology, science, music. Because a country is more than its statistics.", abD2a: "Discover the catalogue",
+      abPosT: "Our position", abPos1: "A complement to INSEED, not a replacement", abPos1p: "The national statistics institute produces official data and runs its own portal. Chad Intelligence is an independent layer that brings this data together with that of international organisations, puts it in context and makes it accessible to everyone, in French and English.",
+      abPos2: "Independent, with an editorial view", abPos2p: "We do more than stack tables: each section offers a reading, labelled as such, next to the raw data. Our interpretations are kept separate from official figures and can be challenged through the contributor space.",
+      abGridT: "Our reading grid: 8 structural constraints", abGridP: "This grid summarises analyses by the World Bank, UNDP, the United Nations, the African Union and several historians and political scientists of Chad. It guides our editorial choices. In blue, the constraints a data platform can act on directly.",
+      abAct: "The platform can act", abActR: "Indirectly: accountability",
+      abMethT: "Our method", abRoadT: "What's next", abRoadP: "We chose education as the first sector covered in depth, after scoring five sectors on source accessibility and stability. Next: INSEED education yearbooks by province, then oil and extractive-industry transparency, agriculture and health.",
       navContrib: "Contribute", cTitle: "Contribute to Chad Intelligence", cTag: "Correct, add, comment, report",
       cLead: "Know the ground? Help us make this data more accurate and complete. Every contribution is reviewed by the team before it is added, and credited if you wish.",
       cBtn: "Correct or add",
@@ -1810,6 +1876,30 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     } catch (err) { out.textContent = t("cErr"); }
   });
 
+
+  /* ---------- À propos ---------- */
+  const BLOCKS8 = [
+    [0, ["Géographie et enclavement", "Geography and landlocked position"], ["Environ 1 700 km du port le plus proche, un lac Tchad qui a perdu l'essentiel de sa surface, et une faible part de terres cultivables.", "About 1,700 km from the nearest port, a Lake Chad that has lost most of its surface, and little arable land."]],
+    [0, ["Pluralité ethnique et héritages historiques", "Ethnic diversity and historical legacies"], ["Plus de 200 groupes, des lectures historiques qui se complètent et parfois s'opposent.", "Over 200 groups, and historical readings that complement and sometimes contradict each other."]],
+    [0, ["Héritage colonial", "Colonial legacy"], ["Un territoire peu investi au sein de l'Afrique-Équatoriale française, une économie organisée autour du coton au sud.", "A territory with little investment within French Equatorial Africa, and an economy built around cotton in the south."]],
+    [2, ["Transitions politiques", "Political transitions"], ["Aucune alternance par les urnes depuis l'indépendance en 1960.", "No change of power through elections since independence in 1960."]],
+    [0, ["Dépendance au pétrole", "Oil dependence"], ["76 % des exportations et 41 % des recettes publiques : le budget suit les cours du brut.", "76% of exports and 41% of government revenue: the budget follows crude prices."]],
+    [1, ["Capital humain", "Human capital"], ["Un développement humain parmi les plus bas au monde, une fécondité élevée et une population qui double en une vingtaine d'années.", "Human development among the lowest in the world, high fertility and a population that doubles in about twenty years."]],
+    [0, ["Insécurité régionale", "Regional insecurity"], ["Groupes armés du bassin du lac Tchad, plus d'un million de réfugiés venus du Soudan, instabilité en Centrafrique et en Libye.", "Armed groups in the Lake Chad basin, over a million refugees from Sudan, instability in the Central African Republic and Libya."]],
+    [1, ["Opacité de la donnée publique", "Opaque public data"], ["Des données rares, dispersées, souvent en PDF et difficiles à comparer dans le temps.", "Data that is scarce, scattered, often in PDF and hard to compare over time."]]
+  ];
+  const PRINCIPLES = [
+    [["Chaque chiffre est sourcé", "Every figure is sourced"], ["Organisation, code d'indicateur et année figurent sous chaque graphique.", "Organisation, indicator code and year appear under every chart."]],
+    [["Aucune estimation maison", "No in-house estimates"], ["Nous publions les données des producteurs officiels. Nos lectures sont signalées comme telles.", "We publish data from official producers. Our readings are labelled as such."]],
+    [["Mises à jour automatiques", "Automatic updates"], ["Les appels d'offres sont actualisés plusieurs fois par jour. Les autres séries le seront à mesure que la collecte s'automatise.", "Tenders refresh several times a day. Other series will follow as collection is automated."]],
+    [["Ouvert aux corrections", "Open to corrections"], ["Toute erreur signalée et vérifiée est corrigée, avec sa source.", "Any reported and verified error is corrected, with its source."]]
+  ];
+  function renderAbout() {
+    const L = lang === "fr" ? 0 : 1;
+    document.getElementById("abBlocks").innerHTML = BLOCKS8.map((b, i) => `<div class="b8${b[0] ? " act" : ""}"><span class="n">${String(i + 1).padStart(2, "0")}</span><h4>${b[1][L]}</h4><p>${b[2][L]}</p>${b[0] === 1 ? `<span class="pill">${t("abAct")}</span>` : b[0] === 2 ? `<span class="pill">${t("abActR")}</span>` : ""}</div>`).join("");
+    document.getElementById("abPrinciples").innerHTML = PRINCIPLES.map(x => `<div><b>${x[0][L]}</b><span>${x[1][L]}</span></div>`).join("");
+  }
+
   /* ---------- CSV ---------- */
   const CSV = {
     gdp: () => "year,gdp_current_usd\n" + series(gdp).map(p => p.join(",")).join("\n"),
@@ -1860,6 +1950,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     { n: t("oilTitle"), v: "76 % " + t("oilExp"), h: "#economie", kw: "pétrole oil brut crude exportations exports recettes" },
     { n: t("secAgr"), v: nf(37.7, 1) + " %", h: "#economie", kw: "agriculture élevage livestock secteurs sectors" },
     { n: t("projTitle"), v: musd(1087354558.10), h: "#projets", kw: "projets projects bailleurs donors banque mondiale world bank appels d'offres tenders marchés procurement financement" },
+    { n: t("abTitle"), v: "", h: "#apropos", kw: "à propos about mission méthode method inseed blocages grille équipe" },
     { n: t("cTitle"), v: "", h: "#contribuer", kw: "contribuer contribute corriger correct ajouter add commenter comment signaler report dénoncer abus erreur" },
     { n: t("eGuideTitle"), v: "", h: "#edu-guide", kw: "orientation guidance étudiants students familles métiers jobs formation training" },
     { n: t("eEtabTitle"), v: "13", h: "#edu-etab", kw: "universités universities écoles instituts ens ena enstp enastic" },
@@ -1900,7 +1991,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     document.querySelectorAll("[data-i18n-ph]").forEach(n => { n.placeholder = t(n.dataset.i18nPh); });
     document.getElementById("lang-fr").setAttribute("aria-pressed", String(lang === "fr"));
     document.getElementById("lang-en").setAttribute("aria-pressed", String(lang === "en"));
-    renderTiles(); renderCountry(); renderEduMore(); renderEconomy(); renderProvinces(); renderSecurity(); renderProjects(); renderTenders(); renderContrib(); renderCompare(); renderEducation(); renderHuman(); renderSources();
+    renderTiles(); renderCountry(); renderEduMore(); renderEconomy(); renderProvinces(); renderSecurity(); renderProjects(); renderTenders(); renderContrib(); renderAbout(); renderCompare(); renderEducation(); renderHuman(); renderSources();
     if (q.value) search();
   }
   ["fr", "en"].forEach(l => document.getElementById("lang-" + l).addEventListener("click", () => {
