@@ -120,6 +120,32 @@ code { font-family: var(--font-mono); font-size: 12px; }
 .soon .card { border-style: dashed; }
 .pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-bottom: 6px; }
 
+.grid2.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 760px) { .grid2.two { grid-template-columns: 1fr; } }
+.minis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.mini { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 2px; }
+.mini .label { font-size: 13px; color: var(--muted); }
+.mini .value { font-family: var(--font-display); font-weight: 700; font-size: 22px; font-variant-numeric: tabular-nums; }
+.mini .meta { font-size: 12px; color: var(--muted); }
+.proj-note { font-size: 12px; color: var(--muted); margin: 4px 0 0; }
+.prov-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+.prov-tools label { font-size: 14px; color: var(--muted); }
+.prov-tools select, .prov-tools input { font: 15px var(--font-body); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+.profile { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 16px; margin-bottom: 16px; }
+@media (max-width: 760px) { .profile { grid-template-columns: 1fr; } }
+.profile .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; margin-top: 12px; }
+.profile .facts div { display: grid; gap: 1px; }
+.profile .facts span { font-size: 12px; color: var(--muted); }
+.profile .facts b { font-family: var(--font-display); font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.profile h3.pname { font-size: 24px; }
+.rankbar { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; margin-top: 4px; }
+.rankbar i { display: block; height: 100%; background: var(--accent); }
+table.prov th button { all: unset; cursor: pointer; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; }
+table.prov th button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+table.prov td.n, table.prov th.n { text-align: right; font-variant-numeric: tabular-nums; }
+table.prov tr.sel td { background: var(--accent-soft); }
+table.prov tbody tr { cursor: pointer; }
+table.prov tbody tr:hover td { background: var(--accent-soft); }
 footer { padding: 28px 0 40px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
 </style>
@@ -131,6 +157,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <a class="brand" href="#top"><span class="flag" aria-hidden="true"><i></i><i></i><i></i></span>Chad Intelligence</a>
     <nav class="main" aria-label="Sections">
       <a href="#pays" data-i18n="navCountry">Fiche pays</a>
+      <a href="#economie" data-i18n="navEco">Économie</a>
+      <a href="#provinces" data-i18n="navProv">Provinces</a>
       <a href="#comparer" data-i18n="navCompare">Comparer</a>
       <a href="#education" data-i18n="navEducation">Éducation</a>
       <a href="#humanitaire" data-i18n="navHuman">Humanitaire</a>
@@ -173,6 +201,69 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <div class="chart" id="chartPop"></div>
           <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/indicator/SP.POP.TOTL?locations=TD">Banque mondiale, SP.POP.TOTL</a></span><button class="btn" data-csv="pop" data-i18n="copyCsv">Copier les données (CSV)</button></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="economie">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="ecoTitle">Économie</h2><span class="tag" data-i18n="ecoTag">Croissance, prix, structure et dépendance au pétrole</span></div>
+      <p class="insight" id="ecoInsight"></p>
+      <div class="minis" id="ecoMinis"></div>
+      <div class="grid2 two">
+        <div class="card">
+          <h3 data-i18n="growthTitle">Croissance du PIB réel, 2005-2026</h3>
+          <p class="sub" data-i18n="growthSub">% par an · PIB total et PIB hors pétrole</p>
+          <div class="legend"><span style="--c: var(--accent)" data-i18n="gTotal">PIB total</span><span style="--c: var(--gold)" data-i18n="gNonOil">PIB hors pétrole</span></div>
+          <div class="chart" id="chartGrowth"></div>
+          <p class="proj-note" data-i18n="projNote">Zone grisée : projections du FMI (2025-2026).</p>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://fred.stlouisfed.org/series/TCDNGDPRPCPPPT">FMI, Perspectives économiques régionales (via FRED)</a></span><button class="btn" data-csv="growth" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="inflTitle">Inflation, 2010-2026</h3>
+          <p class="sub" data-i18n="inflSub">Hausse des prix à la consommation, % par an</p>
+          <div class="chart" id="chartInfl"></div>
+          <p class="proj-note" data-i18n="projNote">Zone grisée : projections du FMI (2025-2026).</p>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://fred.stlouisfed.org/series/TCDPCPIPCPPPT">FMI, Perspectives économiques régionales (via FRED)</a></span><button class="btn" data-csv="infl" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="secTitle">Structure de l'économie, 2024</h3>
+          <p class="sub" data-i18n="secSub">Valeur ajoutée par secteur, % du PIB</p>
+          <div class="chart" id="chartSec"></div>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/indicator/NV.AGR.TOTL.ZS?locations=TD">Banque mondiale, NV.AGR / NV.IND / NV.SRV</a></span><button class="btn" data-csv="sec" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="oilTitle">Poids du pétrole</h3>
+          <p class="sub" data-i18n="oilSub">Part du secteur pétrolier, en %</p>
+          <div class="chart" id="chartOil"></div>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://www.worldbank.org/en/country/chad/overview">Banque mondiale, présentation du Tchad</a></span><button class="btn" data-csv="oil" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="provinces">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="provTitle">Les 23 provinces</h2><span class="tag" data-i18n="provTag">Population, superficie, densité, croissance et réfugiés</span></div>
+      <p class="insight" id="provInsight"></p>
+      <div class="prov-tools">
+        <label for="provSel" data-i18n="provPick">Choisir une province</label>
+        <select id="provSel"></select>
+      </div>
+      <div class="profile">
+        <div class="card" id="provCard"></div>
+        <div class="card">
+          <h3 data-i18n="provChartTitle">Population par province, mi-2023</h3>
+          <p class="sub" data-i18n="provChartSub">Milliers d'habitants · cliquez sur une barre pour ouvrir la fiche</p>
+          <div class="chart" id="chartProv"></div>
+        </div>
+      </div>
+      <div class="card tablewrap">
+        <table class="src prov">
+          <thead><tr id="provHead"></tr></thead>
+          <tbody id="provRows"></tbody>
+        </table>
+        <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://en.wikipedia.org/wiki/Provinces_of_Chad" data-i18n="provSrc1">INSEED, recensement 2009 et estimations mi-2023</a> · <a href="https://www.unhcr.org/refugee-statistics/" data-i18n="provSrc2">HCR, réfugiés par province (déc. 2024)</a></span><button class="btn" data-csv="prov" data-i18n="copyCsv">Copier les données (CSV)</button></div>
       </div>
     </div>
   </section>
@@ -228,8 +319,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <div class="wrap">
       <div class="head"><h2 data-i18n="soonTitle">Prochainement</h2></div>
       <div class="soon">
-        <div class="card"><span class="pill" data-i18n="soonV1">Prochaine version</span><h3 data-i18n="soon1">Fiches des 23 provinces</h3><p class="sub" data-i18n="soon1d">Population, écoles, santé et besoins humanitaires par province.</p></div>
-        <div class="card"><span class="pill" data-i18n="soonV1">Prochaine version</span><h3 data-i18n="soon2">Secteurs économiques</h3><p class="sub" data-i18n="soon2d">Pétrole, élevage, coton, gomme arabique : production, exportations, acteurs.</p></div>
+        <div class="card"><span class="pill" data-i18n="soonV1">Prochaine version</span><h3 data-i18n="soon1">Provinces : écoles et santé</h3><p class="sub" data-i18n="soon1d">Écoles, centres de santé et besoins humanitaires ajoutés à chaque fiche province.</p></div>
+        <div class="card"><span class="pill" data-i18n="soonV1">Prochaine version</span><h3 data-i18n="soon2">Filières économiques</h3><p class="sub" data-i18n="soon2d">Élevage, coton, gomme arabique : production, exportations, acteurs.</p></div>
         <div class="card"><span class="pill" data-i18n="soonV2">Version 2</span><h3 data-i18n="soon3">Assistant IA</h3><p class="sub" data-i18n="soon3d">Posez vos questions en français ou en anglais ; chaque réponse cite ses sources.</p></div>
         <div class="card"><span class="pill" data-i18n="soonV2">Version 2</span><h3 data-i18n="soon4">API et offre Pro</h3><p class="sub" data-i18n="soon4d">Accès programmatique, alertes et graphiques personnalisés pour les organisations.</p></div>
       </div>
@@ -295,6 +386,19 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   /* ---------- Textes FR / EN ---------- */
   const T = {
     fr: {
+      navEco: "Économie", navProv: "Provinces",
+      ecoTitle: "Économie", ecoTag: "Croissance, prix, structure et dépendance au pétrole",
+      growthTitle: "Croissance du PIB réel, 2005-2026", growthSub: "% par an · PIB total et PIB hors pétrole", gTotal: "PIB total", gNonOil: "PIB hors pétrole",
+      projNote: "Zone grisée : projections du FMI (2025-2026).",
+      inflTitle: "Inflation, 2010-2026", inflSub: "Hausse des prix à la consommation, % par an",
+      secTitle: "Structure de l'économie, 2024", secSub: "Valeur ajoutée par secteur, % du PIB", secAgr: "Agriculture, élevage, pêche", secInd: "Industrie (dont pétrole)", secSrv: "Services",
+      oilTitle: "Poids du pétrole", oilSub: "Part du secteur pétrolier, en %", oilGdp: "du PIB", oilRev: "des recettes publiques", oilExp: "des exportations",
+      mGrowth: "Croissance 2024", mNonOil: "Croissance hors pétrole 2024", mInfl: "Inflation 2024", mDebt: "Dette publique", mDebtM: "% du PIB, fin 2023 · FMI", mImf: "FMI",
+      provTitle: "Les 23 provinces", provTag: "Population, superficie, densité, croissance et réfugiés", provPick: "Choisir une province",
+      provChartTitle: "Population par province, mi-2023", provChartSub: "Milliers d'habitants · cliquez sur une barre pour ouvrir la fiche",
+      provSrc1: "INSEED, recensement 2009 et estimations mi-2023", provSrc2: "HCR, réfugiés par province (déc. 2024)",
+      pCap: "Chef-lieu", pPop: "Population mi-2023", pPop09: "Recensement 2009", pArea: "Superficie", pDens: "Densité", pGrow: "Croissance 2009-2023", pRef: "Réfugiés et demandeurs d'asile", pRefShare: "réfugiés pour 100 habitants", pShare: "de la population du pays", pRank: "rang", pPerYear: "% par an", pKm2: "hab./km²", pNone: "aucun recensé",
+      thProv: "Province", thCap: "Chef-lieu", thPop: "Population 2023", thDens: "Densité (hab./km²)", thGrow: "Croissance/an", thRef: "Réfugiés (déc. 2024)",
       navCountry: "Fiche pays", navCompare: "Comparer", navEducation: "Éducation", navHuman: "Humanitaire", navSources: "Sources",
       heroTitle: "La référence des données sur le Tchad",
       heroLead: "Données publiques de la Banque mondiale, du HCR et de l'INSEED, rassemblées, vérifiées et expliquées. Chaque chiffre renvoie à sa source. Sous chaque chiffre clé : la valeur de l'Afrique subsaharienne.",
@@ -319,6 +423,19 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       yrs: "ans", wbank: "Banque mondiale", ssaAvg: "Afr. subsah.", ssaTotal: "Afr. subsah. (total)", ssaNone: "Afr. subsah. : non dispo.", tSsa: "Moyennes Afrique subsaharienne", unhcr: "HCR", enrolment: "Scolarisation primaire (brut)", literacy: "Alphabétisation des adultes", idpsL: "Déplacés internes"
     },
     en: {
+      navEco: "Economy", navProv: "Provinces",
+      ecoTitle: "Economy", ecoTag: "Growth, prices, structure and oil dependence",
+      growthTitle: "Real GDP growth, 2005-2026", growthSub: "% a year · total GDP and non-oil GDP", gTotal: "Total GDP", gNonOil: "Non-oil GDP",
+      projNote: "Shaded area: IMF projections (2025-2026).",
+      inflTitle: "Inflation, 2010-2026", inflSub: "Consumer price growth, % a year",
+      secTitle: "Structure of the economy, 2024", secSub: "Value added by sector, % of GDP", secAgr: "Agriculture, livestock, fishing", secInd: "Industry (incl. oil)", secSrv: "Services",
+      oilTitle: "Weight of oil", oilSub: "Share of the oil sector, in %", oilGdp: "of GDP", oilRev: "of government revenue", oilExp: "of exports",
+      mGrowth: "Growth 2024", mNonOil: "Non-oil growth 2024", mInfl: "Inflation 2024", mDebt: "Public debt", mDebtM: "% of GDP, end 2023 · IMF", mImf: "IMF",
+      provTitle: "The 23 provinces", provTag: "Population, area, density, growth and refugees", provPick: "Choose a province",
+      provChartTitle: "Population by province, mid-2023", provChartSub: "Thousand people · click a bar to open the profile",
+      provSrc1: "INSEED, 2009 census and mid-2023 estimates", provSrc2: "UNHCR, refugees by province (Dec. 2024)",
+      pCap: "Capital", pPop: "Population mid-2023", pPop09: "2009 census", pArea: "Area", pDens: "Density", pGrow: "Growth 2009-2023", pRef: "Refugees and asylum seekers", pRefShare: "refugees per 100 residents", pShare: "of the national population", pRank: "rank", pPerYear: "% a year", pKm2: "people/km²", pNone: "none recorded",
+      thProv: "Province", thCap: "Capital", thPop: "Population 2023", thDens: "Density (people/km²)", thGrow: "Growth/yr", thRef: "Refugees (Dec. 2024)",
       navCountry: "Country profile", navCompare: "Compare", navEducation: "Education", navHuman: "Humanitarian", navSources: "Sources",
       heroTitle: "The reference for data on Chad",
       heroLead: "Public data from the World Bank, UNHCR and INSEED, gathered, checked and explained. Every figure links to its source. Under each key figure: the Sub-Saharan Africa value.",
@@ -434,18 +551,20 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   function hbarChart(box, rows, o) {
     box.innerHTML = "";
-    const W = o.w || 560, rowH = 34, L = 140, R = 90, T0 = 6;
+    const W = o.w || 560, rowH = o.rowH || 34, L = o.l || 140, R = 90, T0 = 6, BH = o.bar || 20;
     const H = T0 + rows.length * rowH + 6;
     const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.label }, box);
-    const max = Math.max(...rows.map(r => r.v));
+    const max = o.max || Math.max(...rows.map(r => r.v));
     rows.forEach((r, i) => {
       const y = T0 + i * rowH;
       const w = (r.v / max) * (W - L - R);
-      const hl = r.key === "TCD";
-      const name = el("text", { x: L - 10, y: y + 21, "text-anchor": "end" }, svg);
+      const hl = r.key === (o.hl || "TCD");
+      const cy = y + rowH / 2;
+      const name = el("text", { x: L - 10, y: cy + 4, "text-anchor": "end" }, svg);
       name.textContent = r.name; if (hl) { name.style.fill = "var(--ink)"; name.style.fontWeight = 700; }
-      el("rect", { x: L, y: y + 7, width: Math.max(w, 2), height: 20, rx: 4, fill: hl ? "var(--accent)" : "var(--line)" }, svg);
-      const v = el("text", { x: L + w + 8, y: y + 21 }, svg);
+      const bar = el("rect", { x: L, y: cy - BH / 2, width: Math.max(w, 2), height: BH, rx: 4, fill: hl ? "var(--accent)" : "var(--line)" }, svg);
+      if (o.click) { [name, bar].forEach(n => { n.style.cursor = "pointer"; n.addEventListener("click", () => o.click(r.name)); }); }
+      const v = el("text", { x: L + w + 8, y: cy + 4 }, svg);
       v.textContent = r.label; v.style.fill = "var(--ink)"; if (hl) v.style.fontWeight = 700;
     });
   }
@@ -559,11 +678,191 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       [t("enrolment"), t("wbank") + " / UNESCO", "SE.PRM.ENRR", "2000-2024", WB + "SE.PRM.ENRR?locations=TD"],
       [t("literacy"), t("wbank") + " / UNESCO", "SE.ADT.LITR.ZS", "2018-2024", WB + "SE.ADT.LITR.ZS"],
       [t("tRef") + ", " + t("idpsL"), t("unhcr"), "population/v1", "2015-2025", "https://www.unhcr.org/refugee-statistics/"],
+      [t("growthTitle"), "FMI / IMF REO (FRED)", "TCDNGDPRPCPPPT, TCDNGDPXORPCPPPT", "2005-2026", "https://fred.stlouisfed.org/series/TCDNGDPRPCPPPT"],
+      [t("inflTitle"), "FMI / IMF REO (FRED)", "TCDPCPIPCPPPT", "2010-2026", "https://fred.stlouisfed.org/series/TCDPCPIPCPPPT"],
+      [t("mDebt"), "FMI / IMF", "Article IV 2024", "2023", "https://www.imf.org/en/News/Articles/2024/12/09/pr-24457-chad-imf-executive-board-concludes-2024-article-iv-consultation"],
+      [t("secTitle"), t("wbank"), "NV.AGR.TOTL.ZS, NV.IND.TOTL.ZS, NV.SRV.TOTL.ZS", "2024", "https://data.worldbank.org/indicator/NV.AGR.TOTL.ZS?locations=TD"],
+      [t("oilTitle"), t("wbank"), "Country overview", "2025", "https://www.worldbank.org/en/country/chad/overview"],
+      [t("provTitle"), "INSEED (RGPH2 2009), estimations mi-2023", "–", "2009, 2023", "https://en.wikipedia.org/wiki/Provinces_of_Chad"],
+      [t("pRef"), t("unhcr") + " Tchad", "–", "déc. 2024", "https://www.ecoi.net/en/file/local/2119766/"],
       [t("tSsa"), t("wbank") + " (SSF)", "SP.POP.TOTL, NY.GDP.PCAP.CD, SP.DYN.LE00.IN, EG.ELC.ACCS.ZS, SP.URB.TOTL", "2024", "https://data.worldbank.org/region/sub-saharan-africa"]
     ];
     document.getElementById("srcRows").innerHTML = rows.map(r =>
       `<tr><td>${r[0]}</td><td><a href="${r[4]}">${r[1]}</a></td><td><code>${r[2]}</code></td><td class="num">${r[3]}</td></tr>`).join("");
   }
+
+
+  /* ---------- Économie (FMI REO via FRED ; Banque mondiale) ---------- */
+  const GROWTH = { 2005: [7.50, 9.95], 2006: [-0.52, 2.49], 2007: [4.36, 8.20], 2008: [3.11, 7.44], 2009: [-1.34, 0.99], 2010: [13.79, 15.88], 2011: [4.55, 5.69], 2012: [8.91, 12.73], 2013: [2.92, 8.32], 2014: [2.31, 1.52], 2015: [3.15, -3.20], 2016: [-3.65, -2.05], 2017: [-2.09, -0.40], 2018: [5.24, 4.26], 2019: [5.87, 4.62], 2020: [0.03, -0.19], 2021: [1.97, 2.81], 2022: [4.67, 4.48], 2023: [4.98, 4.32], 2024: [3.50, 4.55], 2025: [3.34, 4.18], 2026: [3.57, 3.47] };
+  const INFL = { 2010: -2.11, 2011: 2.03, 2012: 7.52, 2013: 0.22, 2014: -5.50, 2015: 4.83, 2016: -1.61, 2017: -0.91, 2018: 4.03, 2019: -0.97, 2020: 4.47, 2021: -0.79, 2022: 5.83, 2023: 2.30, 2024: 5.10, 2025: 3.99, 2026: 3.56 };
+  const PROJ_FROM = 2025;
+  const SECTORS = [["secAgr", 37.70], ["secSrv", 31.58], ["secInd", 29.67]];
+  const OIL = [["oilExp", 76], ["oilRev", 41], ["oilGdp", 15]];
+
+  function multiLine(box, years, series, o) {
+    box.innerHTML = "";
+    const W = 560, H = 250, L = 40, R = 14, T0 = 14, B = 26;
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.label }, box);
+    const x0 = years[0], x1 = years[years.length - 1];
+    const vals = series.flatMap(s => s.v);
+    const lo = Math.min(0, Math.floor(Math.min(...vals) / 5) * 5), hi = Math.ceil(Math.max(...vals) / 5) * 5;
+    const X = x => L + (x - x0) / (x1 - x0) * (W - L - R);
+    const Y = y => T0 + (1 - (y - lo) / (hi - lo)) * (H - T0 - B);
+    const px = X(o.projFrom - 0.5);
+    el("rect", { x: px, y: T0, width: W - R - px, height: H - T0 - B, fill: "var(--line)", "fill-opacity": 0.45 }, svg);
+    const step = (hi - lo) / 4 >= 10 ? 10 : 5;
+    for (let v = lo; v <= hi; v += step) {
+      el("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: "grid", "stroke-width": v === 0 ? 1.4 : 1 }, svg);
+      el("text", { x: L - 8, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = nf(v, 0);
+    }
+    for (let x = x0; x <= x1; x++) if (((x - x0) % 4 === 0 && x1 - x >= 2) || x === x1) el("text", { x: X(x), y: H - 6, "text-anchor": "middle" }, svg).textContent = x;
+    series.forEach(s => {
+      const d = s.v.map((v, i) => (i ? "L" : "M") + X(years[i]).toFixed(1) + " " + Y(v).toFixed(1)).join("");
+      el("path", { d, fill: "none", stroke: s.c, "stroke-width": s.w || 2, "stroke-linejoin": "round" }, svg);
+    });
+    const bw = (W - L - R) / (x1 - x0);
+    years.forEach((yr, i) => {
+      const hit = el("rect", { x: X(yr) - bw / 2, y: T0, width: bw, height: H - T0 - B, fill: "transparent" }, svg);
+      hit.addEventListener("mouseenter", () => showTip(box, svg, X(yr), Y(Math.max(...series.map(s => s.v[i]))), W, H,
+        yr + (yr >= o.projFrom ? " (proj.)" : "") + " · " + series.map(s => s.n + " " + nf(s.v[i], 1) + " %").join(" · ")));
+    });
+    svg.addEventListener("mouseleave", () => hideTip(box));
+  }
+
+  function signedBars(box, pts, o) {
+    box.innerHTML = "";
+    const W = 560, H = 250, L = 40, R = 14, T0 = 18, B = 26;
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.label }, box);
+    const vals = pts.map(p => p[1]);
+    const lo = Math.floor(Math.min(0, ...vals) / 2) * 2, hi = Math.ceil(Math.max(...vals) / 2) * 2;
+    const Y = y => T0 + (1 - (y - lo) / (hi - lo)) * (H - T0 - B);
+    const gw = (W - L - R) / pts.length, bw = gw * 0.62;
+    const projIdx = pts.findIndex(p => p[0] >= o.projFrom);
+    if (projIdx >= 0) el("rect", { x: L + gw * projIdx, y: T0, width: W - R - (L + gw * projIdx), height: H - T0 - B, fill: "var(--line)", "fill-opacity": 0.45 }, svg);
+    for (let v = lo; v <= hi; v += 2) {
+      el("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: "grid", "stroke-width": v === 0 ? 1.4 : 1 }, svg);
+      el("text", { x: L - 8, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = nf(v, 0);
+    }
+    pts.forEach((p, i) => {
+      const cx = L + gw * i + gw / 2, v = p[1];
+      const r = el("rect", { x: cx - bw / 2, y: Math.min(Y(v), Y(0)), width: bw, height: Math.abs(Y(v) - Y(0)), rx: 2, fill: v >= 0 ? "var(--accent)" : "var(--gold)" }, svg);
+      if (i % 2 === 0 || i === pts.length - 1) el("text", { x: cx, y: H - 6, "text-anchor": "middle" }, svg).textContent = p[0];
+      r.addEventListener("mouseenter", () => showTip(box, svg, cx, Y(Math.max(v, 0)), W, H, p[0] + (p[0] >= o.projFrom ? " (proj.)" : "") + " : " + nf(v, 1) + " %"));
+    });
+    svg.addEventListener("mouseleave", () => hideTip(box));
+  }
+
+  function renderEconomy() {
+    const g24 = GROWTH[2024], i24 = INFL[2024];
+    document.getElementById("ecoMinis").innerHTML = [
+      [t("mGrowth"), nf(g24[0], 1) + " %", "2024 · " + t("mImf")],
+      [t("mNonOil"), nf(g24[1], 1) + " %", "2024 · " + t("mImf")],
+      [t("mInfl"), nf(i24, 1) + " %", "2024 · " + t("mImf")],
+      [t("mDebt"), nf(34.2, 1) + " %", t("mDebtM")]
+    ].map(m => `<div class="mini"><span class="label">${m[0]}</span><span class="value">${m[1]}</span><span class="meta">${m[2]}</span></div>`).join("");
+    document.getElementById("ecoInsight").textContent = lang === "fr"
+      ? `Le pétrole pèse environ 15 % du PIB mais 41 % des recettes publiques et 76 % des exportations : les finances du pays suivent les cours du brut. La croissance a été de ${nf(g24[0], 1)} % en 2024, portée par le secteur hors pétrole (${nf(g24[1], 1)} %). L'agriculture et l'élevage restent le premier secteur, avec ${nf(37.7, 1)} % du PIB.`
+      : `Oil is about 15% of GDP but 41% of government revenue and 76% of exports, so public finances follow crude prices. Growth was ${nf(g24[0], 1)}% in 2024, driven by the non-oil sector (${nf(g24[1], 1)}%). Agriculture and livestock remain the largest sector, at ${nf(37.7, 1)}% of GDP.`;
+    const yrs = Object.keys(GROWTH).map(Number);
+    multiLine(document.getElementById("chartGrowth"), yrs, [
+      { n: t("gTotal"), v: yrs.map(y => GROWTH[y][0]), c: "var(--accent)", w: 2.2 },
+      { n: t("gNonOil"), v: yrs.map(y => GROWTH[y][1]), c: "var(--gold)", w: 2 }
+    ], { label: t("growthTitle"), projFrom: PROJ_FROM });
+    signedBars(document.getElementById("chartInfl"), series(INFL), { label: t("inflTitle"), projFrom: PROJ_FROM });
+    hbarChart(document.getElementById("chartSec"), SECTORS.map(s => ({ key: s[0], name: t(s[0]), v: s[1], label: nf(s[1], 1) + " %" })), { label: t("secTitle"), w: 560, l: 200 });
+    hbarChart(document.getElementById("chartOil"), OIL.map(s => ({ key: s[0], name: t(s[0]), v: s[1], label: nf(s[1], 0) + " %" })), { label: t("oilTitle"), w: 560, l: 200, max: 100, hl: "oilExp" });
+  }
+
+  /* ---------- Provinces (INSEED RGPH2 2009 ; estimations mi-2023 ; HCR déc. 2024) ---------- */
+  // [nom, chef-lieu, pop 2009, pop 2023, superficie km², réfugiés+demandeurs d'asile déc. 2024]
+  const PROV = [
+    ["Batha", "Ati", 488458, 748395, 93732, 0],
+    ["Barh el-Gazel", "Moussoro", 257267, 407256, 58525, 0],
+    ["Borkou", "Faya", 93584, 154865, 271513, 0],
+    ["Chari-Baguirmi", "Massenya", 578425, 884924, 47226, 6511],
+    ["Ennedi-Est", "Amdjarass", 107302, 175321, 81696, 51897],
+    ["Ennedi-Ouest", "Fada", 60617, 109753, 117686, 0],
+    ["Guéra", "Mongo", 538359, 824161, 62678, 0],
+    ["Hadjer-Lamis", "Massakory", 566858, 870231, 31376, 0],
+    ["Kanem", "Mao", 333387, 505839, 70516, 0],
+    ["Lac", "Bol", 331496, 509258, 20543, 21603],
+    ["Logone Occidental", "Moundou", 689044, 1053958, 8969, 0],
+    ["Logone Oriental", "Doba", 779339, 1184567, 24119, 67504],
+    ["Mandoul", "Koumra", 628065, 1002346, 17761, 17559],
+    ["Mayo-Kebbi Est", "Bongor", 774782, 1179260, 18458, 1498],
+    ["Mayo-Kebbi Ouest", "Pala", 564470, 858593, 12787, 0],
+    ["Moyen-Chari", "Sarh", 588008, 902311, 42307, 38006],
+    ["N'Djamena", "N'Djamena", 951418, 1434592, 408, 10683],
+    ["Ouaddaï", "Abéché", 721166, 1102467, 30790, 636272],
+    ["Salamat", "Am Timan", 302301, 470256, 69631, 10612],
+    ["Sila", "Goz Beïda", 387461, 591300, 36745, 174320],
+    ["Tandjilé", "Laï", 661906, 1007812, 17891, 0],
+    ["Tibesti", "Bardaï", 25483, 52626, 135896, 0],
+    ["Wadi Fira", "Biltine", 508383, 792394, 56362, 250186]
+  ].map(r => ({ name: r[0], cap: r[1], p09: r[2], p23: r[3], area: r[4], ref: r[5],
+    dens: r[3] / r[4], grow: (Math.pow(r[3] / r[2], 1 / 14) - 1) * 100 }));
+  const PTOTAL = PROV.reduce((a, r) => a + r.p23, 0);
+  const rankOf = (key, r) => [...PROV].sort((a, b) => b[key] - a[key]).indexOf(r) + 1;
+  let provSel = "Ouaddaï", provSort = { key: "p23", dir: -1 };
+
+  function renderProvinces() {
+    const sel = document.getElementById("provSel");
+    sel.innerHTML = [...PROV].sort((a, b) => a.name.localeCompare(b.name, "fr")).map(r => `<option value="${r.name}"${r.name === provSel ? " selected" : ""}>${r.name}</option>`).join("");
+    const top3 = [...PROV].sort((a, b) => b.p23 - a.p23).slice(0, 3);
+    const refProv = PROV.filter(r => r.ref > 0).sort((a, b) => b.ref - a.ref);
+    const east = ["Ouaddaï", "Wadi Fira", "Sila"].map(n => PROV.find(r => r.name === n)).reduce((a, r) => a + r.ref, 0);
+    const refTot = PROV.reduce((a, r) => a + r.ref, 0);
+    const ndj = PROV.find(r => r.name === "N'Djamena"), tib = PROV.find(r => r.name === "Tibesti");
+    document.getElementById("provInsight").textContent = lang === "fr"
+      ? `${top3.map(r => r.name).join(", ")} sont les provinces les plus peuplées. La densité va de ${nf(tib.dens, 1)} hab./km² au Tibesti à ${nf(ndj.dens, 0)} à N'Djamena. Trois provinces de l'Est (Ouaddaï, Wadi Fira, Sila) accueillent ${nf(east / refTot * 100, 0)} % des ${nf(refTot, 0)} réfugiés et demandeurs d'asile recensés fin 2024.`
+      : `${top3.map(r => r.name).join(", ")} are the most populous provinces. Density ranges from ${nf(tib.dens, 1)} people/km² in Tibesti to ${nf(ndj.dens, 0)} in N'Djamena. Three eastern provinces (Ouaddaï, Wadi Fira, Sila) host ${nf(east / refTot * 100, 0)}% of the ${nf(refTot, 0)} refugees and asylum seekers recorded at the end of 2024.`;
+    void refProv;
+    renderProfile();
+    const rows = [...PROV].sort((a, b) => b.p23 - a.p23).map(r => ({ key: r.name === provSel ? "TCD" : r.name, name: r.name, v: r.p23, label: nf(r.p23 / 1000, 0) }));
+    hbarChart(document.getElementById("chartProv"), rows, { label: t("provChartTitle"), w: 560, l: 150, rowH: 22, bar: 14, click: name => { provSel = name; renderProvinces(); } });
+    renderProvTable();
+  }
+
+  function renderProfile() {
+    const r = PROV.find(x => x.name === provSel);
+    const refLine = r.ref > 0
+      ? `<b>${nf(r.ref, 0)}</b><span>${nf(r.ref / r.p23 * 100, 1)} ${t("pRefShare")}</span>`
+      : `<b>–</b><span>${t("pNone")}</span>`;
+    document.getElementById("provCard").innerHTML = `
+      <h3 class="pname">${r.name}</h3>
+      <p class="sub">${t("pCap")} : ${r.cap}</p>
+      <div class="facts">
+        <div><span>${t("pPop")}</span><b>${nf(r.p23, 0)}</b><span>${nf(r.p23 / PTOTAL * 100, 1)} % ${t("pShare")} · ${t("pRank")} ${rankOf("p23", r)}/23</span></div>
+        <div><span>${t("pPop09")}</span><b>${nf(r.p09, 0)}</b></div>
+        <div><span>${t("pArea")}</span><b>${nf(r.area, 0)} km²</b><span>${t("pRank")} ${rankOf("area", r)}/23</span></div>
+        <div><span>${t("pDens")}</span><b>${nf(r.dens, r.dens < 10 ? 1 : 0)}</b><span>${t("pKm2")} · ${t("pRank")} ${rankOf("dens", r)}/23</span></div>
+        <div><span>${t("pGrow")}</span><b>${nf(r.grow, 1)} %</b><span>${t("pPerYear")}</span></div>
+        <div><span>${t("pRef")}</span>${refLine}</div>
+      </div>`;
+  }
+
+  function renderProvTable() {
+    const cols = [["name", "thProv", false], ["cap", "thCap", false], ["p23", "thPop", true], ["dens", "thDens", true], ["grow", "thGrow", true], ["ref", "thRef", true]];
+    document.getElementById("provHead").innerHTML = cols.map(c =>
+      `<th class="${c[2] ? "n" : ""}" aria-sort="${provSort.key === c[0] ? (provSort.dir > 0 ? "ascending" : "descending") : "none"}"><button type="button" data-sort="${c[0]}">${t(c[1])}${provSort.key === c[0] ? (provSort.dir > 0 ? " ↑" : " ↓") : ""}</button></th>`).join("");
+    const k = provSort.key, d = provSort.dir;
+    const rows = [...PROV].sort((a, b) => typeof a[k] === "string" ? d * a[k].localeCompare(b[k], "fr") : d * (a[k] - b[k]));
+    document.getElementById("provRows").innerHTML = rows.map(r =>
+      `<tr data-prov="${r.name}"${r.name === provSel ? ' class="sel"' : ""}><td>${r.name}</td><td>${r.cap}</td><td class="n num">${nf(r.p23, 0)}</td><td class="n num">${nf(r.dens, r.dens < 10 ? 1 : 0)}</td><td class="n num">${nf(r.grow, 1)} %</td><td class="n num">${r.ref ? nf(r.ref, 0) : "–"}</td></tr>`).join("");
+  }
+
+  document.getElementById("provSel").addEventListener("change", e => { provSel = e.target.value; renderProvinces(); });
+  document.getElementById("provHead").addEventListener("click", e => {
+    const b = e.target.closest("[data-sort]"); if (!b) return;
+    const k = b.dataset.sort;
+    provSort = { key: k, dir: provSort.key === k ? -provSort.dir : (k === "name" || k === "cap" ? 1 : -1) };
+    renderProvTable();
+  });
+  document.getElementById("provRows").addEventListener("click", e => {
+    const tr = e.target.closest("tr[data-prov]"); if (!tr) return;
+    provSel = tr.dataset.prov; renderProvinces();
+    document.getElementById("provSel").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 
   /* ---------- CSV ---------- */
   const CSV = {
@@ -571,7 +870,12 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     pop: () => "year,population\n" + series(pop).map(p => p.join(",")).join("\n"),
     enr: () => "year,primary_gross_enrolment_pct\n" + series(enr).map(p => p[0] + "," + (p[1] == null ? "" : p[1])).join("\n"),
     lit: () => "iso3,year,adult_literacy_pct\n" + Object.keys(LIT).map(k => `${k},${LIT[k][1]},${LIT[k][0]}`).join("\n"),
-    hum: () => "year,refugees,idps\n" + hum.map(r => r.join(",")).join("\n")
+    hum: () => "year,refugees,idps\n" + hum.map(r => r.join(",")).join("\n"),
+    growth: () => "year,real_gdp_growth_pct,real_nonoil_gdp_growth_pct,projection\n" + Object.keys(GROWTH).map(y => `${y},${GROWTH[y][0]},${GROWTH[y][1]},${+y >= PROJ_FROM}`).join("\n"),
+    infl: () => "year,cpi_inflation_pct,projection\n" + Object.keys(INFL).map(y => `${y},${INFL[y]},${+y >= PROJ_FROM}`).join("\n"),
+    sec: () => "sector,value_added_pct_gdp_2024\n" + SECTORS.map(s => `${T.en[s[0]]},${s[1]}`).join("\n"),
+    oil: () => "measure,oil_share_pct\n" + OIL.map(s => `${T.en[s[0]]},${s[1]}`).join("\n"),
+    prov: () => "province,capital,pop_2009,pop_mid2023,area_km2,density_2023,growth_pct_per_year,refugees_dec2024\n" + PROV.map(r => `"${r.name}","${r.cap}",${r.p09},${r.p23},${r.area},${r.dens.toFixed(1)},${r.grow.toFixed(2)},${r.ref}`).join("\n")
   };
   document.addEventListener("click", e => {
     const b = e.target.closest("[data-csv]");
@@ -599,7 +903,13 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     { n: t("literacy"), v: nf(30.63, 1) + " %", h: "#education", kw: "alphabétisation literacy lire écrire" },
     { n: t("tRef"), v: fmt(1502263, "mio"), h: "#humanitaire", kw: "réfugiés refugees soudan sudan hcr unhcr humanitaire" },
     { n: t("idpsL"), v: nf(219595, 0), h: "#humanitaire", kw: "déplacés internes idp displaced humanitaire" },
-    { n: t("tUrb"), v: nf(26.93, 1) + " %", h: "#pays", kw: "urbanisation urban villes cities" }
+    { n: t("tUrb"), v: nf(26.93, 1) + " %", h: "#pays", kw: "urbanisation urban villes cities" },
+    { n: t("mGrowth"), v: nf(3.5, 1) + " %", h: "#economie", kw: "croissance growth économie economy pib" },
+    { n: t("mInfl"), v: nf(5.1, 1) + " %", h: "#economie", kw: "inflation prix prices" },
+    { n: t("mDebt"), v: nf(34.2, 1) + " %", h: "#economie", kw: "dette debt finances publiques" },
+    { n: t("oilTitle"), v: "76 % " + t("oilExp"), h: "#economie", kw: "pétrole oil brut crude exportations exports recettes" },
+    { n: t("secAgr"), v: nf(37.7, 1) + " %", h: "#economie", kw: "agriculture élevage livestock secteurs sectors" },
+    ...PROV.map(r => ({ n: r.name, v: nf(r.p23, 0), h: "#provinces", kw: "province région region " + r.cap, prov: r.name }))
   ];
   const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   const q = document.getElementById("q"), res = document.getElementById("results");
@@ -608,13 +918,17 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     if (!v) { res.classList.remove("open"); res.innerHTML = ""; return; }
     const hits = INDEX().filter(x => norm(x.n + " " + x.kw).includes(v));
     res.innerHTML = hits.length
-      ? hits.map(x => `<li><a href="${x.h}"><span>${x.n}</span><span class="num">${x.v}</span></a></li>`).join("")
+      ? hits.slice(0, 12).map(x => `<li><a href="${x.h}"${x.prov ? ` data-goprov="${x.prov}"` : ""}><span>${x.n}</span><span class="num">${x.v}</span></a></li>`).join("")
       : `<li class="empty">${t("noResult")}</li>`;
     res.classList.add("open");
   }
   q.addEventListener("input", search);
   q.addEventListener("focus", search);
-  res.addEventListener("click", () => { res.classList.remove("open"); });
+  res.addEventListener("click", e => {
+    const a = e.target.closest("[data-goprov]");
+    if (a) { provSel = a.dataset.goprov; renderProvinces(); }
+    res.classList.remove("open");
+  });
   document.addEventListener("click", e => { if (!e.target.closest(".search")) res.classList.remove("open"); });
   q.addEventListener("keydown", e => { if (e.key === "Escape") { res.classList.remove("open"); q.blur(); } });
 
@@ -625,7 +939,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     document.querySelectorAll("[data-i18n-ph]").forEach(n => { n.placeholder = t(n.dataset.i18nPh); });
     document.getElementById("lang-fr").setAttribute("aria-pressed", String(lang === "fr"));
     document.getElementById("lang-en").setAttribute("aria-pressed", String(lang === "en"));
-    renderTiles(); renderCountry(); renderCompare(); renderEducation(); renderHuman(); renderSources();
+    renderTiles(); renderCountry(); renderEconomy(); renderProvinces(); renderCompare(); renderEducation(); renderHuman(); renderSources();
     if (q.value) search();
   }
   ["fr", "en"].forEach(l => document.getElementById("lang-" + l).addEventListener("click", () => {
