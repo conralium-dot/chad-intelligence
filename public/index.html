@@ -160,7 +160,7 @@ code { font-family: var(--font-mono); font-size: 12px; }
 .rankbar i { display: block; height: 100%; background: var(--accent); }
 table.prov th button { all: unset; cursor: pointer; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; }
 table.prov th button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-table.prov td.n, table.prov th.n { text-align: right; font-variant-numeric: tabular-nums; }
+table.prov td.n, table.prov th.n, table.attr td.n, table.attr th.n { text-align: right; font-variant-numeric: tabular-nums; }
 table.prov tr.sel td { background: var(--accent-soft); }
 table.prov tbody tr { cursor: pointer; }
 table.prov tbody tr:hover td { background: var(--accent-soft); }
@@ -197,6 +197,25 @@ table.prov tbody tr:hover td { background: var(--accent-soft); }
 .tender .meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 12px; }
 .due { font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
 .due.soon { background: rgba(179, 38, 30, 0.12); color: var(--critical); }
+.tprof { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 10px; font-size: 13px; color: var(--muted); }
+.tprof .chips { margin: 0; }
+.who { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(201, 148, 0, .14); color: #7a5a00; }
+.scopeb { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); }
+.tender details { margin-top: 6px; border-top: 1px dashed var(--line); padding-top: 6px; }
+.tender summary { cursor: pointer; font-weight: 600; font-size: 13px; color: var(--accent); }
+.cand { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-top: 10px; }
+.cand > div { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+.cand h5 { margin: 0 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.cand p { margin: 0 0 6px; }
+.cand blockquote { margin: 4px 0; padding: 4px 8px; border-left: 3px solid var(--gold); background: var(--surface); font-size: 12.5px; }
+.cand ol { margin: 0; padding-left: 18px; }
+.cand .wide { grid-column: 1 / -1; }
+.cand .btn { margin-top: 4px; }
+.attr-bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 10px; }
+.attr-bar input, .attr-bar select { font: 14px var(--font-body); padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+.attr-bar input { flex: 1 1 200px; }
+.attr td .rec { font-size: 12px; color: var(--muted); display: block; }
+.attr td .rec a { color: var(--muted); }
 .feedstate { font-size: 13px; color: var(--muted); }
 .signup { background: var(--accent); color: #fff; border-radius: 14px; padding: 26px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 24px; }
 @media (max-width: 860px) { .signup { grid-template-columns: 1fr; } }
@@ -590,11 +609,23 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <div class="card" style="margin-top:16px" id="appels">
         <h3 data-i18n="liveTitle">Appels d'offres ouverts au Tchad</h3>
         <p class="sub" data-i18n="liveSub">Avis publiés par les projets de la Banque mondiale, mis à jour automatiquement plusieurs fois par jour.</p>
+        <div class="tprof"><span data-i18n="tProfL">Vous êtes :</span><div class="chips" id="tProf" role="group" aria-label="Profil"><button type="button" data-pf="all" aria-pressed="true">Tous profils</button><button type="button" data-pf="td" aria-pressed="false">Entreprise tchadienne</button><button type="button" data-pf="fx" aria-pressed="false">Entreprise étrangère</button><button type="button" data-pf="cs" aria-pressed="false">Cabinet de conseil</button><button type="button" data-pf="in" aria-pressed="false">Consultant indépendant</button></div></div>
         <div class="chips" id="tGroup" role="group" aria-label="Type de marché"><button type="button" data-tg="all" aria-pressed="true">Tous</button><button type="button" data-tg="CW" aria-pressed="false">Travaux</button><button type="button" data-tg="GO" aria-pressed="false">Fournitures</button><button type="button" data-tg="CS" aria-pressed="false">Conseil</button><button type="button" data-tg="NC" aria-pressed="false">Services</button></div>
+        <p class="sub" id="tProfNote" style="margin:0 0 10px"></p>
         <div class="tenders" id="tOpen"><p class="feedstate">Chargement des appels d'offres…</p></div>
         <h3 style="margin:22px 0 4px; font-size:15px" data-i18n="awardTitle">Derniers marchés attribués</h3>
         <p class="sub" data-i18n="awardSub">Pour savoir qui gagne quoi, et repérer partenaires et concurrents.</p>
         <div class="tenders" id="tAward"></div>
+        <h3 style="margin:26px 0 4px; font-size:15px" id="partenaires" data-i18n="atTitle">Qui gagne au Tchad : annuaire des attributaires</h3>
+        <p class="sub" data-i18n="atSub">Toutes les entreprises et tous les consultants qui ont remporté un marché financé par la Banque mondiale au Tchad, d'après les avis d'attribution. Pour trouver un partenaire de groupement ou un sous-traitant, ou jauger la concurrence.</p>
+        <div class="attr-bar">
+          <label class="sr" for="atQ" style="position:absolute;left:-9999px" data-i18n="atSearch">Rechercher une entreprise</label>
+          <input id="atQ" type="search" autocomplete="off" data-i18n-ph="atSearch" placeholder="Rechercher une entreprise">
+          <select id="atGroup" aria-label="Domaine"><option value="all">Tous les domaines</option><option value="CW">Travaux</option><option value="GO">Fournitures</option><option value="CS">Conseil</option><option value="NC">Services</option></select>
+          <select id="atCtry" aria-label="Pays"><option value="all">Tous les pays</option><option value="td">Installés au Tchad</option><option value="fx">Étrangers</option></select>
+        </div>
+        <div style="overflow-x:auto"><table class="src attr"><thead><tr><th data-i18n="atFirm">Attributaire</th><th data-i18n="atCountry">Pays</th><th class="n" data-i18n="atWins">Marchés</th><th data-i18n="atDom">Domaines</th><th class="n" data-i18n="atAmt">Montant cumulé</th><th data-i18n="atLast">Dernier</th></tr></thead><tbody id="atBody"><tr><td colspan="6" class="feedstate">Chargement des appels d'offres…</td></tr></tbody></table></div>
+        <p class="sub" id="atInfo" style="margin-top:8px"></p>
         <div class="foot"><span id="tFeedInfo"></span><button class="btn" data-csv="tend" data-i18n="copyCsv">Copier les données (CSV)</button></div>
       </div>
       <h3 style="margin:28px 0 6px" data-i18n="tendTitle">Où trouver les appels d'offres</h3>
@@ -1199,6 +1230,34 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   /* ---------- Textes FR / EN ---------- */
   const T = {
     fr: {
+      tProfL: "Vous êtes :", pfAll: "Tous profils", pfTd: "Entreprise tchadienne", pfFx: "Entreprise étrangère", pfCs: "Cabinet de conseil", pfIn: "Consultant indépendant",
+      pfNoteFx: "Pour une entreprise étrangère : les marchés nationaux restent ouverts en droit, mais un groupement ou un partenariat avec une entreprise installée au Tchad est souvent décisif. L'annuaire des attributaires, plus bas, aide à trouver ce partenaire.",
+      pfNoteIn: "Seuls les avis destinés aux consultants individuels sont affichés : candidature sur CV, sans structure d'entreprise exigée.",
+      whoBiz: "Entreprises", whoCs: "Cabinets de conseil", whoIn: "Consultants individuels", whoAll: "Tous profils",
+      tScNat: "Appel d'offres national", tScInt: "Appel d'offres international", costNone: "Coûts et garanties précisés dans le dossier d'appel d'offres.", lgFrench: "Français", lgEnglish: "Anglais",
+      cdOpen: "Conditions pour candidater", cdWho: "Qui peut candidater", cdNat: "Nationalité", cdSize: "Taille et capacité", cdOwn: "Actionnariat et groupements",
+      cdHow: "Comment candidater", cdCost: "Coûts et garanties", cdContact: "Acheteur et contact", cdFind: "Trouver un partenaire",
+      cdFindP: "Repérez dans l'annuaire les entreprises qui ont déjà gagné des marchés de ce type au Tchad.", cdFindB: "Voir les attributaires du domaine",
+      cdRef: "Référence", cdDl: "Date limite", cdLang: "Langue de l'avis", cdFull: "Lire l'avis complet",
+      cdExtract: "Extraits de l'avis",
+      cdNote: "Extraits repérés automatiquement dans l'avis publié par l'acheteur. Seuls l'avis et le dossier officiels font foi : vérifiez toujours la date limite et les critères avant de candidater.",
+      natRule: "Règle Banque mondiale : les entreprises et personnes de tous les pays peuvent candidater, sauf celles sanctionnées par le Groupe de la Banque mondiale, ou ressortissantes d'un pays avec lequel le Tchad interdit les relations commerciales ou visé par un embargo du Conseil de sécurité de l'ONU. Une entreprise publique n'est éligible que si elle est juridiquement et financièrement autonome et régie par le droit commercial.",
+      natNat: "Appel d'offres national : publié localement, dossier souvent à retirer sur place à N'Djamena. Les entreprises étrangères ne peuvent pas être exclues, mais dans la pratique ces marchés vont surtout à des entreprises installées au Tchad.",
+      natInt: "Appel d'offres international : publicité internationale, entreprises étrangères attendues. Un partenaire local reste utile pour la logistique, le dédouanement et la sous-traitance.",
+      natUnk: "La portée (nationale ou internationale) n'est pas précisée dans l'avis : à vérifier dans le dossier.",
+      sizeRule: "Aucune taille minimale d'entreprise n'est imposée par principe. La capacité exigée (chiffre d'affaires moyen, marchés similaires, personnel clé, matériel) est fixée marché par marché dans le dossier.",
+      sizeNone: "L'avis ne détaille pas les critères de capacité : ils figurent dans le dossier d'appel d'offres ou les termes de référence.",
+      ownRule: "La nationalité d'une entreprise est celle du pays où elle est constituée et immatriculée : la composition de l'actionnariat n'est pas en soi un critère, hors sanctions. Le titulaire peut devoir déclarer ses bénéficiaires effectifs (personnes détenant au moins 25 % du capital ou des droits de vote, ou contrôlant l'entreprise).",
+      jvYes: "Les groupements sont en principe acceptés, avec une responsabilité conjointe et solidaire de leurs membres.",
+      jvNo: "L'avis semble exclure les groupements : à vérifier auprès de l'acheteur.",
+      xElig: "Éligibilité", xCapacity: "Capacité financière", xExperience: "Expérience et moyens", xJv: "Groupement et sous-traitance", xOwner: "Actionnariat",
+      xMoney: "Coûts, garanties, validité", xSubmit: "Dépôt et langue", xVisit: "Visite ou réunion préalable", xPref: "Marge de préférence", xGender: "Exigences EAS/HS",
+      atTitle: "Qui gagne au Tchad : annuaire des attributaires",
+      atSub: "Toutes les entreprises et tous les consultants qui ont remporté un marché financé par la Banque mondiale au Tchad, d'après les avis d'attribution. Pour trouver un partenaire de groupement ou un sous-traitant, ou jauger la concurrence.",
+      atSearch: "Rechercher une entreprise", atFirm: "Attributaire", atCountry: "Pays", atWins: "Marchés", atDom: "Domaines", atAmt: "Montant cumulé", atLast: "Dernier",
+      atAllG: "Tous les domaines", atAllC: "Tous les pays", atTd: "Installés au Tchad", atFx: "Étrangers", atNone: "Aucun attributaire ne correspond.",
+      atInfo: "{f} attributaires lus dans {n} avis d'attribution de la Banque mondiale (Tchad), mis à jour le {d}. Montants signés, en devise d'origine.",
+      atFail: "L'annuaire est momentanément indisponible.", atMore: "{n} autres : affinez la recherche.",
       navVoix: "Les voix", vTitle: "Les voix du Tchad", vTag: "Cinéma, littérature, histoire, sciences sociales, musique",
       vLead: "Un pays ne se résume pas à ses statistiques. Ce catalogue rassemble les œuvres et les travaux qui racontent le Tchad, de l'intérieur comme de l'extérieur. Il est tenu à jour par l'équipe éditoriale et s'enrichit des propositions des contributeurs.",
       vSearch: "Rechercher une œuvre, un auteur, un thème", vTypeL: "Type", vSortL: "Trier", vSortImp: "Les plus marquantes", vSortNew: "Les plus récentes", vSortOld: "Les plus anciennes",
@@ -1322,6 +1381,34 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       yrs: "ans", wbank: "Banque mondiale", ssaAvg: "Afr. subsah.", ssaTotal: "Afr. subsah. (total)", ssaNone: "Afr. subsah. : non dispo.", tSsa: "Moyennes Afrique subsaharienne", unhcr: "HCR", enrolment: "Scolarisation primaire (brut)", literacy: "Alphabétisation des adultes", idpsL: "Déplacés internes"
     },
     en: {
+      tProfL: "You are:", pfAll: "All profiles", pfTd: "Chadian company", pfFx: "Foreign company", pfCs: "Consulting firm", pfIn: "Independent consultant",
+      pfNoteFx: "For a foreign company: national tenders remain legally open, but a joint venture or partnership with a company based in Chad is often decisive. The awardee directory below helps you find that partner.",
+      pfNoteIn: "Only notices for individual consultants are shown: applications are CV-based, no company structure required.",
+      whoBiz: "Companies", whoCs: "Consulting firms", whoIn: "Individual consultants", whoAll: "All profiles",
+      tScNat: "National tender", tScInt: "International tender", costNone: "Costs and securities are set out in the bidding documents.", lgFrench: "French", lgEnglish: "English",
+      cdOpen: "How to apply", cdWho: "Who can apply", cdNat: "Nationality", cdSize: "Size and capacity", cdOwn: "Ownership and joint ventures",
+      cdHow: "How to apply", cdCost: "Costs and securities", cdContact: "Buyer and contact", cdFind: "Find a partner",
+      cdFindP: "Use the directory to spot companies that have already won this type of contract in Chad.", cdFindB: "See awardees in this field",
+      cdRef: "Reference", cdDl: "Deadline", cdLang: "Notice language", cdFull: "Read the full notice",
+      cdExtract: "Excerpts from the notice",
+      cdNote: "Excerpts detected automatically in the notice published by the buyer. Only the official notice and bidding documents are binding: always check the deadline and criteria before applying.",
+      natRule: "World Bank rule: firms and individuals from all countries may apply, except those sanctioned by the World Bank Group, or from a country with which Chad prohibits commercial relations or which is under a UN Security Council embargo. A state-owned enterprise is eligible only if it is legally and financially autonomous and operates under commercial law.",
+      natNat: "National tender: advertised locally, documents often collected in person in N'Djamena. Foreign firms cannot be excluded, but in practice these contracts mostly go to companies based in Chad.",
+      natInt: "International tender: advertised internationally, foreign firms expected. A local partner is still useful for logistics, customs clearance and subcontracting.",
+      natUnk: "The notice does not state whether the tender is national or international: check the bidding documents.",
+      sizeRule: "No minimum company size is imposed as a rule. The required capacity (average turnover, similar contracts, key staff, equipment) is set contract by contract in the bidding documents.",
+      sizeNone: "The notice does not detail capacity criteria: they are in the bidding documents or terms of reference.",
+      ownRule: "A firm's nationality is that of the country where it is incorporated and registered: shareholding is not a criterion in itself, sanctions aside. The winner may have to disclose its beneficial owners (people holding 25% or more of the shares or voting rights, or controlling the firm).",
+      jvYes: "Joint ventures are allowed in principle, with joint and several liability of their members.",
+      jvNo: "The notice appears to exclude joint ventures: check with the buyer.",
+      xElig: "Eligibility", xCapacity: "Financial capacity", xExperience: "Experience and resources", xJv: "Joint ventures and subcontracting", xOwner: "Ownership",
+      xMoney: "Costs, securities, validity", xSubmit: "Submission and language", xVisit: "Site visit or pre-bid meeting", xPref: "Margin of preference", xGender: "SEA/SH requirements",
+      atTitle: "Who wins in Chad: awardee directory",
+      atSub: "Every company and consultant that has won a World Bank-financed contract in Chad, based on award notices. To find a joint-venture partner or subcontractor, or to size up the competition.",
+      atSearch: "Search a company", atFirm: "Awardee", atCountry: "Country", atWins: "Contracts", atDom: "Fields", atAmt: "Total amount", atLast: "Latest",
+      atAllG: "All fields", atAllC: "All countries", atTd: "Based in Chad", atFx: "Foreign", atNone: "No awardee matches.",
+      atInfo: "{f} awardees read from {n} World Bank award notices (Chad), updated {d}. Signed amounts, in original currency.",
+      atFail: "The directory is temporarily unavailable.", atMore: "{n} more: refine your search.",
       navVoix: "Voices", vTitle: "Voices of Chad", vTag: "Film, literature, history, social science, music",
       vLead: "A country is more than its statistics. This catalogue brings together the works and research that tell Chad's story, from inside and outside. It is maintained by the editorial team and grows with contributors' suggestions.",
       vSearch: "Search a work, an author, a theme", vTypeL: "Type", vSortL: "Sort", vSortImp: "Most significant", vSortNew: "Most recent", vSortOld: "Oldest",
@@ -2039,24 +2126,133 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     } catch (e) { TENDERS = { error: true }; }
     renderTenders();
   }
+  /* ---------- Conditions de candidature ---------- */
+  const METH = {
+    RFB: ["biz", ["Retirer ou acheter le dossier d'appel d'offres auprès de l'acheteur.", "Vérifier les critères de qualification du dossier : chiffre d'affaires, marchés similaires, personnel, matériel.", "Déposer une offre complète (administrative, technique, financière) avec la garantie demandée avant la date limite.", "Ouverture publique des offres, puis attribution à l'offre conforme jugée la plus avantageuse."],
+      ["Collect or buy the bidding documents from the buyer.", "Check the qualification criteria: turnover, similar contracts, staff, equipment.", "Submit a complete bid (administrative, technical, financial) with the required security before the deadline.", "Public bid opening, then award to the most advantageous responsive bid."]],
+    RFQ: ["biz", ["Demande de cotations : procédure simplifiée pour des montants limités.", "Envoyer un devis conforme à la demande avant la date limite.", "Attribution en général à l'offre conforme la moins chère."],
+      ["Request for quotations: a simplified procedure for limited amounts.", "Send a compliant quotation before the deadline.", "Award usually to the lowest compliant quotation."]],
+    RFP: ["biz", ["Demande de propositions : marché complexe où la solution technique compte.", "Remettre une proposition technique et une proposition financière.", "Évaluation sur la qualité et le coût."],
+      ["Request for proposals: a complex contract where the technical solution matters.", "Submit a technical and a financial proposal.", "Evaluation on quality and cost."]],
+    QCBS: ["cs", ["Envoyer une manifestation d'intérêt : présentation du cabinet, références de missions similaires, moyens.", "L'acheteur retient une liste restreinte de cabinets qualifiés.", "Les cabinets retenus reçoivent une demande de propositions : offre technique puis financière, sélection qualité-coût."],
+      ["Send an expression of interest: firm profile, similar assignments, resources.", "The buyer shortlists qualified firms.", "Shortlisted firms receive a request for proposals: technical then financial offer, quality- and cost-based selection."]],
+    QBS: ["cs", ["Manifestation d'intérêt puis liste restreinte.", "Sélection sur la seule qualité technique, puis négociation du prix avec le cabinet classé premier."],
+      ["Expression of interest, then shortlist.", "Selection on technical quality alone, then price negotiation with the top-ranked firm."]],
+    FBS: ["cs", ["Manifestation d'intérêt puis liste restreinte.", "Budget fixé à l'avance : la meilleure proposition technique dans l'enveloppe l'emporte."],
+      ["Expression of interest, then shortlist.", "Budget fixed in advance: the best technical proposal within the budget wins."]],
+    LCS: ["cs", ["Manifestation d'intérêt puis liste restreinte.", "Parmi les propositions techniquement qualifiées, la moins chère l'emporte."],
+      ["Expression of interest, then shortlist.", "Among technically qualified proposals, the cheapest wins."]],
+    CQS: ["cs", ["Envoyer une manifestation d'intérêt soignée : c'est elle qui décide.", "Le cabinet jugé le plus qualifié est invité à remettre une proposition, puis à négocier le contrat."],
+      ["Send a careful expression of interest: it is the deciding document.", "The most qualified firm is invited to submit a proposal, then negotiate the contract."]],
+    INDV: ["in", ["Candidature personnelle : CV détaillé et lettre de motivation, selon les termes de référence.", "Comparaison des CV, parfois entretien, puis négociation du contrat."],
+      ["Personal application: detailed CV and cover letter, as per the terms of reference.", "CVs are compared, sometimes an interview, then contract negotiation."]],
+    PQ: ["biz", ["Préqualification : déposer d'abord un dossier de capacités (références, moyens, finances).", "Seules les entreprises préqualifiées recevront ensuite le dossier d'appel d'offres."],
+      ["Prequalification: first submit a capacity file (references, resources, finances).", "Only prequalified firms will then receive the bidding documents."]],
+    GPN: ["all", ["Avis général : annonce des marchés prévus par le projet, sans dépôt d'offre.", "Signaler son intérêt à l'acheteur et surveiller la publication des avis spécifiques."],
+      ["General notice: announces the project's planned contracts, no bid to submit.", "Register your interest with the buyer and watch for specific notices."]]
+  };
+  const methKey = n => {
+    if (n.type === "General Procurement Notice") return "GPN";
+    if (n.type === "Invitation for Prequalification") return "PQ";
+    const c = (n.method_code || "").toUpperCase(), m = (n.method || "").toLowerCase();
+    if (METH[c]) return c;
+    if (/individual|indv|ics/.test(c + " " + m)) return "INDV";
+    if (/quality and cost|qcbs/.test(m)) return "QCBS";
+    if (/consultant.?s qualification|cqs/.test(m)) return "CQS";
+    if (/least.?cost/.test(m)) return "LCS";
+    if (/fixed budget/.test(m)) return "FBS";
+    if (/quality.?based/.test(m)) return "QBS";
+    if (/quotation/.test(m)) return "RFQ";
+    if (/proposal/.test(m)) return n.group === "CS" ? "QCBS" : "RFP";
+    return n.group === "CS" ? "QCBS" : "RFB";
+  };
+  const whoOf = n => METH[methKey(n)][0];
+  const PROF = { all: () => true, td: n => ["biz", "all"].includes(whoOf(n)), fx: n => ["biz", "cs", "all"].includes(whoOf(n)), cs: n => ["cs", "all"].includes(whoOf(n)), in: n => ["in", "all"].includes(whoOf(n)) };
+  let tProf = "all";
+  const XK = [["elig", "xElig"], ["capacity", "xCapacity"], ["experience", "xExperience"], ["jv", "xJv"], ["owner", "xOwner"], ["money", "xMoney"], ["submit", "xSubmit"], ["visit", "xVisit"], ["pref", "xPref"], ["gender", "xGender"]];
+  function candBox(n) {
+    const L = lang === "fr" ? 1 : 2, mk = methKey(n), M = METH[mk], c = n.conditions || {};
+    const q = k => (c[k] || []).map(x => `<blockquote>${esc(x)}</blockquote>`).join("");
+    const whoTxt = { biz: t("whoBiz"), cs: t("whoCs"), in: t("whoIn"), all: t("whoAll") }[M[0]];
+    const nat = n.scope === "national" ? t("natNat") : n.scope === "international" ? t("natInt") : t("natUnk");
+    const sizeX = q("capacity") + q("experience");
+    const jv = n.jv === false ? t("jvNo") : t("jvYes");
+    const ct = n.contact || {};
+    const contact = [ct.org, ct.name, ct.email ? `<a href="mailto:${esc(ct.email)}">${esc(ct.email)}</a>` : "", ct.phone, ct.address].filter(Boolean).map((x, i) => i === 2 ? x : esc(x)).join("<br>");
+    return `<details><summary>${t("cdOpen")}</summary><div class="cand">
+      <div><h5>${t("cdWho")}</h5><p><b>${whoTxt}</b> · ${esc(n.method || mk)}</p>${q("elig")}</div>
+      <div><h5>${t("cdNat")}</h5><p>${nat}</p><p class="sub" style="font-size:12px">${t("natRule")}</p></div>
+      <div><h5>${t("cdSize")}</h5><p>${t("sizeRule")}</p>${sizeX || `<p class="sub" style="font-size:12px">${t("sizeNone")}</p>`}</div>
+      <div><h5>${t("cdOwn")}</h5><p>${t("ownRule")}</p><p>${jv}</p>${q("jv")}${q("owner")}</div>
+      <div><h5>${t("cdHow")}</h5><ol>${M[L].map(x => `<li>${esc(x)}</li>`).join("")}</ol>${q("submit")}${q("visit")}
+        <p style="margin-top:6px">${n.ref ? `${t("cdRef")} : <b>${esc(n.ref)}</b><br>` : ""}${n.deadline ? `${t("cdDl")} : <b>${fdate2(n.deadline)}${n.deadline_time ? " · " + esc(n.deadline_time) : ""}</b><br>` : ""}${n.lang ? `${t("cdLang")} : ${esc(T[lang]["lg" + n.lang] || n.lang)}` : ""}</p></div>
+      <div><h5>${t("cdCost")}</h5>${q("money") || `<p class="sub" style="font-size:12px">${t("costNone")}</p>`}${q("pref")}${q("gender")}</div>
+      ${contact ? `<div><h5>${t("cdContact")}</h5><p>${contact}</p></div>` : ""}
+      <div><h5>${t("cdFind")}</h5><p>${t("cdFindP")}</p><button type="button" class="btn" data-findg="${esc(n.group)}">${t("cdFindB")}</button></div>
+      <p class="sub wide" style="font-size:12px;margin:0">${t("cdNote")} <a href="${esc(n.url)}" target="_blank" rel="noopener">${t("cdFull")} ↗</a></p>
+    </div></details>`;
+  }
+
+  /* ---------- Annuaire des attributaires ---------- */
+  let ATTR = null, atGroup = "all", atCtry = "all";
+  const isTd = c => /^(tchad|chad)$/i.test((c || "").trim());
+  async function loadAttrib() {
+    try {
+      const r = await fetch("/api/attributaires", { headers: { accept: "application/json" } });
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json();
+      if (!j.firms) throw new Error("format");
+      ATTR = j;
+    } catch (e) { ATTR = { error: true }; }
+    renderAttrib();
+  }
+  function renderAttrib() {
+    const gs = document.getElementById("atGroup"), cs = document.getElementById("atCtry");
+    gs.innerHTML = [["all", "atAllG"], ["CW", "tgCW"], ["GO", "tgGO"], ["CS", "tgCS"], ["NC", "tgNC"]].map(g => `<option value="${g[0]}">${t(g[1])}</option>`).join(""); gs.value = atGroup;
+    cs.innerHTML = [["all", "atAllC"], ["td", "atTd"], ["fx", "atFx"]].map(g => `<option value="${g[0]}">${t(g[1])}</option>`).join(""); cs.value = atCtry;
+    const body = document.getElementById("atBody"), info = document.getElementById("atInfo");
+    if (!ATTR) { body.innerHTML = `<tr><td colspan="6" class="feedstate">${t("tLoading")}</td></tr>`; return; }
+    if (ATTR.error) { body.innerHTML = `<tr><td colspan="6" class="feedstate">${t("atFail")}</td></tr>`; info.textContent = ""; return; }
+    const qv = norm(document.getElementById("atQ").value.trim());
+    const list = ATTR.firms.filter(f => (atGroup === "all" || f.groups[atGroup]) && (atCtry === "all" || (atCtry === "td") === isTd(f.country)) && (!qv || norm(f.name + " " + f.country + " " + f.recent.map(r => r.title).join(" ")).includes(qv)));
+    const amt = f => Object.entries(f.totals).sort((a, b) => b[1] - a[1]).map(([c, v]) => v >= 1e9 ? nf(v / 1e9, 1) + (lang === "fr" ? " Md " : " bn ") + c : v >= 1e6 ? nf(v / 1e6, 1) + (lang === "fr" ? " M " : " M ") + c : nf(v, 0) + " " + c).join("<br>");
+    const shown = list.slice(0, 40);
+    body.innerHTML = shown.length ? shown.map(f => `<tr><td><b>${esc(f.name)}</b>${f.recent.map(r => `<span class="rec"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title || "—")}</a> · ${fdate2(r.date)}</span>`).join("")}</td>
+      <td>${esc(f.country || "—")}</td><td class="n">${f.wins}</td><td>${Object.keys(f.groups).map(g => t("tg" + g) || g).join(", ")}</td><td class="n" style="white-space:nowrap">${amt(f) || "—"}</td><td>${fdate2(f.last)}</td></tr>`).join("")
+      + (list.length > 40 ? `<tr><td colspan="6" class="feedstate">${t("atMore").replace("{n}", list.length - 40)}</td></tr>` : "")
+      : `<tr><td colspan="6" class="feedstate">${t("atNone")}</td></tr>`;
+    info.textContent = t("atInfo").replace("{f}", nf(ATTR.firms.length, 0)).replace("{n}", nf(ATTR.awards_read, 0)).replace("{d}", new Date(ATTR.fetched_at).toLocaleDateString(loc(), { day: "numeric", month: "long", year: "numeric" }));
+  }
+  document.getElementById("atQ").addEventListener("input", renderAttrib);
+  document.getElementById("atGroup").addEventListener("change", e => { atGroup = e.target.value; renderAttrib(); });
+  document.getElementById("atCtry").addEventListener("change", e => { atCtry = e.target.value; renderAttrib(); });
+  document.getElementById("tOpen").addEventListener("click", e => {
+    const b = e.target.closest("[data-findg]"); if (!b) return;
+    atGroup = b.dataset.findg || "all"; atCtry = tProf === "fx" ? "td" : "all"; document.getElementById("atQ").value = ""; renderAttrib();
+    document.getElementById("partenaires").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  document.getElementById("tProf").addEventListener("click", e => { const b = e.target.closest("[data-pf]"); if (!b) return; tProf = b.dataset.pf; renderTenders(); });
+
   function renderTenders() {
+    document.getElementById("tProf").innerHTML = [["all", "pfAll"], ["td", "pfTd"], ["fx", "pfFx"], ["cs", "pfCs"], ["in", "pfIn"]].map(g => `<button type="button" data-pf="${g[0]}" aria-pressed="${tProf === g[0]}">${t(g[1])}</button>`).join("");
+    document.getElementById("tProfNote").textContent = tProf === "fx" ? t("pfNoteFx") : tProf === "in" ? t("pfNoteIn") : "";
     document.getElementById("tGroup").innerHTML = [["all", "tgAll"], ["CW", "tgCW"], ["GO", "tgGO"], ["CS", "tgCS"], ["NC", "tgNC"]].map(g => `<button type="button" data-tg="${g[0]}" aria-pressed="${tGroup === g[0]}">${t(g[1])}</button>`).join("");
     const openBox = document.getElementById("tOpen"), awBox = document.getElementById("tAward"), info = document.getElementById("tFeedInfo");
     if (!TENDERS) { openBox.innerHTML = `<p class="feedstate">${t("tLoading")}</p>`; return; }
     if (TENDERS.error) { openBox.innerHTML = `<p class="feedstate">${t("tFail")}</p>`; awBox.innerHTML = ""; info.textContent = ""; return; }
     const today = new Date().toISOString().slice(0, 10);
     const byProj = Object.fromEntries(PROJ.map(p => [p.id, p.name]));
-    const inGroup = n => tGroup === "all" || n.group === tGroup;
+    const inGroup = n => (tGroup === "all" || n.group === tGroup) && PROF[tProf](n);
     const open = TENDERS.notices.filter(n => n.type !== "Contract Award" && n.deadline && n.deadline >= today && inGroup(n)).sort((a, b) => a.deadline.localeCompare(b.deadline));
-    const awards = TENDERS.notices.filter(n => n.type === "Contract Award" && inGroup(n)).slice(0, 8);
+    const awards = TENDERS.notices.filter(n => n.type === "Contract Award" && (tGroup === "all" || n.group === tGroup)).slice(0, 8);
     const card = (n, withDue) => {
       let due = "";
       if (withDue) {
         const days = Math.round((Date.parse(n.deadline) - Date.parse(today)) / 864e5);
         due = `<span class="due${days <= 7 ? " soon" : ""}">${days === 0 ? t("tToday") : days + " " + t("tDaysLeft")}</span>`;
       }
-      return `<div class="tender"><a href="${esc(n.url)}">${esc(n.title || n.project)}</a>
-        <div class="meta">${due}<span>${t(NT[n.type] || "ntIFB")}</span>${withDue ? `<span>${t("tDeadline")} ${fdate2(n.deadline)}</span>` : ""}<span>${t("tPublished")} ${fdate2(n.published)}</span><span>${esc(n.method)}</span><span>${t("tProject")} : ${esc(byProj[n.project_id] || n.project || n.project_id)}</span></div></div>`;
+      return `<div class="tender"><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title || n.project)}</a>
+        <div class="meta">${due}<span>${t(NT[n.type] || "ntIFB")}</span>${withDue ? `<span>${t("tDeadline")} ${fdate2(n.deadline)}</span>` : ""}<span>${t("tPublished")} ${fdate2(n.published)}</span><span>${esc(n.method)}</span><span>${t("tProject")} : ${esc(byProj[n.project_id] || n.project || n.project_id)}</span></div>${withDue ? `<div class="meta"><span class="who">${t({ biz: "whoBiz", cs: "whoCs", in: "whoIn", all: "whoAll" }[whoOf(n)])}</span>${n.scope ? `<span class="scopeb">${t(n.scope === "national" ? "tScNat" : "tScInt")}</span>` : ""}</div>${candBox(n)}` : ""}</div>`;
     };
     openBox.innerHTML = open.length ? open.map(n => card(n, true)).join("") : `<p class="feedstate">${t("tNone")}</p>`;
     awBox.innerHTML = awards.map(n => card(n, false)).join("");
@@ -2463,6 +2659,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     { n: t("eTvetTitle"), v: "1,4 %", h: "#edu-offre", kw: "formation professionnelle vocational fonap cftp lycée technique apprentissage" },
     { n: t("eNeedTitle"), v: "", h: "#edu-besoins", kw: "besoins needs métiers porteurs emploi jobs compétences skills" },
     { n: t("fTer"), v: "4,4 %", h: "#edu-parcours", kw: "supérieur université tertiary scolarisation" },
+    { n: t("atTitle"), v: "", h: "#partenaires", kw: "attributaires awardees partenaires partners groupement joint venture sous-traitance subcontract concurrents competitors entreprises companies qui gagne" },
     { n: t("liveTitle"), v: "", h: "#appels", kw: "appels d'offres tenders marchés procurement avis bids alertes" },
     { n: t("secuTitle"), v: "338", h: "#securite", kw: "sécurité security violences conflits acled risque risk" },
     { n: t("ifcTitle"), v: musd(157.4e6), h: "#projets", kw: "ifc investissement privé private investment télécoms moov airtel" },
@@ -2497,7 +2694,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     document.querySelectorAll("[data-i18n-ph]").forEach(n => { n.placeholder = t(n.dataset.i18nPh); });
     document.getElementById("lang-fr").setAttribute("aria-pressed", String(lang === "fr"));
     document.getElementById("lang-en").setAttribute("aria-pressed", String(lang === "en"));
-    renderTiles(); renderCountry(); renderEduMore(); renderEconomy(); renderProvinces(); renderSecurity(); renderProjects(); renderTenders(); renderContrib(); renderAbout(); renderVoix(); renderCompare(); renderEducation(); renderHuman(); renderSources();
+    renderTiles(); renderCountry(); renderEduMore(); renderEconomy(); renderProvinces(); renderSecurity(); renderProjects(); renderTenders(); renderAttrib(); renderContrib(); renderAbout(); renderVoix(); renderCompare(); renderEducation(); renderHuman(); renderSources();
     if (q.value) search();
   }
   ["fr", "en"].forEach(l => document.getElementById("lang-" + l).addEventListener("click", () => {
@@ -2505,7 +2702,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   }));
 
   applyLang();
-  if (!window.__PRERENDER) { loadTenders(); loadVoix(); }
+  if (!window.__PRERENDER) { loadTenders(); loadAttrib(); loadVoix(); }
 })();
 </script>
 
