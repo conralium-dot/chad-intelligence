@@ -193,6 +193,34 @@ table.prov tbody tr:hover td { background: var(--accent-soft); }
 .signup button { justify-self: start; border: 0; background: var(--gold); color: #0f1b33; font: 700 15px var(--font-body); padding: 11px 18px; border-radius: 8px; cursor: pointer; }
 .signup .msg { font-size: 14px; min-height: 1.2em; color: #fff; }
 .signup .fine { font-size: 12px; color: rgba(255,255,255,.75); }
+.edu-sub { margin: 30px 0 10px; font-size: 19px; }
+.matrix { width: 100%; border-collapse: collapse; font-size: 14px; }
+.matrix th, .matrix td { text-align: left; padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.matrix th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; }
+.matrix td.metier b { display: block; font-size: 15px; }
+.matrix td small { color: var(--muted); display: block; margin-top: 2px; }
+.need { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.need.n4 { background: rgba(179, 38, 30, .12); color: var(--critical); }
+.need.n3 { background: rgba(201, 148, 0, .16); color: #8a6500; }
+.need.n2 { background: var(--accent-soft); color: var(--accent); }
+.need.n1 { background: var(--line); color: var(--muted); }
+:root[data-theme="dark"] .need.n3 { color: var(--gold); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .need.n3 { color: var(--gold); } }
+.inst { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+.inst .it { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--surface); display: grid; gap: 3px; }
+.inst .it b { font-size: 14px; }
+.inst .it span { font-size: 12px; color: var(--muted); }
+.inst .it .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+.guide { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: 18px; }
+@media (max-width: 860px) { .guide { grid-template-columns: 1fr; } }
+.guide .steps { display: grid; gap: 14px; }
+.guide .steps label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 6px; }
+.guide .opts { display: grid; gap: 6px; }
+.guide .opts button { text-align: left; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 500 14px var(--font-body); padding: 9px 12px; border-radius: 8px; cursor: pointer; }
+.guide .opts button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.guide .res h3 { font-size: 20px; }
+.guide .res ol { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 6px; }
+.guide .res .warn { border-left: 3px solid var(--gold); padding: 8px 12px; background: rgba(201,148,0,.08); border-radius: 0 8px 8px 0; font-size: 13px; margin-top: 12px; }
 footer { padding: 28px 0 40px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
 </style>
@@ -209,7 +237,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <a href="#projets" data-i18n="navProj">Projets</a>
       <a href="#appels" data-i18n="navTend">Appels d'offres</a>
       <a href="#comparer" data-i18n="navCompare">Comparer</a>
-      <a href="#education" data-i18n="navEducation">Éducation</a>
+      <a href="#education" data-i18n="navEducation">Éducation et orientation</a>
       <a href="#humanitaire" data-i18n="navHuman">Humanitaire</a>
       <a href="#sources" data-i18n="navSources">Sources</a>
     </nav>
@@ -412,7 +440,15 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   <section class="block" id="education">
     <div class="wrap">
-      <div class="head"><h2 data-i18n="eduTitle">Éducation</h2><span class="tag" data-i18n="eduTag">Premier secteur couvert en détail</span></div>
+      <div class="head"><h2 data-i18n="eduTitle">Éducation, formation et orientation</h2><span class="tag" data-i18n="eduTag">Du pré-primaire à l'université, et les métiers dont le pays a besoin</span></div>
+      <div class="chips" role="group" aria-label="Sous-sections" style="margin-bottom:14px">
+        <a class="btn" href="#edu-parcours" data-i18n="eNav1">Le parcours scolaire</a>
+        <a class="btn" href="#edu-offre" data-i18n="eNav2">Public, privé, formation pro</a>
+        <a class="btn" href="#edu-etab" data-i18n="eNav3">Établissements</a>
+        <a class="btn" href="#edu-besoins" data-i18n="eNav4">Formations et besoins</a>
+        <a class="btn" href="#edu-guide" data-i18n="eNav5">Guide d'orientation</a>
+      </div>
+      <div class="minis" id="eduMinis"></div>
       <p class="insight" id="eduInsight"></p>
       <div class="grid2">
         <div class="card">
@@ -427,6 +463,74 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <div class="chart" id="chartLit"></div>
           <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/indicator/SE.ADT.LITR.ZS">Banque mondiale / UNESCO, SE.ADT.LITR.ZS</a></span><button class="btn" data-csv="lit" data-i18n="copyCsv">Copier les données (CSV)</button></div>
         </div>
+      </div>
+      <h3 class="edu-sub" id="edu-parcours" data-i18n="eParTitle">Le parcours scolaire, niveau par niveau</h3>
+      <p class="insight" id="eduFunnelInsight"></p>
+      <div class="card">
+        <h3 data-i18n="eFunTitle">Taux de scolarisation et d'achèvement, Tchad et Afrique subsaharienne</h3>
+        <p class="sub" data-i18n="eFunSub">% de la classe d'âge concernée · dernière année disponible entre parenthèses</p>
+        <div class="legend"><span style="--c: var(--accent)" data-i18n="eTcd">Tchad</span><span style="--c: var(--line)" data-i18n="eSsa">Afrique subsaharienne</span></div>
+        <div class="chart" id="chartFunnel"></div>
+        <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/topic/education?locations=TD">Banque mondiale / Institut de statistique de l'UNESCO</a></span><button class="btn" data-csv="edu" data-i18n="copyCsv">Copier les données (CSV)</button></div>
+      </div>
+      <div class="grid2 two" style="margin-top:16px">
+        <div class="card">
+          <h3 data-i18n="eQualTitle">Conditions d'enseignement</h3>
+          <p class="sub" data-i18n="eQualSub">Tchad comparé à la moyenne d'Afrique subsaharienne</p>
+          <table class="src" id="eduQual"></table>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/topic/education?locations=TD">Banque mondiale / UNESCO</a></span></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="eGapTitle">Filles et garçons</h3>
+          <p class="sub" data-i18n="eGapSub">Nombre de filles scolarisées pour 1 garçon (1 = égalité)</p>
+          <div class="chart" id="chartGpi"></div>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/indicator/SE.ENR.SECO.FM.ZS?locations=TD">Banque mondiale / UNESCO</a></span></div>
+        </div>
+      </div>
+
+      <h3 class="edu-sub" id="edu-offre" data-i18n="eOffTitle">Public, privé et formation professionnelle</h3>
+      <div class="grid2 two">
+        <div class="card">
+          <h3 data-i18n="ePrivTitle">Part des élèves et étudiants dans le privé</h3>
+          <p class="sub" data-i18n="ePrivSub">% des effectifs de chaque niveau</p>
+          <div class="chart" id="chartPriv"></div>
+          <div class="foot"><span><span data-i18n="source">Source</span> : <a href="https://data.worldbank.org/indicator/SE.SEC.PRIV.ZS?locations=TD">Banque mondiale / UNESCO</a> · <a href="https://tchadinfos.com/2026/05/15/tchad-le-ministre-de-lenseignement-superieur-repond-aux-questions-des-deputes-sur-les-etablissements-prives/" data-i18n="ePrivSrc2">ministère de l'Enseignement supérieur (supérieur, 2024-2025)</a></span></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="eTvetTitle">La formation professionnelle, maillon faible</h3>
+          <p class="sub" id="eTvetP1"></p>
+          <ul class="sub" style="padding-left:18px; margin:8px 0 0; display:grid; gap:6px" id="eTvetList"></ul>
+          <div class="foot"><span><span data-i18n="source">Sources</span> : <a href="https://data.worldbank.org/indicator/SE.SEC.ENRL.VO.ZS?locations=TD">Banque mondiale / UNESCO</a> · <a href="https://www.afd.fr/fr/projets/afpacet-appui-la-formation-professionnelle-et-la-competitivite-des-entreprises">AFD</a> · <a href="https://tchadinfos.com/?p=393215">Tchadinfos</a></span></div>
+        </div>
+      </div>
+
+      <h3 class="edu-sub" id="edu-etab" data-i18n="eEtabTitle">Universités et établissements publics d'enseignement supérieur</h3>
+      <p class="insight" id="eEtabInsight"></p>
+      <div class="prov-tools">
+        <div class="chips" id="instType" role="group" aria-label="Type" style="margin:0"></div>
+        <label for="instDom" data-i18n="eDomL">Domaine</label>
+        <select id="instDom"></select>
+      </div>
+      <div class="inst" id="instList"></div>
+      <div class="foot" style="margin-top:8px"><span><span data-i18n="source">Sources</span> : <a href="https://edition-efua.acaref.net/wp-content/uploads/sites/6/2026/02/16-NEMADJI-CELESTINE-4.pdf">ACAREF (2026)</a> · <a href="https://tchadinfos.com/2025/07/18/tchad-creation-de-trois-nouvelles-universites-et-dun-institut-national/">Tchadinfos (2025)</a> · <a href="https://www.unirank.org/td/public/">uniRank</a> · <a href="https://planipolis.iiep.unesco.org/sites/default/files/ressources/chad_plan_de_mise_en_oeuvre_de_la_continuite_pedagogique.pdf">MESRS / UNESCO-IIPE</a></span></div>
+
+      <h3 class="edu-sub" id="edu-besoins" data-i18n="eNeedTitle">Rapprocher les formations des besoins du pays</h3>
+      <p class="insight" id="eNeedInsight"></p>
+      <div class="card tablewrap">
+        <table class="matrix">
+          <thead><tr><th data-i18n="mxMetier">Filière et métiers</th><th data-i18n="mxSignal">Pourquoi le pays en a besoin</th><th data-i18n="mxWhere">Où se former</th><th data-i18n="mxNeed">Besoin</th></tr></thead>
+          <tbody id="needRows"></tbody>
+        </table>
+        <div class="foot"><span data-i18n="mxNote">Lecture Chad Intelligence à partir des données du site : emploi, projets financés et appels d'offres en cours. Le niveau de besoin est une appréciation, pas une statistique officielle.</span></div>
+      </div>
+
+      <h3 class="edu-sub" id="edu-guide" data-i18n="eGuideTitle">Guide d'orientation</h3>
+      <div class="card guide">
+        <div class="steps">
+          <div><label data-i18n="gQ1">1. Où en êtes-vous ?</label><div class="opts" id="gProfile"></div></div>
+          <div><label data-i18n="gQ2">2. Quel domaine vous attire ?</label><div class="opts" id="gDomain"></div></div>
+        </div>
+        <div class="res" id="gResult"></div>
       </div>
     </div>
   </section>
@@ -557,6 +661,23 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   /* ---------- Textes FR / EN ---------- */
   const T = {
     fr: {
+      eNav1: "Le parcours scolaire", eNav2: "Public, privé, formation pro", eNav3: "Établissements", eNav4: "Formations et besoins", eNav5: "Guide d'orientation",
+      eParTitle: "Le parcours scolaire, niveau par niveau", eFunTitle: "Taux de scolarisation et d'achèvement, Tchad et Afrique subsaharienne", eFunSub: "% de la classe d'âge concernée · dernière année disponible entre parenthèses", eTcd: "Tchad", eSsa: "Afrique subsaharienne",
+      fPre: "Pré-primaire (inscrits)", fPrim: "Primaire (inscrits)", fPrimC: "Primaire (achèvent)", fLowC: "Collège (achèvent)", fSec: "Secondaire (inscrits)", fUp: "Lycée (inscrits)", fTer: "Supérieur (inscrits)",
+      eQualTitle: "Conditions d'enseignement", eQualSub: "Tchad comparé à la moyenne d'Afrique subsaharienne", qInd: "Indicateur", qPtr: "Élèves par enseignant au primaire", qTrained: "Enseignants du primaire formés", qSpend: "Dépenses d'éducation", qSpendB: "Part du budget de l'État", qOut: "Enfants en âge du primaire non scolarisés", qYouth: "Jeunes de 15-24 ans sachant lire", qNeet: "Jeunes ni en emploi, ni en études, ni en formation",
+      eGapTitle: "Filles et garçons", eGapSub: "Nombre de filles scolarisées pour 1 garçon (1 = égalité)", gPrim: "Primaire", gSec: "Secondaire", gTer: "Supérieur",
+      eOffTitle: "Public, privé et formation professionnelle", ePrivTitle: "Part des élèves et étudiants dans le privé", ePrivSub: "% des effectifs de chaque niveau", ePrivSrc2: "ministère de l'Enseignement supérieur (supérieur, 2024-2025)",
+      eTvetTitle: "La formation professionnelle, maillon faible",
+      eEtabTitle: "Universités et établissements publics d'enseignement supérieur", eDomL: "Domaine",
+      tyAll: "Tous", tyUni: "Universités", tyIns: "Instituts supérieurs", tyEns: "Écoles normales", tyGe: "Grandes écoles", tyNew: "créée en 2025",
+      d_all: "Tous les domaines", d_general: "Formation générale", d_sante: "Santé", d_energie: "Énergie et pétrole", d_agri: "Agriculture et élevage", d_btp: "BTP et travaux publics", d_num: "Numérique", d_ens: "Enseignement", d_admin: "Gestion et administration", d_tech: "Sciences et techniques",
+      eNeedTitle: "Rapprocher les formations des besoins du pays", mxMetier: "Filière et métiers", mxSignal: "Pourquoi le pays en a besoin", mxWhere: "Où se former", mxNeed: "Besoin",
+      mxNote: "Lecture Chad Intelligence à partir des données du site : emploi, projets financés et appels d'offres en cours. Le niveau de besoin est une appréciation, pas une statistique officielle.",
+      n4: "Très fort", n3: "Fort", n2: "Moyen", n1: "Ciblé",
+      eGuideTitle: "Guide d'orientation", gQ1: "1. Où en êtes-vous ?", gQ2: "2. Quel domaine vous attire ?",
+      gp_fond: "Je termine l'école fondamentale (collège)", gp_bac: "J'ai ou je prépare le baccalauréat", gp_dip: "Je suis étudiant ou diplômé", gp_adu: "Je suis en activité ou en reconversion",
+      gPath: "Les voies possibles", gWhere: "Établissements publics de ce domaine", gNeed: "Le besoin dans ce domaine", gNone: "Pas d'établissement public spécialisé recensé : les universités généralistes et le privé agréé proposent des filières proches.",
+      gWarn: "Avant de vous inscrire dans un établissement privé, vérifiez qu'il est reconnu par le ministère de l'Enseignement supérieur : 63 établissements privés sont reconnus, et le ministère en a fermé ou mis en demeure plusieurs.",
       navTend: "Appels d'offres", mapTitle: "Carte des provinces", mapSub: "Choisissez un indicateur, puis cliquez sur une province pour ouvrir sa fiche.", mapSrc: "Contours : geoBoundaries, © contributeurs OpenStreetMap (ODbL)",
       mPop: "Population", mDens: "Densité", mGrow: "Croissance", mRef: "Réfugiés", mViol: "Violences politiques", mFat: "Victimes", mLow: "faible", mHigh: "élevé", mTop: "Les 5 provinces en tête",
       mUnitPop: "habitants (mi-2023)", mUnitDens: "hab./km²", mUnitGrow: "% par an, 2009-2023", mUnitRef: "réfugiés et demandeurs d'asile (déc. 2024)", mUnitViol: "événements, nov. 2025 - oct. 2026", mUnitFat: "victimes, nov. 2025 - oct. 2026",
@@ -605,7 +726,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       provSrc1: "INSEED, recensement 2009 et estimations mi-2023", provSrc2: "HCR, réfugiés par province (déc. 2024)",
       pCap: "Chef-lieu", pPop: "Population mi-2023", pPop09: "Recensement 2009", pArea: "Superficie", pDens: "Densité", pGrow: "Croissance 2009-2023", pRef: "Réfugiés et demandeurs d'asile", pRefShare: "réfugiés pour 100 habitants", pShare: "de la population du pays", pRank: "rang", pPerYear: "% par an", pKm2: "hab./km²", pNone: "aucun recensé",
       thProv: "Province", thCap: "Chef-lieu", thPop: "Population 2023", thDens: "Densité (hab./km²)", thGrow: "Croissance/an", thRef: "Réfugiés (déc. 2024)",
-      navCountry: "Fiche pays", navCompare: "Comparer", navEducation: "Éducation", navHuman: "Humanitaire", navSources: "Sources",
+      navCountry: "Fiche pays", navCompare: "Comparer", navEducation: "Éducation et orientation", navHuman: "Humanitaire", navSources: "Sources",
       heroTitle: "La référence des données sur le Tchad",
       heroLead: "Données publiques de la Banque mondiale, du HCR et de l'INSEED, rassemblées, vérifiées et expliquées. Chaque chiffre renvoie à sa source. Sous chaque chiffre clé : la valeur de l'Afrique subsaharienne.",
       searchLabel: "Rechercher un indicateur", searchPh: "Rechercher : population, PIB, réfugiés, électricité…", noResult: "Aucun indicateur trouvé. Essayez « PIB » ou « réfugiés ».",
@@ -613,7 +734,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       gdpTitle: "PIB, 2004-2024", gdpSub: "Milliards de dollars US courants", popTitle: "Population, 2004-2024", popSub: "Millions d'habitants",
       source: "Source", copyCsv: "Copier les données (CSV)", copied: "Copié", copyFail: "Copie impossible ici",
       compareTitle: "Le Tchad face à ses voisins", compareTag: "Cameroun, Niger, Nigeria, Soudan, République centrafricaine",
-      eduTitle: "Éducation", eduTag: "Premier secteur couvert en détail",
+      eduTitle: "Éducation, formation et orientation", eduTag: "Du pré-primaire à l'université, et les métiers dont le pays a besoin",
       enrTitle: "Taux brut de scolarisation au primaire", enrSub: "% de la population d'âge scolaire, 2000-2024 (peut dépasser 100 %)",
       litTitle: "Alphabétisation des adultes", litSub: "% des 15 ans et plus, dernière année disponible par pays",
       humTitle: "Humanitaire", humTag: "Personnes réfugiées et déplacées au Tchad, fin d'année", refugees: "Réfugiés accueillis", idps: "Déplacés internes",
@@ -629,6 +750,23 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       yrs: "ans", wbank: "Banque mondiale", ssaAvg: "Afr. subsah.", ssaTotal: "Afr. subsah. (total)", ssaNone: "Afr. subsah. : non dispo.", tSsa: "Moyennes Afrique subsaharienne", unhcr: "HCR", enrolment: "Scolarisation primaire (brut)", literacy: "Alphabétisation des adultes", idpsL: "Déplacés internes"
     },
     en: {
+      eNav1: "The school pathway", eNav2: "Public, private, vocational", eNav3: "Institutions", eNav4: "Training and needs", eNav5: "Guidance tool",
+      eParTitle: "The school pathway, level by level", eFunTitle: "Enrolment and completion rates, Chad and Sub-Saharan Africa", eFunSub: "% of the relevant age group · latest year available in brackets", eTcd: "Chad", eSsa: "Sub-Saharan Africa",
+      fPre: "Pre-primary (enrolled)", fPrim: "Primary (enrolled)", fPrimC: "Primary (complete)", fLowC: "Lower secondary (complete)", fSec: "Secondary (enrolled)", fUp: "Upper secondary (enrolled)", fTer: "Tertiary (enrolled)",
+      eQualTitle: "Teaching conditions", eQualSub: "Chad compared with the Sub-Saharan Africa average", qInd: "Indicator", qPtr: "Pupils per teacher, primary", qTrained: "Trained primary teachers", qSpend: "Education spending", qSpendB: "Share of government budget", qOut: "Primary-age children out of school", qYouth: "Young people aged 15-24 who can read", qNeet: "Youth not in employment, education or training",
+      eGapTitle: "Girls and boys", eGapSub: "Girls enrolled per boy (1 = parity)", gPrim: "Primary", gSec: "Secondary", gTer: "Tertiary",
+      eOffTitle: "Public, private and vocational training", ePrivTitle: "Share of pupils and students in private institutions", ePrivSub: "% of enrolment at each level", ePrivSrc2: "Ministry of Higher Education (tertiary, 2024-2025)",
+      eTvetTitle: "Vocational training, the weak link",
+      eEtabTitle: "Public universities and higher education institutions", eDomL: "Field",
+      tyAll: "All", tyUni: "Universities", tyIns: "Higher institutes", tyEns: "Teacher colleges", tyGe: "Grandes écoles", tyNew: "created in 2025",
+      d_all: "All fields", d_general: "General studies", d_sante: "Health", d_energie: "Energy and oil", d_agri: "Agriculture and livestock", d_btp: "Construction and public works", d_num: "Digital", d_ens: "Teaching", d_admin: "Management and administration", d_tech: "Science and engineering",
+      eNeedTitle: "Matching training to the country's needs", mxMetier: "Field and jobs", mxSignal: "Why the country needs it", mxWhere: "Where to train", mxNeed: "Need",
+      mxNote: "Chad Intelligence reading based on the data on this site: jobs, funded projects and open tenders. The level of need is an assessment, not an official statistic.",
+      n4: "Very high", n3: "High", n2: "Medium", n1: "Targeted",
+      eGuideTitle: "Guidance tool", gQ1: "1. Where are you now?", gQ2: "2. Which field interests you?",
+      gp_fond: "I am finishing basic school (lower secondary)", gp_bac: "I have or am preparing the baccalauréat", gp_dip: "I am a student or graduate", gp_adu: "I am working or changing career",
+      gPath: "Possible pathways", gWhere: "Public institutions in this field", gNeed: "Demand in this field", gNone: "No specialised public institution listed: general universities and accredited private institutions offer related courses.",
+      gWarn: "Before enrolling in a private institution, check that it is recognised by the Ministry of Higher Education: 63 private institutions are recognised, and the ministry has closed or warned several others.",
       navTend: "Tenders", mapTitle: "Map of the provinces", mapSub: "Pick an indicator, then click a province to open its profile.", mapSrc: "Boundaries: geoBoundaries, © OpenStreetMap contributors (ODbL)",
       mPop: "Population", mDens: "Density", mGrow: "Growth", mRef: "Refugees", mViol: "Political violence", mFat: "Fatalities", mLow: "low", mHigh: "high", mTop: "Top 5 provinces",
       mUnitPop: "people (mid-2023)", mUnitDens: "people/km²", mUnitGrow: "% a year, 2009-2023", mUnitRef: "refugees and asylum seekers (Dec. 2024)", mUnitViol: "events, Nov. 2025 - Oct. 2026", mUnitFat: "fatalities, Nov. 2025 - Oct. 2026",
@@ -677,7 +815,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       provSrc1: "INSEED, 2009 census and mid-2023 estimates", provSrc2: "UNHCR, refugees by province (Dec. 2024)",
       pCap: "Capital", pPop: "Population mid-2023", pPop09: "2009 census", pArea: "Area", pDens: "Density", pGrow: "Growth 2009-2023", pRef: "Refugees and asylum seekers", pRefShare: "refugees per 100 residents", pShare: "of the national population", pRank: "rank", pPerYear: "% a year", pKm2: "people/km²", pNone: "none recorded",
       thProv: "Province", thCap: "Capital", thPop: "Population 2023", thDens: "Density (people/km²)", thGrow: "Growth/yr", thRef: "Refugees (Dec. 2024)",
-      navCountry: "Country profile", navCompare: "Compare", navEducation: "Education", navHuman: "Humanitarian", navSources: "Sources",
+      navCountry: "Country profile", navCompare: "Compare", navEducation: "Education and guidance", navHuman: "Humanitarian", navSources: "Sources",
       heroTitle: "The reference for data on Chad",
       heroLead: "Public data from the World Bank, UNHCR and INSEED, gathered, checked and explained. Every figure links to its source. Under each key figure: the Sub-Saharan Africa value.",
       searchLabel: "Search an indicator", searchPh: "Search: population, GDP, refugees, electricity…", noResult: "No indicator found. Try “GDP” or “refugees”.",
@@ -685,7 +823,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       gdpTitle: "GDP, 2004-2024", gdpSub: "Billion current US dollars", popTitle: "Population, 2004-2024", popSub: "Million people",
       source: "Source", copyCsv: "Copy data (CSV)", copied: "Copied", copyFail: "Copy not available here",
       compareTitle: "Chad and its neighbours", compareTag: "Cameroon, Niger, Nigeria, Sudan, Central African Republic",
-      eduTitle: "Education", eduTag: "First sector covered in depth",
+      eduTitle: "Education, training and guidance", eduTag: "From pre-primary to university, and the skills the country needs",
       enrTitle: "Gross primary school enrolment", enrSub: "% of school-age population, 2000-2024 (can exceed 100%)",
       litTitle: "Adult literacy", litSub: "% of people aged 15 and over, latest year available per country",
       humTitle: "Humanitarian", humTag: "Refugees and displaced people in Chad, end of year", refugees: "Refugees hosted", idps: "Internally displaced",
@@ -927,6 +1065,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       [t("provTitle"), "INSEED (RGPH2 2009), estimations mi-2023", "–", "2009, 2023", "https://en.wikipedia.org/wiki/Provinces_of_Chad"],
       [t("pRef"), t("unhcr") + " Tchad", "–", "déc. 2024", "https://www.ecoi.net/en/file/local/2119766/"],
       [t("projTitle"), t("wbank") + " (CPF FY26-31)", "IDA, IFC", "14/02/2026", "https://documents1.worldbank.org/curated/en/099926304102627179/pdf/SECBOS-a04c4094-2b56-4c7e-8395-ef04e4ba3221.pdf"],
+      [t("eFunTitle"), t("wbank") + " / UNESCO", "SE.PRE/PRM/SEC/TER.ENRR, SE.PRM.CMPT.ZS, SE.SEC.CMPT.LO.ZS", "2016-2024", "https://data.worldbank.org/topic/education?locations=TD"],
+      [t("eEtabTitle"), "ACAREF, Tchadinfos, uniRank, MESRS", "–", "2020-2026", "https://edition-efua.acaref.net/wp-content/uploads/sites/6/2026/02/16-NEMADJI-CELESTINE-4.pdf"],
       [t("liveTitle"), t("wbank"), "procnotices API", "live", "https://projects.worldbank.org/en/projects-operations/procurement"],
       [t("secuTitle"), "ACLED / HDX HAPI", "conflict-events", "11/2025-10/2026", "https://data.humdata.org/hapi"],
       [t("mapTitle"), "geoBoundaries (OSM, ODbL)", "TCD ADM1", "2023", "https://www.geoboundaries.org/"],
@@ -1331,6 +1471,196 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     } catch (err) { msg.textContent = t("suErr"); }
   });
 
+
+  /* ---------- Éducation : données Banque mondiale / ISU (via API WDI, consultée le 22/11/2026) ---------- */
+  const EDU = {
+    funnel: [ // [clé, Tchad [valeur, année], ASS [valeur, année]]
+      ["fPre", [1.27, 2021], [28.14, 2020]],
+      ["fPrim", [88.46, 2024], [97.1, 2024]],
+      ["fPrimC", [41.85, 2021], [68.91, 2024]],
+      ["fLowC", [18.42, 2021], [44.36, 2023]],
+      ["fSec", [23.49, 2024], [45.91, 2024]],
+      ["fUp", [16.88, 2019], [33.44, 2018]],
+      ["fTer", [4.4, 2020], [9.27, 2021]]
+    ],
+    qual: [ // [clé, Tchad, ASS, format]
+      ["qPtr", [56.89, 2016], [37.36, 2018], "n"],
+      ["qTrained", [29.44, 2024], [68.82, 2022], "pct"],
+      ["qSpend", [3.2, 2023], [3.26, 2023], "pctgdp"],
+      ["qSpendB", [16.48, 2023], [15.38, 2024], "pct"],
+      ["qYouth", [45.13, 2019], [78.98, 2024], "pct"],
+      ["qNeet", [42.32, 2022], null, "pct"],
+      ["qOut", [855041, 2024], null, "int"]
+    ],
+    gpi: [["gPrim", 0.80, 0.96, 2021], ["gSec", 0.58, 0.90, 2021], ["gTer", 0.39, 0.79, 2020]],
+    priv: [["gPrim", 23.62, "2024"], ["gSec", 39.32, "2024"], ["gTer", 30, "2024-25"]],
+    voc: [1.42, 2019, 5.83, 2018],
+    emp: { agri: [71.74, 2025], ind: [8.5, 2025], srv: [19.76, 2025] }
+  };
+  // [nom, ville, province, type, domaines, année de création]
+  const INST = [
+    ["Université de N'Djamena", "N'Djamena", "N'Djamena", "uni", ["general", "sante", "tech"], 1971],
+    ["Université Polytechnique de Mongo", "Mongo", "Guéra", "uni", ["tech"], 2002],
+    ["Université Adam Barka d'Abéché", "Abéché", "Ouaddaï", "uni", ["general"], 2003],
+    ["Université Numérique du Tchad", "—", "", "uni", ["num", "general"], 2005],
+    ["Université des Sciences et de Technologie d'Ati", "Ati", "Batha", "uni", ["tech"], 2008],
+    ["Université de Moundou", "Moundou", "Logone Occidental", "uni", ["general"], 2008],
+    ["Université de Doba", "Doba", "Logone Oriental", "uni", ["general"], 2010],
+    ["Université de Sarh", "Sarh", "Moyen-Chari", "uni", ["general"], 2010],
+    ["Université de Pala", "Pala", "Mayo-Kebbi Ouest", "uni", ["general"], 2014],
+    ["Université Roi Fayçal", "N'Djamena", "N'Djamena", "uni", ["general"], null],
+    ["Université de Bongor (UNIB)", "Bongor", "Mayo-Kebbi Est", "uni", ["general"], 2025],
+    ["Université du Sahara de Faya (UNISAF)", "Faya", "Borkou", "uni", ["general"], 2025],
+    ["Université du Lac Tchad (UNILAC)", "Bol", "Lac", "uni", ["general"], 2025],
+    ["Institut national supérieur des sciences et techniques d'Abéché", "Abéché", "Ouaddaï", "ins", ["tech", "energie"], null],
+    ["Institut national supérieur du pétrole de Mao", "Mao", "Kanem", "ins", ["energie"], null],
+    ["Institut national supérieur des arts et métiers de Biltine", "Biltine", "Wadi Fira", "ins", ["tech", "btp"], null],
+    ["Institut supérieur du Sahara et du Sahel d'Iriba", "Iriba", "Wadi Fira", "ins", ["general"], null],
+    ["Institut national supérieur des sciences agronomiques et technologies agroalimentaires de Laï", "Laï", "Tandjilé", "ins", ["agri"], null],
+    ["Institut national supérieur des sciences et techniques de la santé de Massakory (INSTESAM)", "Massakory", "Hadjer-Lamis", "ins", ["sante"], 2025],
+    ["École normale supérieure de N'Djamena", "N'Djamena", "N'Djamena", "ens", ["ens"], null],
+    ["École normale supérieure des sciences exactes et appliquées de Bongor", "Bongor", "Mayo-Kebbi Est", "ens", ["ens", "tech"], null],
+    ["École normale supérieure d'Abéché", "Abéché", "Ouaddaï", "ens", ["ens"], null],
+    ["École normale supérieure de l'enseignement technique de Sarh (ENSET)", "Sarh", "Moyen-Chari", "ens", ["ens", "tech"], null],
+    ["École nationale d'administration (ENA)", "N'Djamena", "N'Djamena", "ge", ["admin"], null],
+    ["École nationale supérieure des travaux publics (ENSTP)", "N'Djamena", "N'Djamena", "ge", ["btp"], null],
+    ["École nationale supérieure des TIC (ENASTIC)", "N'Djamena", "N'Djamena", "ge", ["num"], null]
+  ].map(r => ({ name: r[0], city: r[1], prov: r[2], type: r[3], dom: r[4], year: r[5] }));
+  const DOMS = ["general", "sante", "energie", "agri", "btp", "num", "ens", "admin", "tech"];
+  // Filières : [domaine, besoin 1-4, métiers FR/EN, signal FR/EN, où se former FR/EN]
+  const NEEDS = [
+    ["energie", 4, ["Électricité et énergie solaire", "Electricity and solar energy"], ["Électriciens, techniciens solaires, ingénieurs énergie", "Electricians, solar technicians, energy engineers"],
+      ["13 % de la population a l'électricité. 269 M$ restent à dépenser dans des projets d'énergie, et des appels d'offres portent sur des systèmes solaires pour écoles et centres de santé.", "13% of people have electricity. $269M is still to be spent on energy projects, and open tenders cover solar systems for schools and health centres."],
+      ["Lycées techniques industriels, centres de formation pro, INS du pétrole de Mao, INST d'Abéché, université d'Ati", "Industrial technical schools, vocational centres, Mao petroleum institute, Abéché institute, Ati university"]],
+    ["btp", 4, ["BTP et travaux publics", "Construction and public works"], ["Maçons, électriciens bâtiment, géomètres, conducteurs de travaux, ingénieurs génie civil", "Builders, site electricians, surveyors, site managers, civil engineers"],
+      ["524 M$ restent à dépenser en transport et en aménagement urbain. Trois appels d'offres ouverts portent sur la construction de 108 écoles.", "$524M is still to be spent on transport and urban works. Three open tenders cover building 108 schools."],
+      ["Centres de formation pro, lycées techniques, ENSTP, INS des arts et métiers de Biltine", "Vocational centres, technical schools, ENSTP, Biltine arts and crafts institute"]],
+    ["ens", 4, ["Enseignement", "Teaching"], ["Instituteurs, professeurs de collège et lycée, professeurs de l'enseignement technique", "Primary teachers, secondary teachers, technical teachers"],
+      ["57 élèves par enseignant au primaire, 29 % d'enseignants formés, 855 000 enfants non scolarisés, et de nouvelles écoles en construction.", "57 pupils per primary teacher, 29% of teachers trained, 855,000 children out of school, and new schools being built."],
+      ["Écoles normales supérieures (N'Djamena, Bongor, Abéché, ENSET de Sarh), écoles normales d'instituteurs", "Teacher colleges (N'Djamena, Bongor, Abéché, ENSET Sarh), primary teacher schools"]],
+    ["agri", 3, ["Agriculture, élevage et agroalimentaire", "Agriculture, livestock and agri-food"], ["Techniciens agricoles et d'élevage, auxiliaires vétérinaires, transformation agroalimentaire", "Farm and livestock technicians, animal health workers, food processing"],
+      ["72 % des emplois et 38 % du PIB. 250 M$ restent à dépenser dans des projets agricoles et pastoraux.", "72% of jobs and 38% of GDP. $250M is still to be spent on farming and pastoral projects."],
+      ["INS des sciences agronomiques de Laï, centres de formation pro, apprentissage", "Laï agronomy institute, vocational centres, apprenticeships"]],
+    ["sante", 3, ["Santé", "Health"], ["Infirmiers, sages-femmes, techniciens de laboratoire, médecins", "Nurses, midwives, lab technicians, doctors"],
+      ["Espérance de vie de 55 ans. 120 M$ restent à dépenser dans des projets de santé, et un institut national de santé a été créé à Massakory en 2025.", "Life expectancy of 55. $120M is still to be spent on health projects, and a national health institute opened in Massakory in 2025."],
+      ["Faculté des sciences de la santé (université de N'Djamena), INSTESAM de Massakory", "Faculty of health sciences (University of N'Djamena), INSTESAM Massakory"]],
+    ["num", 3, ["Numérique et télécoms", "Digital and telecoms"], ["Techniciens réseaux, développeurs, agents de maintenance informatique", "Network technicians, developers, IT support"],
+      ["13 % de la population utilise internet. 83 M$ restent à dépenser dans le projet de transformation numérique, et l'IFC investit dans les opérateurs télécoms.", "13% of people use the internet. $83M is still to be spent on the digital transformation project, and IFC invests in telecom operators."],
+      ["ENASTIC, Université numérique du Tchad", "ENASTIC, Chad Digital University"]],
+    ["admin", 2, ["Gestion, finance et gestion de projet", "Management, finance and project management"], ["Comptables, gestionnaires de projets, spécialistes de la passation de marchés et du suivi-évaluation", "Accountants, project managers, procurement and M&E specialists"],
+      ["Chaque projet financé recrute des équipes de gestion, et 100 M$ sont dédiés aux PME. Les diplômés en gestion restent toutefois nombreux.", "Every funded project hires management teams, and $100M targets SMEs. But management graduates are already numerous."],
+      ["ENA, universités, établissements privés agréés", "ENA, universities, accredited private institutions"]],
+    ["petrole", 1, ["Pétrole et mines", "Oil and mining"], ["Techniciens de production, maintenance industrielle, géologues", "Production technicians, industrial maintenance, geologists"],
+      ["Le pétrole fait 76 % des exportations, mais l'industrie ne représente que 9 % des emplois : peu de postes, très qualifiés.", "Oil makes up 76% of exports, but industry is only 9% of jobs: few, highly skilled positions."],
+      ["INS du pétrole de Mao, INST d'Abéché", "Mao petroleum institute, Abéché institute"]]
+  ];
+  const GPROF = ["fond", "bac", "dip", "adu"];
+  const PATHS = {
+    fond: [["Centre de formation technique et professionnelle : 2 ans, à partir de 15 ans, après l'école fondamentale.", "Technical and vocational training centre: 2 years, from age 15, after basic school."],
+           ["Lycée technique (industriel ou commercial) jusqu'au baccalauréat technique.", "Technical high school (industrial or commercial) up to the technical baccalauréat."],
+           ["Apprentissage en alternance entre un atelier et un centre, soutenu par le FONAP.", "Work-study apprenticeship between a workshop and a centre, supported by FONAP."]],
+    bac: [["Licence (3 ans) dans une université publique, souvent près de chez soi depuis l'ouverture des universités régionales.", "Bachelor's degree (3 years) at a public university, often close to home now that regional universities have opened."],
+          ["Institut national supérieur à vocation professionnelle (santé, pétrole, agronomie, arts et métiers).", "Professional national higher institute (health, oil, agronomy, arts and crafts)."],
+          ["École normale supérieure pour devenir enseignant, ou grande école (administration, travaux publics, TIC).", "Teacher college to become a teacher, or a grande école (administration, public works, ICT)."]],
+    dip: [["Master ou spécialisation dans le domaine choisi.", "Master's degree or specialisation in the chosen field."],
+          ["Postes dans les projets financés par les bailleurs : gestion, passation de marchés, suivi-évaluation (voir les appels d'offres « Conseil »).", "Jobs in donor-funded projects: management, procurement, monitoring and evaluation (see “Consulting” tenders)."],
+          ["Formation continue financée par le FONAP pour acquérir une compétence technique recherchée.", "Continuing training funded by FONAP to gain an in-demand technical skill."]],
+    adu: [["Formation continue qualifiante, financée par le FONAP via la taxe d'apprentissage des entreprises.", "Qualifying continuing training, funded by FONAP through the companies' training tax."],
+          ["Apprentissage en alternance dans un métier porteur (électricité, solaire, BTP).", "Work-study apprenticeship in an in-demand trade (electrical, solar, construction)."],
+          ["Formations courtes certifiantes dans un centre ou un établissement privé agréé.", "Short certified courses at a centre or an accredited private institution."]]
+  };
+  let instType = "all", instDom = "all", gProf = "bac", gDom = "energie";
+  const pctf = v => nf(v, 1) + " %";
+
+  function renderEduMore() {
+    const F = EDU.funnel;
+    document.getElementById("eduMinis").innerHTML = [
+      [t("fPre"), F[0][1], F[0][2]], [t("fPrimC"), F[2][1], F[2][2]], [t("fLowC"), F[3][1], F[3][2]], [t("fTer"), F[6][1], F[6][2]]
+    ].map(m => `<div class="mini"><span class="label">${m[0]}</span><span class="value">${pctf(m[1][0])}</span><span class="meta">${m[1][1]} · ${t("eSsa")} : ${pctf(m[2][0])}</span></div>`).join("");
+    document.getElementById("eduFunnelInsight").textContent = lang === "fr"
+      ? `Sur 100 enfants, environ 88 sont inscrits au primaire, mais 42 seulement le terminent et 18 achèvent le collège. 4 jeunes sur 100 accèdent au supérieur, deux fois moins que la moyenne d'Afrique subsaharienne. Le pré-primaire est quasi inexistant (1 %).`
+      : `Out of 100 children, about 88 enrol in primary school, but only 42 complete it and 18 complete lower secondary. 4 in 100 young people reach higher education, half the Sub-Saharan average. Pre-primary is almost non-existent (1%).`;
+    // graphique entonnoir comparé
+    const box = document.getElementById("chartFunnel"); box.innerHTML = "";
+    const W = 1000, rowH = 44, L = 230, R = 70, T0 = 4, H = T0 + F.length * rowH + 4;
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": t("eFunTitle") }, box);
+    F.forEach((r, i) => {
+      const y = T0 + i * rowH, X = v => v / 100 * (W - L - R);
+      const nm = el("text", { x: L - 12, y: y + 16, "text-anchor": "end" }, svg); nm.textContent = t(r[0]); nm.style.fill = "var(--ink)"; nm.style.fontSize = "13px";
+      el("rect", { x: L, y: y + 4, width: Math.max(X(r[1][0]), 2), height: 16, rx: 3, fill: "var(--accent)" }, svg);
+      const a = el("text", { x: L + Math.max(X(r[1][0]), 2) + 6, y: y + 16 }, svg); a.textContent = `${pctf(r[1][0])} (${r[1][1]})`; a.style.fill = "var(--ink)"; a.style.fontWeight = 600;
+      el("rect", { x: L, y: y + 23, width: Math.max(X(r[2][0]), 2), height: 10, rx: 3, fill: "var(--line)" }, svg);
+      const b = el("text", { x: L + Math.max(X(r[2][0]), 2) + 6, y: y + 32 }, svg); b.textContent = `${pctf(r[2][0])} (${r[2][1]})`;
+    });
+    // conditions
+    const fmtQ = (v, f) => !v ? "–" : f === "n" ? nf(v[0], 0) : f === "int" ? nf(v[0], 0) : f === "pctgdp" ? nf(v[0], 1) + (lang === "fr" ? " % du PIB" : "% of GDP") : pctf(v[0]);
+    document.getElementById("eduQual").innerHTML = `<thead><tr><th>${t("qInd")}</th><th class="n">${t("eTcd")}</th><th class="n">${t("eSsa")}</th></tr></thead><tbody>` +
+      EDU.qual.map(q => `<tr><td>${t(q[0])}</td><td class="n num"><b>${fmtQ(q[1], q[3])}</b> <small style="color:var(--muted)">${q[1][1]}</small></td><td class="n num">${fmtQ(q[2], q[3])}${q[2] ? ` <small style="color:var(--muted)">${q[2][1]}</small>` : ""}</td></tr>`).join("") + "</tbody>";
+    hbarChart(document.getElementById("chartGpi"), EDU.gpi.map(g => ({ key: g[0], name: `${t(g[0])} (${g[3]})`, v: g[1], label: `${nf(g[1], 2)} · ${t("eSsa")} ${nf(g[2], 2)}` })), { label: t("eGapTitle"), w: 560, l: 130, max: 1, r: 170, rowH: 34, hl: "gTer" });
+    hbarChart(document.getElementById("chartPriv"), EDU.priv.map(g => ({ key: g[0], name: `${t(g[0])} (${g[2]})`, v: g[1], label: (g[0] === "gTer" ? (lang === "fr" ? "près de " : "nearly ") : "") + nf(g[1], g[0] === "gTer" ? 0 : 1) + " %" })), { label: t("ePrivTitle"), w: 560, l: 150, max: 100, r: 110, rowH: 34, hl: "gSec" });
+    document.getElementById("eTvetP1").textContent = lang === "fr"
+      ? `Seuls ${nf(EDU.voc[0], 1)} % des élèves du secondaire suivent une filière technique ou professionnelle (${EDU.voc[1]}), contre ${nf(EDU.voc[2], 1)} % en Afrique subsaharienne. Or ${nf(EDU.emp.agri[0], 0)} % des emplois sont agricoles et les projets en cours recherchent surtout des techniciens.`
+      : `Only ${nf(EDU.voc[0], 1)}% of secondary pupils follow a technical or vocational track (${EDU.voc[1]}), against ${nf(EDU.voc[2], 1)}% in Sub-Saharan Africa. Yet ${nf(EDU.emp.agri[0], 0)}% of jobs are in farming and current projects mostly need technicians.`;
+    document.getElementById("eTvetList").innerHTML = (lang === "fr" ? [
+      "Centres de formation technique et professionnelle (CFTP) : 2 ans après l'école fondamentale. Une enquête nationale de 2026 en a couvert 57.",
+      "Lycées techniques industriels et commerciaux jusqu'au baccalauréat technique.",
+      "FONAP (Fonds national d'appui à la formation professionnelle) : finance la formation continue et l'apprentissage grâce à la taxe payée par les entreprises.",
+      "Apprentissage en alternance (« Bab Al Amal ») : les jeunes se forment entre un atelier et un lycée technique, à Sarh notamment.",
+      "Avec l'AFD, 7 000 personnes ont suivi des formations continues pilotes, dont 43 % de femmes."
+    ] : [
+      "Technical and vocational training centres (CFTP): 2 years after basic school. A 2026 national survey covered 57 of them.",
+      "Industrial and commercial technical high schools up to the technical baccalauréat.",
+      "FONAP (national vocational training support fund): funds continuing training and apprenticeships through a tax paid by companies.",
+      "Work-study apprenticeships (“Bab Al Amal”): young people train between a workshop and a technical school, notably in Sarh.",
+      "With AFD, 7,000 people followed pilot continuing training courses, 43% of them women."
+    ]).map(x => `<li>${x}</li>`).join("");
+    renderInst(); renderNeeds(); renderGuide();
+  }
+
+  function renderInst() {
+    const n = INST.filter(i => i.type === "uni").length, nNew = INST.filter(i => i.year === 2025).length;
+    document.getElementById("eEtabInsight").textContent = lang === "fr"
+      ? `Le Tchad compte ${n} universités publiques, dont ${nNew - 1} créées en 2025 à Bongor, Faya et Bol pour rapprocher l'université des régions, ainsi que des instituts professionnels et quatre écoles normales supérieures. Côté privé, 63 établissements sont reconnus et accueillent près de 30 % des étudiants (27 362 en 2024-2025), dont les trois quarts à N'Djamena.`
+      : `Chad has ${n} public universities, ${nNew - 1} of them created in 2025 in Bongor, Faya and Bol to bring university closer to the regions, plus professional institutes and four teacher colleges. On the private side, 63 institutions are recognised and enrol nearly 30% of students (27,362 in 2024-2025), three quarters of them in N'Djamena.`;
+    document.getElementById("instType").innerHTML = [["all", "tyAll"], ["uni", "tyUni"], ["ins", "tyIns"], ["ens", "tyEns"], ["ge", "tyGe"]].map(c => `<button type="button" data-ity="${c[0]}" aria-pressed="${instType === c[0]}">${t(c[1])}</button>`).join("");
+    document.getElementById("instDom").innerHTML = `<option value="all">${t("d_all")}</option>` + DOMS.map(d => `<option value="${d}"${instDom === d ? " selected" : ""}>${t("d_" + d)}</option>`).join("");
+    const list = INST.filter(i => (instType === "all" || i.type === instType) && (instDom === "all" || i.dom.includes(instDom)));
+    document.getElementById("instList").innerHTML = list.map(i => `<div class="it"><b>${i.name}</b><span>${i.city}${i.prov && i.prov !== i.city ? " · " + i.prov : ""}${i.year ? " · " + (i.year === 2025 ? t("tyNew") : i.year) : ""}</span><div class="tags">${i.dom.map(d => `<span class="tag-s">${t("d_" + d)}</span>`).join("")}</div></div>`).join("");
+  }
+
+  function renderNeeds() {
+    const L = lang === "fr" ? 0 : 1;
+    document.getElementById("eNeedInsight").textContent = lang === "fr"
+      ? `Les projets en cours et l'économie réelle demandent surtout des techniciens (électricité, solaire, BTP) et des enseignants. Or la formation professionnelle accueille à peine 1,4 % des élèves du secondaire. C'est là que les familles, les centres de formation et les entreprises peuvent agir le plus vite.`
+      : `Current projects and the real economy mostly need technicians (electrical, solar, construction) and teachers. Yet vocational training takes in barely 1.4% of secondary pupils. This is where families, training centres and companies can act fastest.`;
+    document.getElementById("needRows").innerHTML = NEEDS.map(n => `<tr><td class="metier"><b>${n[2][L]}</b><small>${n[3][L]}</small></td><td>${n[4][L]}</td><td>${n[5][L]}</td><td><span class="need n${n[1]}">${t("n" + n[1])}</span></td></tr>`).join("");
+  }
+
+  function renderGuide() {
+    const L = lang === "fr" ? 0 : 1;
+    document.getElementById("gProfile").innerHTML = GPROF.map(p => `<button type="button" data-gp="${p}" aria-pressed="${gProf === p}">${t("gp_" + p)}</button>`).join("");
+    const doms = NEEDS.map(n => [n[0], n[2][L]]);
+    document.getElementById("gDomain").innerHTML = doms.map(d => `<button type="button" data-gd="${d[0]}" aria-pressed="${gDom === d[0]}">${d[1]}</button>`).join("");
+    const need = NEEDS.find(n => n[0] === gDom);
+    const GDOM = { petrole: ["energie"] };
+    const insts = gProf === "fond" ? [] : INST.filter(i => (GDOM[gDom] || [gDom]).some(d => i.dom.includes(d)));
+    document.getElementById("gResult").innerHTML = `
+      <h3>${need[2][L]}</h3>
+      <p class="sub">${need[3][L]}</p>
+      <p style="margin:12px 0 4px"><b>${t("gNeed")}</b> <span class="need n${need[1]}">${t("n" + need[1])}</span></p>
+      <p class="sub" style="margin:0">${need[4][L]}</p>
+      <p style="margin:14px 0 0"><b>${t("gPath")}</b></p>
+      <ol>${PATHS[gProf].map(x => `<li>${x[L]}</li>`).join("")}</ol>
+      ${gProf === "fond" ? "" : `<p style="margin:14px 0 6px"><b>${t("gWhere")}</b></p>${insts.length ? `<div class="inst">${insts.map(i => `<div class="it"><b>${i.name}</b><span>${i.city}${i.prov && i.prov !== i.city ? " · " + i.prov : ""}</span></div>`).join("")}</div>` : `<p class="sub">${t("gNone")}</p>`}`}
+      <p class="sub" style="margin-top:10px">${lang === "fr" ? "Où se former" : "Where to train"} : ${need[5][L]}</p>
+      <div class="warn">${t("gWarn")}</div>`;
+  }
+
+  document.getElementById("instType").addEventListener("click", e => { const b = e.target.closest("[data-ity]"); if (!b) return; instType = b.dataset.ity; renderInst(); });
+  document.getElementById("instDom").addEventListener("change", e => { instDom = e.target.value; renderInst(); });
+  document.getElementById("gProfile").addEventListener("click", e => { const b = e.target.closest("[data-gp]"); if (!b) return; gProf = b.dataset.gp; renderGuide(); });
+  document.getElementById("gDomain").addEventListener("click", e => { const b = e.target.closest("[data-gd]"); if (!b) return; gDom = b.dataset.gd; renderGuide(); });
+
   /* ---------- CSV ---------- */
   const CSV = {
     gdp: () => "year,gdp_current_usd\n" + series(gdp).map(p => p.join(",")).join("\n"),
@@ -1344,6 +1674,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     oil: () => "measure,oil_share_pct\n" + OIL.map(s => `${T.en[s[0]]},${s[1]}`).join("\n"),
     secu: () => "province,political_violence_events,fatalities,demonstrations,period\n" + PROV.map(r => `"${r.name}",${r.viol},${r.fat},${r.demo},2025-11/2026-10`).join("\n"),
     tend: () => "id,type,title,project_id,published,deadline,method,group,url\n" + ((TENDERS && TENDERS.notices) || []).map(n => [n.id, n.type, '"' + (n.title || "").replace(/"/g, "'") + '"', n.project_id, n.published, n.deadline || "", n.method, n.group, n.url].join(",")).join("\n"),
+    edu: () => "indicator,chad_value,chad_year,ssa_value,ssa_year\n" + EDU.funnel.map(r => `${T.en[r[0]]},${r[1][0]},${r[1][1]},${r[2][0]},${r[2][1]}`).join("\n"),
     proj: () => "project_id,name,scope,sector,approval,closing,net_commitment_usd,disbursed_usd,undisbursed_usd\n" + PROJ.map(p => `${p.id},"${p.name}",${p.scope},${p.sec},${p.appr},${p.close},${p.amt},${p.disb},${p.rem}`).join("\n"),
     prov: () => "province,capital,pop_2009,pop_mid2023,area_km2,density_2023,growth_pct_per_year,refugees_dec2024\n" + PROV.map(r => `"${r.name}","${r.cap}",${r.p09},${r.p23},${r.area},${r.dens.toFixed(1)},${r.grow.toFixed(2)},${r.ref}`).join("\n")
   };
@@ -1380,6 +1711,11 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     { n: t("oilTitle"), v: "76 % " + t("oilExp"), h: "#economie", kw: "pétrole oil brut crude exportations exports recettes" },
     { n: t("secAgr"), v: nf(37.7, 1) + " %", h: "#economie", kw: "agriculture élevage livestock secteurs sectors" },
     { n: t("projTitle"), v: musd(1087354558.10), h: "#projets", kw: "projets projects bailleurs donors banque mondiale world bank appels d'offres tenders marchés procurement financement" },
+    { n: t("eGuideTitle"), v: "", h: "#edu-guide", kw: "orientation guidance étudiants students familles métiers jobs formation training" },
+    { n: t("eEtabTitle"), v: "13", h: "#edu-etab", kw: "universités universities écoles instituts ens ena enstp enastic" },
+    { n: t("eTvetTitle"), v: "1,4 %", h: "#edu-offre", kw: "formation professionnelle vocational fonap cftp lycée technique apprentissage" },
+    { n: t("eNeedTitle"), v: "", h: "#edu-besoins", kw: "besoins needs métiers porteurs emploi jobs compétences skills" },
+    { n: t("fTer"), v: "4,4 %", h: "#edu-parcours", kw: "supérieur université tertiary scolarisation" },
     { n: t("liveTitle"), v: "", h: "#appels", kw: "appels d'offres tenders marchés procurement avis bids alertes" },
     { n: t("secuTitle"), v: "338", h: "#securite", kw: "sécurité security violences conflits acled risque risk" },
     { n: t("ifcTitle"), v: musd(157.4e6), h: "#projets", kw: "ifc investissement privé private investment télécoms moov airtel" },
@@ -1414,7 +1750,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     document.querySelectorAll("[data-i18n-ph]").forEach(n => { n.placeholder = t(n.dataset.i18nPh); });
     document.getElementById("lang-fr").setAttribute("aria-pressed", String(lang === "fr"));
     document.getElementById("lang-en").setAttribute("aria-pressed", String(lang === "en"));
-    renderTiles(); renderCountry(); renderEconomy(); renderProvinces(); renderSecurity(); renderProjects(); renderTenders(); renderCompare(); renderEducation(); renderHuman(); renderSources();
+    renderTiles(); renderCountry(); renderEduMore(); renderEconomy(); renderProvinces(); renderSecurity(); renderProjects(); renderTenders(); renderCompare(); renderEducation(); renderHuman(); renderSources();
     if (q.value) search();
   }
   ["fr", "en"].forEach(l => document.getElementById("lang-" + l).addEventListener("click", () => {
